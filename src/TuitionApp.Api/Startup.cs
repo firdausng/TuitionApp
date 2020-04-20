@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TuitionApp.Api.StartupExtension;
 
 namespace TuitionApp.Api
 {
@@ -21,6 +22,8 @@ namespace TuitionApp.Api
             services.AddTuitionAppCore();
 
             services.AddControllers();
+
+            services.AddSwaggerConfig();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -33,6 +36,8 @@ namespace TuitionApp.Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCustomSwaggerConfig();
 
             app.UseEndpoints(endpoints =>
             {
