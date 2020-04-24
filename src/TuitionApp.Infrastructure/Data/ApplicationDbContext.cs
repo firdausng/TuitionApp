@@ -9,8 +9,12 @@ namespace TuitionApp.Infrastructure.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Timetable> Timetables { get; set; }
+        public DbSet<Timeslot> Timeslots { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
@@ -22,29 +26,29 @@ namespace TuitionApp.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // many to many mapping for test location and teacher
-            modelBuilder.Entity<LocationTeacher>()
-                .HasKey(bc => new { bc.LocationId, bc.TeacherId });
-            modelBuilder.Entity<LocationTeacher>()
+            // many to many mapping for location and instructor
+            modelBuilder.Entity<LocationInstructor>()
+                .HasKey(bc => new { bc.LocationId, bc.InstructorId });
+            modelBuilder.Entity<LocationInstructor>()
                 .HasOne(bc => bc.Location)
-                .WithMany(b => b.LocationTeachers)
-                .HasForeignKey(bc => bc.TeacherId);
-            modelBuilder.Entity<LocationTeacher>()
-                .HasOne(bc => bc.Teacher)
-                .WithMany(c => c.LocationTeachers)
+                .WithMany(b => b.LocationInstructors)
+                .HasForeignKey(bc => bc.InstructorId);
+            modelBuilder.Entity<LocationInstructor>()
+                .HasOne(bc => bc.Instructor)
+                .WithMany(c => c.LocationInstructors)
                 .HasForeignKey(bc => bc.LocationId);
 
-            // many to many mapping for test subject and teacher
-            modelBuilder.Entity<TeacherSubject>()
-                .HasKey(bc => new { bc.SubjectId, bc.TeacherId });
-            modelBuilder.Entity<TeacherSubject>()
-                .HasOne(bc => bc.Teacher)
-                .WithMany(b => b.TeacherSubjects)
-                .HasForeignKey(bc => bc.SubjectId);
-            modelBuilder.Entity<TeacherSubject>()
-                .HasOne(bc => bc.Subject)
-                .WithMany(c => c.TeacherSubjects)
-                .HasForeignKey(bc => bc.TeacherId);
+            // many to many mapping for Timetable and Instructor
+            modelBuilder.Entity<InstructorTimetable>()
+                .HasKey(bc => new { bc.InstructorId, bc.TimetableId });
+            modelBuilder.Entity<InstructorTimetable>()
+                .HasOne(bc => bc.Instructor)
+                .WithMany(b => b.InstructorTimetables)
+                .HasForeignKey(bc => bc.TimetableId);
+            modelBuilder.Entity<InstructorTimetable>()
+                .HasOne(bc => bc.Timetable)
+                .WithMany(c => c.InstructorTimetables)
+                .HasForeignKey(bc => bc.InstructorId);
         }
     }
 }

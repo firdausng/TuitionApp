@@ -1,9 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using TuitionApp.Core.Features.Common;
 using TuitionApp.Core.Features.Location;
-using TuitionApp.Core.Features.Location.Query;
 
 namespace TuitionApp.Api.Controllers
 {
@@ -17,16 +20,23 @@ namespace TuitionApp.Api.Controllers
             this.mediator = mediator;
         }
 
+        [HttpGet(Name = "GetLocationList")]
+        public async Task<ActionResult<GetObjectListVm<GetLocationDto>>> GetLocationList()
+        {
+            var vm = await mediator.Send(new GetLocationListQuery());
+            return Ok(vm);
+        }
+
         [HttpGet("{locationId}", Name = "GetLocationItem")]
         public async Task<ActionResult<GetLocationDto>> GetLocationItem(Guid locationId)
         {
-            var vm = await mediator.Send(new GetLocationQuery() { Id = locationId });
+            var vm = await mediator.Send(new GetLocationItemQuery() { Id = locationId });
 
             return Ok(vm);
         }
 
-        [HttpPost(Name = "NewLocation")]
-        public async Task<ActionResult<Guid>> NewLocation(CreateLocationCommand itemCommand)
+        [HttpPost(Name = "NewLocationItem")]
+        public async Task<ActionResult<Guid>> NewLocationItem(CreateLocationCommand itemCommand)
         {
             var vm = await mediator.Send(itemCommand);
             if (vm.Id != null)
