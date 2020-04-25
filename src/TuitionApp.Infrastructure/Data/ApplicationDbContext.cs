@@ -15,7 +15,6 @@ namespace TuitionApp.Infrastructure.Data
         public DbSet<Timetable> Timetables { get; set; }
         public DbSet<Timeslot> Timeslots { get; set; }
 
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
