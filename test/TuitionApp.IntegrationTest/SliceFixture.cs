@@ -45,12 +45,10 @@ namespace TuitionApp.IntegrationTest
 
         public static async Task ResetCheckpoint()
         {
-            using (var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                await conn.OpenAsync();
+            using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            await conn.OpenAsync();
 
-                await _checkpoint.Reset(conn);
-            }
+            await _checkpoint.Reset(conn);
         }
 
         public static async Task ExecuteScopeAsync(Func<IServiceProvider, Task> action)
