@@ -47,7 +47,7 @@ namespace TuitionApp.IntegrationTest.Location
             var locationDto = await SendAsync(new CreateLocationCommand()
             {
                 IsEnabled = true,
-                Name = "ShouldGetLocationItem"
+                Name = "ShouldGetLocationList"
             });
 
             var created = await ExecuteDbContextAsync(db => 

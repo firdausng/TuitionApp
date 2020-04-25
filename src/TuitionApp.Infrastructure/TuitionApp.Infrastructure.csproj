@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200424150340_initial.cs" />
+    <Compile Remove="Migrations\20200424150340_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200425165511_initial.cs" />
+    <Compile Remove="Migrations\20200425165511_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200425165746_initil.cs" />
+    <Compile Remove="Migrations\20200425165746_initil.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
       <PrivateAssets>all</PrivateAssets>

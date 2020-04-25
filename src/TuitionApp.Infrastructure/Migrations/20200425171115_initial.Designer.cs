@@ -10,7 +10,7 @@ using TuitionApp.Infrastructure.Data;
 namespace TuitionApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200424150340_initial")]
+    [Migration("20200425171115_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,29 +102,6 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Instructor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Instructors");
-                });
-
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.InstructorTimetable", b =>
                 {
                     b.Property<Guid>("InstructorId")
@@ -181,7 +158,7 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.ToTable("LocationInstructor");
                 });
 
-            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Student", b =>
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Person", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -190,7 +167,14 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonRole")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("TenantId")
@@ -198,7 +182,9 @@ namespace TuitionApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Person");
+
+                    b.HasDiscriminator<string>("PersonRole").HasValue("Person");
                 });
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Timeslot", b =>
@@ -254,6 +240,23 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Timetables");
+                });
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Instructor", b =>
+                {
+                    b.HasBaseType("TuitionApp.Core.Domain.Entities.Person");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasDiscriminator().HasValue("Instructor");
+                });
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Student", b =>
+                {
+                    b.HasBaseType("TuitionApp.Core.Domain.Entities.Person");
+
+                    b.HasDiscriminator().HasValue("Student");
                 });
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Classroom", b =>

@@ -22,21 +22,6 @@ namespace TuitionApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Instructors",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    HireDate = table.Column<DateTime>(nullable: false),
-                    Address = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Instructors", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -53,17 +38,20 @@ namespace TuitionApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Students",
+                name: "Person",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     TenantId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true)
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    PersonRole = table.Column<string>(nullable: false),
+                    HireDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Person", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,9 +112,9 @@ namespace TuitionApp.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LocationInstructor_Instructors_LocationId",
+                        name: "FK_LocationInstructor_Person_LocationId",
                         column: x => x.LocationId,
-                        principalTable: "Instructors",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -147,9 +135,9 @@ namespace TuitionApp.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Enrollments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Enrollments_Students_StudentId",
+                        name: "FK_Enrollments_Person_StudentId",
                         column: x => x.StudentId,
-                        principalTable: "Students",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -177,9 +165,9 @@ namespace TuitionApp.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InstructorTimetable_Instructors_TimetableId",
+                        name: "FK_InstructorTimetable_Person_TimetableId",
                         column: x => x.TimetableId,
-                        principalTable: "Instructors",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -270,10 +258,7 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Timeslots");
 
             migrationBuilder.DropTable(
-                name: "Students");
-
-            migrationBuilder.DropTable(
-                name: "Instructors");
+                name: "Person");
 
             migrationBuilder.DropTable(
                 name: "Classrooms");

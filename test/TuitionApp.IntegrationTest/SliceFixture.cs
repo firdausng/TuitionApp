@@ -39,7 +39,7 @@ namespace TuitionApp.IntegrationTest
                     {
                         "public"
                     },
-                DbAdapter = DbAdapter.Postgres
+                DbAdapter = DbAdapter.Postgres,
             };
         }
 
@@ -47,7 +47,6 @@ namespace TuitionApp.IntegrationTest
         {
             using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             await conn.OpenAsync();
-
             await _checkpoint.Reset(conn);
         }
 

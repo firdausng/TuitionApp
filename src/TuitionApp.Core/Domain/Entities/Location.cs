@@ -14,6 +14,13 @@ namespace TuitionApp.Core.Domain.Entities
         public ICollection<LocationInstructor> LocationInstructors { get; set; } = new List<LocationInstructor>();
     }
 
+    public abstract class Person: BaseEntity
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Address { get; set; }
+    }
+
     public class Classroom : BaseEntity
     {
         public string Name { get; set; }
@@ -24,11 +31,9 @@ namespace TuitionApp.Core.Domain.Entities
         public ICollection<Timeslot> Timeslots { get; set; } = new List<Timeslot>();
     }
 
-    public class Instructor : BaseEntity
+    public class Instructor : Person
     {
-        public string Name { get; set; }
         public DateTime HireDate { get; set; }
-        public string Address { get; set; }
         public ICollection<LocationInstructor> LocationInstructors { get; set; } = new List<LocationInstructor>();
         public ICollection<InstructorTimetable> InstructorTimetables { get; set; } = new List<InstructorTimetable>();
     }
@@ -76,10 +81,8 @@ namespace TuitionApp.Core.Domain.Entities
         public Timetable Timetable { get; set; }
     }
 
-    public class Student: BaseEntity
+    public class Student: Person
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     }
 
