@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Features.Location;
 using Xunit;
 
-namespace TuitionApp.IntegrationTest.Location.Classroom
+namespace TuitionApp.IntegrationTest.Location
 {
     using static SliceFixture;
     public class CreateClassroomFromLocationTests: IntegrationTestBase
@@ -16,7 +16,7 @@ namespace TuitionApp.IntegrationTest.Location.Classroom
         [Fact]
         public async Task ShouldCreateClassroomFromLocation()
         {
-            var createLocationDto = await SendAsync(new CreateLocationCommand 
+            var createLocationDto = await SendAsync(new CreateLocationItemCommand 
             { 
                 Name = "location1",
                 IsEnabled = true

@@ -36,7 +36,7 @@ namespace TuitionApp.Api.Controllers
         }
 
         [HttpPost(Name = "NewLocationItem")]
-        public async Task<ActionResult<Guid>> NewLocationItem(CreateLocationCommand itemCommand)
+        public async Task<ActionResult<Guid>> NewLocationItem(CreateLocationItemCommand itemCommand)
         {
             var vm = await mediator.Send(itemCommand);
             if (vm.Id != null)

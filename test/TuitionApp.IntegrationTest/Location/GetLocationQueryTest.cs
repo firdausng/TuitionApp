@@ -17,7 +17,7 @@ namespace TuitionApp.IntegrationTest.Location
         [Fact]
         public async Task ShouldGetLocationItem()
         {
-            var locationDto = await SendAsync(new CreateLocationCommand()
+            var locationDto = await SendAsync(new CreateLocationItemCommand()
             {
                 IsEnabled = true,
                 Name = "ShouldGetLocationItem"
@@ -44,7 +44,7 @@ namespace TuitionApp.IntegrationTest.Location
         [Fact]
         public async Task ShouldGetLocationList()
         {
-            var locationDto = await SendAsync(new CreateLocationCommand()
+            var locationDto = await SendAsync(new CreateLocationItemCommand()
             {
                 IsEnabled = true,
                 Name = "ShouldGetLocationList"

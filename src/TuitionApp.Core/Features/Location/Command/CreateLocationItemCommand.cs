@@ -6,12 +6,12 @@ using TuitionApp.Core.Common.Interfaces;
 
 namespace TuitionApp.Core.Features.Location
 {
-    public class CreateLocationCommand : IRequest<CreateLocationDto>
+    public class CreateLocationItemCommand : IRequest<CreateLocationItemDto>
     {
         public string Name { get; set; }
         public bool IsEnabled { get; set; }
 
-        public class CommandHandler : IRequestHandler<CreateLocationCommand, CreateLocationDto>
+        public class CommandHandler : IRequestHandler<CreateLocationItemCommand, CreateLocationItemDto>
         {
             private readonly IApplicationDbContext context;
             public CommandHandler(IApplicationDbContext context)
@@ -19,7 +19,7 @@ namespace TuitionApp.Core.Features.Location
                 this.context = context;
             }
 
-            public async Task<CreateLocationDto> Handle(CreateLocationCommand request, CancellationToken cancellationToken)
+            public async Task<CreateLocationItemDto> Handle(CreateLocationItemCommand request, CancellationToken cancellationToken)
             {
                 var entity = new Domain.Entities.Location()
                 {
@@ -29,7 +29,7 @@ namespace TuitionApp.Core.Features.Location
                 context.Locations.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return new CreateLocationDto
+                return new CreateLocationItemDto
                 {
                     Id = entity.Id
                 };
@@ -37,7 +37,7 @@ namespace TuitionApp.Core.Features.Location
         }
     }
 
-    public class CreateLocationDto
+    public class CreateLocationItemDto
     {
         public Guid Id { get; set; }
     }

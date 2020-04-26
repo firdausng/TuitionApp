@@ -9,7 +9,7 @@ using TuitionApp.Core.Features.Common;
 using TuitionApp.Core.Features.Location;
 using Xunit;
 
-namespace TuitionApp.IntegrationTest.Location.Classroom
+namespace TuitionApp.IntegrationTest.Location
 {
     using static SliceFixture;
     public class GetClassroomFromLocationQueryTests: IntegrationTestBase
@@ -17,7 +17,7 @@ namespace TuitionApp.IntegrationTest.Location.Classroom
         [Fact]
         public async Task ShouldGetClassroomFromLocationItem()
         {
-            var locationDto = await SendAsync(new CreateLocationCommand()
+            var locationDto = await SendAsync(new CreateLocationItemCommand()
             {
                 IsEnabled = true,
                 Name = "ShouldGetClassroomFromLocationItem_location"
@@ -47,7 +47,7 @@ namespace TuitionApp.IntegrationTest.Location.Classroom
         [Fact]
         public async Task ShouldGetClassroomListFromLocation()
         {
-            var locationDto = await SendAsync(new CreateLocationCommand()
+            var locationDto = await SendAsync(new CreateLocationItemCommand()
             {
                 IsEnabled = true,
                 Name = "ShouldGetClassroomListFromLocation_location"

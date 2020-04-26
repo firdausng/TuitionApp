@@ -22,13 +22,13 @@ namespace TuitionApp.IntegrationTest.LocationItem
         [Fact]
         public async Task ShouldCreateLocation()
         {
-            CreateLocationDto dto = null;
-            CreateLocationCommand command = null;
+            CreateLocationItemDto dto = null;
+            CreateLocationItemCommand command = null;
 
             await ExecuteDbContextAsync(async (ctxt, mediator) =>
             {
                 //await ctxt.Locations.AddAsync(dept);
-                command = new CreateLocationCommand()
+                command = new CreateLocationItemCommand()
                 {
                     IsEnabled = true,
                     Name = "location1"

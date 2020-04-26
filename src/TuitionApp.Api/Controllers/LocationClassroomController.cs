@@ -36,8 +36,8 @@ namespace TuitionApp.Api.Controllers
             return Ok(vm);
         }
 
-        [HttpPost(Name = "NewClassroomItem")]
-        public async Task<ActionResult<Guid>> NewClassroomItem(LocationClassroomCreateRequest request, Guid locationId)
+        [HttpPost(Name = "CreateClassroomFromLocation")]
+        public async Task<ActionResult<Guid>> CreateClassroomFromLocation(LocationClassroomCreateRequest request, Guid locationId)
         {
             var itemCommand = new CreateClassroomFromLocationCommand 
             { 
