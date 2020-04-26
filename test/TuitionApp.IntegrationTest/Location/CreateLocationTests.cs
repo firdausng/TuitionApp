@@ -14,7 +14,7 @@ using TuitionApp.Api;
 using TuitionApp.Core.Features.Location;
 using Xunit;
 
-namespace TuitionApp.IntegrationTest.LocationItem
+namespace TuitionApp.IntegrationTest.Location
 {
     using static SliceFixture;
     public class CreateLocationTests : IntegrationTestBase

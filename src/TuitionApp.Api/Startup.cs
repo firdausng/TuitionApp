@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TuitionApp.Api.StartupExtension;
+using TuitionApp.Core.Common.Converters;
 
 namespace TuitionApp.Api
 {
@@ -21,7 +22,11 @@ namespace TuitionApp.Api
             services.AddInfrastructure(Configuration);
             services.AddTuitionAppCore();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                });
 
             services.AddSwaggerConfig();
         }

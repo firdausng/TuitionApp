@@ -28,7 +28,7 @@ namespace TuitionApp.Api.Controllers
         }
 
         [HttpGet("{courseId}", Name = "GetCourseItem")]
-        public async Task<ActionResult<GetCourseItemDto>> GetStudentItem(Guid courseId)
+        public async Task<ActionResult<GetCourseItemDto>> GetCourseItem(Guid courseId)
         {
             var vm = await mediator.Send(new GetCourseItemQuery() { Id = courseId });
 

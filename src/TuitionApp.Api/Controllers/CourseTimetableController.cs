@@ -47,7 +47,7 @@ namespace TuitionApp.Api.Controllers
             var vm = await mediator.Send(itemCommand);
             if (vm.Id != null)
             {
-                var link = Url.Link("GetTimetableItemFromCourse", new { classroomId = vm.Id, courseId });
+                var link = Url.Link("GetTimetableItemFromCourse", new { timetableId = vm.Id, courseId });
                 return Created(link, vm);
             }
             else
