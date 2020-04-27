@@ -16,18 +16,16 @@ namespace TuitionApp.IntegrationTest.Course
         [Fact]
         public async Task ShouldCreateTimetableFromCourse()
         {
-            var createCourseItemCommand = new CreateCourseItemCommand()
+            var createCourseItemDto = await SendAsync(new CreateCourseItemCommand()
             {
                 Name = "ShouldCreateTimetableFromCourse",
                 Rate = 40,
-            };
-            var createCourseItemDto = await SendAsync(createCourseItemCommand);
+            });
 
-            CreateTimetableFromCourseCommand command = new CreateTimetableFromCourseCommand
+            CreateTimetableFromCourseDto dto = await SendAsync(new CreateTimetableFromCourseCommand
             {
                 CourseId = createCourseItemDto.Id
-            };
-            CreateTimetableFromCourseDto dto = await SendAsync(command);
+            });
 
             var created = await ExecuteDbContextAsync(db => db.Timetables.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 

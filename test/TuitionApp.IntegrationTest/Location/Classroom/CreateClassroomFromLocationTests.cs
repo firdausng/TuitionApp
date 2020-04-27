@@ -22,21 +22,14 @@ namespace TuitionApp.IntegrationTest.Location
                 IsEnabled = true
             });
 
-            CreateClassroomFromLocationCommand command = null;
-            CreateClassroomFromLocationDto dto = null;
-
-            await ExecuteDbContextAsync(async (ctxt, mediator) =>
+            CreateClassroomFromLocationCommand command = new CreateClassroomFromLocationCommand
             {
-                //await ctxt.Departments.AddAsync(dept);
-                command = new CreateClassroomFromLocationCommand
-                {
-                    IsEnabled = true,
-                    Name= "Classroom1",
-                    Capacity= 40,
-                    LocationId = createLocationDto.Id
-                };
-                dto = await mediator.Send(command);
-            });
+                IsEnabled = true,
+                Name = "Classroom1",
+                Capacity = 40,
+                LocationId = createLocationDto.Id
+            };
+            CreateClassroomFromLocationDto dto = await SendAsync(command);
 
             var created = await ExecuteDbContextAsync(db => db.Classrooms.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 

@@ -62,9 +62,9 @@ namespace TuitionApp.Core.Domain.Entities
     public class Timeslot: BaseEntity
     {
         public int WeekNumber { get; set; }
-        public string Month { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int Day { get; set; }
+        public TimeSpan Time { get; set; }
+        public bool Disabled { get; set; } 
         public Guid ClassroomId { get; set; }
         public Classroom Classroom { get; set; }
         public Guid TimetableId { get; set; }

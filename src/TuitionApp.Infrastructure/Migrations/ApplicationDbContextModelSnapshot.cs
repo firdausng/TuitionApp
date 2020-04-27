@@ -194,17 +194,17 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.Property<Guid>("ClassroomId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<int>("Day")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Month")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<bool>("Disabled")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
+
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("TimetableId")
                         .HasColumnType("uuid");

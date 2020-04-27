@@ -179,9 +179,9 @@ namespace TuitionApp.Infrastructure.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     TenantId = table.Column<Guid>(nullable: false),
                     WeekNumber = table.Column<int>(nullable: false),
-                    Month = table.Column<string>(nullable: true),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
+                    Day = table.Column<int>(nullable: false),
+                    Time = table.Column<TimeSpan>(nullable: false),
+                    Disabled = table.Column<bool>(nullable: false),
                     ClassroomId = table.Column<Guid>(nullable: false),
                     TimetableId = table.Column<Guid>(nullable: false)
                 },
