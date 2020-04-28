@@ -61,14 +61,34 @@ namespace TuitionApp.Core.Domain.Entities
 
     public class Timeslot: BaseEntity
     {
-        public int WeekNumber { get; set; }
-        public int Day { get; set; }
-        public TimeSpan Time { get; set; }
+        public TimeSpan Duration { get; set; }
+        public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; } 
-        public Guid ClassroomId { get; set; }
-        public Classroom Classroom { get; set; }
+        public Guid DayslotId { get; set; }
+        public Dayslot Dayslot { get; set; }
         public Guid SessionId { get; set; }
         public Session Session { get; set; }
+    }
+
+    public class Dayslot : BaseEntity
+    {
+        public DateTime DateTime { get; set; }
+        public int WeekNumber { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
+        public TimeSpan OpeningTime { get; set; }
+        public TimeSpan ClosingTime { get; set; }
+        public bool Disabled { get; set; }
+        public Guid ClassroomId { get; set; }
+        public Classroom Classroom { get; set; }
+        public ICollection<Timeslot> Timeslots { get; set; } = new List<Timeslot>();
+    }
+
+    public class CalendarSetting : BaseEntity
+    {
+        public DayOfWeek FirstDayOfWeek { get; set; }
+        public TimeSpan DefaultOpeningTime { get; set; }
+        public TimeSpan DefaultClosingTime { get; set; }
+        public bool AllowedTimeslotOverlap { get; set; }
     }
 
     public class Course : BaseEntity

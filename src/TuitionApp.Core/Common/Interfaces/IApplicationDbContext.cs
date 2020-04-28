@@ -15,6 +15,8 @@ namespace TuitionApp.Core.Common.Interfaces
         public DbSet<Course> Courses { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Timeslot> Timeslots { get; set; }
+        public DbSet<Dayslot> Dayslots { get; set; }
+        public DbSet<CalendarSetting> CalendarYearSettings { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
