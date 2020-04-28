@@ -13,10 +13,10 @@ namespace TuitionApp.Core.Features.Timeslot
 {
     public class CreateTimeslotItemCommand : IRequest<CreateTimeslotItem>
     {
-        public int Day { get; set; }
-        public int Week { get; set; }
-        public TimeSpan Time { get; set; }
-        public Guid RoomId { get; set; }
+        public TimeSpan Duration { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public bool Disabled { get; set; }
+        public Guid DayslotId { get; set; }
         public Guid SessionId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItem>
@@ -29,23 +29,23 @@ namespace TuitionApp.Core.Features.Timeslot
 
             public async Task<CreateTimeslotItem> Handle(CreateTimeslotItemCommand request, CancellationToken cancellationToken)
             {
-                var classroom = await context.Classrooms.SingleOrDefaultAsync(l => l.Id.Equals(request.RoomId));
+                var classroom = await context.Dayslots.SingleOrDefaultAsync(l => l.Id.Equals(request.DayslotId));
                 if (classroom == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.Classroom), request.RoomId);
+                    throw new EntityNotFoundException(nameof(Domain.Entities.Dayslot), request.DayslotId);
                 }
 
-                var timeslot = await context.Timeslots
-                    .Where(l => l.Classroom.Equals(classroom))
-                    .Where(l => l.WeekNumber == request.Week)
-                    .Where(l => l.Day == request.Day)
-                    .Where(l => l.Time == request.Time)
-                    .SingleOrDefaultAsync();
+                //var timeslot = await context.Timeslots
+                //    .Where(l => l.Classroom.Equals(classroom))
+                //    .Where(l => l.WeekNumber == request.Week)
+                //    .Where(l => l.Day == request.Day)
+                //    .Where(l => l.Time == request.Time)
+                //    .SingleOrDefaultAsync();
 
-                if (timeslot != null)
-                {
-                    throw new EntityAlreadyExistException(nameof(Domain.Entities.Timeslot), timeslot.Id);
-                }
+                //if (timeslot != null)
+                //{
+                //    throw new EntityAlreadyExistException(nameof(Domain.Entities.Timeslot), timeslot.Id);
+                //}
 
                 var session = await context.Sessions.SingleOrDefaultAsync(l => l.Id.Equals(request.SessionId));
                 if (session == null)
@@ -55,11 +55,10 @@ namespace TuitionApp.Core.Features.Timeslot
 
                 var entity = new Domain.Entities.Timeslot()
                 {
-                    Classroom = classroom,
                     Session = session,
-                    WeekNumber = request.Week,
-                    Day = request.Day,
-                    Time = request.Time,
+                    Disabled = request.Disabled,
+                    Duration = request.Duration,
+                    StartTime = request.StartTime,
                     
                 };
                 context.Timeslots.Add(entity);
