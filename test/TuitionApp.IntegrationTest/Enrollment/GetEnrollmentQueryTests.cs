@@ -32,7 +32,7 @@ namespace TuitionApp.IntegrationTest.Enrollment
             dto.Id.ShouldBe(created.Id);
             dto.Grade.ShouldBe(created.Grade);
             dto.StudentId.ShouldBe(created.StudentId);
-            dto.TimetableId.ShouldBe(created.TimetableId);
+            dto.SessionId.ShouldBe(created.SessionId);
             dto.StartDate.ShouldBe(created.StartDate);
             dto.EndDate.ShouldBe(created.EndDate);
         }
@@ -66,11 +66,11 @@ namespace TuitionApp.IntegrationTest.Enrollment
 
             var courseDto = await SendAsync(new CreateCourseItemCommand()
             {
-                Name = "ShouldCreateTimetableFromCourse",
+                Name = "ShouldCreateSessionFromCourse",
                 Rate = 40,
             });
 
-            var TimetableDto = await SendAsync(new CreateTimetableFromCourseCommand
+            var SessionDto = await SendAsync(new CreateSessionFromCourseCommand
             {
                 CourseId = courseDto.Id
             });
@@ -79,7 +79,7 @@ namespace TuitionApp.IntegrationTest.Enrollment
             {
                 StartDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
                 StudentId = studentDto.Id,
-                TimetableId = TimetableDto.Id,
+                SessionId = SessionDto.Id,
             };
             var dto = await SendAsync(command);
             return dto;

@@ -12,52 +12,52 @@ using Xunit;
 namespace TuitionApp.IntegrationTest.Course
 {
     using static SliceFixture;
-    public class GetTimetableFromCourseQueryTests: IntegrationTestBase
+    public class GetSessionFromCourseQueryTests: IntegrationTestBase
     {
         [Fact]
-        public async Task ShouldGetClassroomFromLocationItem()
+        public async Task ShouldGetSessionFromCourseItem()
         {
             var createCourseItemCommand = new CreateCourseItemCommand()
             {
-                Name = "ShouldCreateTimetableFromCourse",
+                Name = "ShouldCreateSessionFromCourse",
                 Rate = 40,
             };
             var CourseDto = await SendAsync(createCourseItemCommand);
 
-            var timetableDto = await SendAsync(new CreateTimetableFromCourseCommand()
+            var SessionDto = await SendAsync(new CreateSessionFromCourseCommand()
             {
                 CourseId = CourseDto.Id
             });
 
-            var query = new GetTimetableItemFromCourseQuery() { Id = timetableDto.Id, CourseId = CourseDto.Id };
+            var query = new GetSessionItemFromCourseQuery() { Id = SessionDto.Id, CourseId = CourseDto.Id };
             var getClassroomItemdto = await SendAsync(query);
 
-            var created = await ExecuteDbContextAsync(db => db.Timetables.Where(c => c.Id.Equals(timetableDto.Id)).SingleOrDefaultAsync());
+            var created = await ExecuteDbContextAsync(db => db.Sessions.Where(c => c.Id.Equals(SessionDto.Id)).SingleOrDefaultAsync());
 
             getClassroomItemdto.ShouldNotBeNull();
             getClassroomItemdto.Id.ShouldBe(created.Id);
         }
 
         [Fact]
-        public async Task ShouldGetClassroomListFromLocation()
+        public async Task ShouldGetSessionFromCourse()
         {
             var createCourseItemCommand = new CreateCourseItemCommand()
             {
-                Name = "ShouldCreateTimetableFromCourse",
+                Name = "ShouldCreateSessionFromCourse",
                 Rate = 40,
             };
             var CourseDto = await SendAsync(createCourseItemCommand);
 
-            var timetableDto = await SendAsync(new CreateTimetableFromCourseCommand()
+            var SessionDto = await SendAsync(new CreateSessionFromCourseCommand()
             {
                 CourseId = CourseDto.Id
             });
 
             var created = await ExecuteDbContextAsync(db =>
-            db.Timetables.Where(c => c.Id.Equals(timetableDto.Id)).SingleOrDefaultAsync());
+            db.Sessions.Where(c => c.Id.Equals(SessionDto.Id)).SingleOrDefaultAsync());
 
-            GetTimetableListFromCourseQuery query = new GetTimetableListFromCourseQuery() { CourseId= CourseDto.Id };
-            GetObjectListVm<GetTimetableItemFromCourseDto> dto = await SendAsync(query);
+            GetSessionListFromCourseQuery query = new GetSessionListFromCourseQuery() { CourseId= CourseDto.Id };
+            GetObjectListVm<GetSessionItemFromCourseDto> dto = await SendAsync(query);
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

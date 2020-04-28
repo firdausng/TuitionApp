@@ -10,11 +10,11 @@ using TuitionApp.Core.Common.Interfaces;
 
 namespace TuitionApp.Core.Features.Course
 {
-    public class CreateTimetableFromCourseCommand : IRequest<CreateTimetableFromCourseDto>
+    public class CreateSessionFromCourseCommand : IRequest<CreateSessionFromCourseDto>
     {
         public Guid CourseId { get; set; }
 
-        public class CommandHandler : IRequestHandler<CreateTimetableFromCourseCommand, CreateTimetableFromCourseDto>
+        public class CommandHandler : IRequestHandler<CreateSessionFromCourseCommand, CreateSessionFromCourseDto>
         {
             private readonly IApplicationDbContext context;
             public CommandHandler(IApplicationDbContext context)
@@ -22,7 +22,7 @@ namespace TuitionApp.Core.Features.Course
                 this.context = context;
             }
 
-            public async Task<CreateTimetableFromCourseDto> Handle(CreateTimetableFromCourseCommand request, CancellationToken cancellationToken)
+            public async Task<CreateSessionFromCourseDto> Handle(CreateSessionFromCourseCommand request, CancellationToken cancellationToken)
             {
                 var course = await context.Courses.SingleOrDefaultAsync(l => l.Id.Equals(request.CourseId));
                 if (course == null)
@@ -30,14 +30,14 @@ namespace TuitionApp.Core.Features.Course
                     throw new EntityNotFoundException(nameof(Domain.Entities.Course), request.CourseId);
                 }
 
-                var entity = new Domain.Entities.Timetable()
+                var entity = new Domain.Entities.Session()
                 {
                     Course = course,
                 };
-                context.Timetables.Add(entity);
+                context.Sessions.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return new CreateTimetableFromCourseDto
+                return new CreateSessionFromCourseDto
                 {
                     Id = entity.Id
                 };
@@ -45,7 +45,7 @@ namespace TuitionApp.Core.Features.Course
         }
     }
 
-    public class CreateTimetableFromCourseDto
+    public class CreateSessionFromCourseDto
     {
         public Guid Id { get; set; }
     }

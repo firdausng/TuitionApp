@@ -17,7 +17,7 @@ namespace TuitionApp.Core.Features.Timeslot
         public int Week { get; set; }
         public TimeSpan Time { get; set; }
         public Guid roomId { get; set; }
-        public Guid TimetableId { get; set; }
+        public Guid SessionId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItem>
         {
@@ -47,16 +47,16 @@ namespace TuitionApp.Core.Features.Timeslot
                     throw new EntityAlreadyExistException(nameof(Domain.Entities.Timeslot), timeslot.Id);
                 }
 
-                var timetable = await context.Timetables.SingleOrDefaultAsync(l => l.Id.Equals(request.TimetableId));
-                if (timetable == null)
+                var session = await context.Sessions.SingleOrDefaultAsync(l => l.Id.Equals(request.SessionId));
+                if (session == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.Timetable), request.TimetableId);
+                    throw new EntityNotFoundException(nameof(Domain.Entities.Session), request.SessionId);
                 }
 
                 var entity = new Domain.Entities.Timeslot()
                 {
                     Classroom = classroom,
-                    Timetable = timetable,
+                    Session = session,
                     WeekNumber = request.Week,
                     Day = request.Day,
                     Time = request.Time,

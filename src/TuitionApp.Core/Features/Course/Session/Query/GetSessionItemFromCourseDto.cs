@@ -2,7 +2,7 @@
 
 namespace TuitionApp.Core.Features.Course
 {
-    public class GetTimetableItemFromCourseDto
+    public class GetSessionItemFromCourseDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

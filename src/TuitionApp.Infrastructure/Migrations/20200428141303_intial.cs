@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TuitionApp.Infrastructure.Migrations
 {
-    public partial class initial : Migration
+    public partial class intial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,7 +55,7 @@ namespace TuitionApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Timetables",
+                name: "Sessions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -64,9 +64,9 @@ namespace TuitionApp.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Timetables", x => x.Id);
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Timetables_Courses_CourseId",
+                        name: "FK_Sessions_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
@@ -129,44 +129,44 @@ namespace TuitionApp.Infrastructure.Migrations
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     StudentId = table.Column<Guid>(nullable: false),
-                    TimetableId = table.Column<Guid>(nullable: false)
+                    SessionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enrollments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Enrollments_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Enrollments_Person_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Enrollments_Timetables_TimetableId",
-                        column: x => x.TimetableId,
-                        principalTable: "Timetables",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "InstructorTimetable",
+                name: "InstructorSession",
                 columns: table => new
                 {
                     InstructorId = table.Column<Guid>(nullable: false),
-                    TimetableId = table.Column<Guid>(nullable: false)
+                    SessionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InstructorTimetable", x => new { x.InstructorId, x.TimetableId });
+                    table.PrimaryKey("PK_InstructorSession", x => new { x.InstructorId, x.SessionId });
                     table.ForeignKey(
-                        name: "FK_InstructorTimetable_Timetables_InstructorId",
+                        name: "FK_InstructorSession_Sessions_InstructorId",
                         column: x => x.InstructorId,
-                        principalTable: "Timetables",
+                        principalTable: "Sessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InstructorTimetable_Person_TimetableId",
-                        column: x => x.TimetableId,
+                        name: "FK_InstructorSession_Person_SessionId",
+                        column: x => x.SessionId,
                         principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -183,7 +183,7 @@ namespace TuitionApp.Infrastructure.Migrations
                     Time = table.Column<TimeSpan>(nullable: false),
                     Disabled = table.Column<bool>(nullable: false),
                     ClassroomId = table.Column<Guid>(nullable: false),
-                    TimetableId = table.Column<Guid>(nullable: false)
+                    SessionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -195,9 +195,9 @@ namespace TuitionApp.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Timeslots_Timetables_TimetableId",
-                        column: x => x.TimetableId,
-                        principalTable: "Timetables",
+                        name: "FK_Timeslots_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -208,19 +208,19 @@ namespace TuitionApp.Infrastructure.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Enrollments_SessionId",
+                table: "Enrollments",
+                column: "SessionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Enrollments_StudentId",
                 table: "Enrollments",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Enrollments_TimetableId",
-                table: "Enrollments",
-                column: "TimetableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InstructorTimetable_TimetableId",
-                table: "InstructorTimetable",
-                column: "TimetableId");
+                name: "IX_InstructorSession_SessionId",
+                table: "InstructorSession",
+                column: "SessionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LocationInstructor_InstructorId",
@@ -228,19 +228,19 @@ namespace TuitionApp.Infrastructure.Migrations
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sessions_CourseId",
+                table: "Sessions",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Timeslots_ClassroomId",
                 table: "Timeslots",
                 column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Timeslots_TimetableId",
+                name: "IX_Timeslots_SessionId",
                 table: "Timeslots",
-                column: "TimetableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Timetables_CourseId",
-                table: "Timetables",
-                column: "CourseId");
+                column: "SessionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -249,7 +249,7 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
-                name: "InstructorTimetable");
+                name: "InstructorSession");
 
             migrationBuilder.DropTable(
                 name: "LocationInstructor");
@@ -264,7 +264,7 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Classrooms");
 
             migrationBuilder.DropTable(
-                name: "Timetables");
+                name: "Sessions");
 
             migrationBuilder.DropTable(
                 name: "Locations");

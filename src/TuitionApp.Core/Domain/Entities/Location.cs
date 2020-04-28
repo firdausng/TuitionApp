@@ -40,7 +40,7 @@ namespace TuitionApp.Core.Domain.Entities
     {
         public DateTime HireDate { get; set; }
         public ICollection<LocationInstructor> LocationInstructors { get; set; } = new List<LocationInstructor>();
-        public ICollection<InstructorTimetable> InstructorTimetables { get; set; } = new List<InstructorTimetable>();
+        public ICollection<InstructorSession> InstructorSessions { get; set; } = new List<InstructorSession>();
     }
 
     public class LocationInstructor
@@ -51,12 +51,12 @@ namespace TuitionApp.Core.Domain.Entities
         public Location Location { get; set; }
     }
 
-    public class Timetable : BaseEntity
+    public class Session : BaseEntity
     {
         public Guid CourseId { get; set; }
         public Course Course { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
-        public ICollection<InstructorTimetable> InstructorTimetables { get; set; } = new List<InstructorTimetable>();
+        public ICollection<InstructorSession> InstructorSessions { get; set; } = new List<InstructorSession>();
     }
 
     public class Timeslot: BaseEntity
@@ -67,23 +67,23 @@ namespace TuitionApp.Core.Domain.Entities
         public bool Disabled { get; set; } 
         public Guid ClassroomId { get; set; }
         public Classroom Classroom { get; set; }
-        public Guid TimetableId { get; set; }
-        public Timetable Timetable { get; set; }
+        public Guid SessionId { get; set; }
+        public Session Session { get; set; }
     }
 
     public class Course : BaseEntity
     {
         public string Name { get; set; }
         public int Rate { get; set; }
-        public ICollection<Timetable> Timetables { get; set; } = new List<Timetable>();
+        public ICollection<Session> Sessions { get; set; } = new List<Session>();
     }
 
-    public class InstructorTimetable
+    public class InstructorSession
     {
         public Guid InstructorId { get; set; }
         public Instructor Instructor { get; set; }
-        public Guid TimetableId { get; set; }
-        public Timetable Timetable { get; set; }
+        public Guid SessionId { get; set; }
+        public Session Session { get; set; }
     }
 
     public class Student: Person
@@ -98,7 +98,7 @@ namespace TuitionApp.Core.Domain.Entities
         public DateTime EndDate { get; set; }
         public Guid StudentId { get; set; }
         public Student Student { get; set; }
-        public Guid TimetableId { get; set; }
-        public Timetable Timetable { get; set; }
+        public Guid SessionId { get; set; }
+        public Session Session { get; set; }
     }
 }

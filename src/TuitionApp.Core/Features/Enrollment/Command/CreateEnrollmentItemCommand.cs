@@ -14,7 +14,7 @@ namespace TuitionApp.Core.Features.Enrollment
     {
         public DateTime StartDate { get; set; }
         public Guid StudentId { get; set; }
-        public Guid TimetableId { get; set; }
+        public Guid SessionId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateEnrollmentItemCommand, CreateEnrollmentItem>
         {
@@ -32,10 +32,10 @@ namespace TuitionApp.Core.Features.Enrollment
                     throw new EntityNotFoundException(nameof(Domain.Entities.Student), request.StudentId);
                 }
 
-                var timetable = await context.Timetables.SingleOrDefaultAsync(l => l.Id.Equals(request.TimetableId));
-                if (timetable == null)
+                var Session = await context.Sessions.SingleOrDefaultAsync(l => l.Id.Equals(request.SessionId));
+                if (Session == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.Timetable), request.TimetableId);
+                    throw new EntityNotFoundException(nameof(Domain.Entities.Session), request.SessionId);
                 }
 
 
@@ -43,7 +43,7 @@ namespace TuitionApp.Core.Features.Enrollment
                 {
                     StartDate = request.StartDate,
                     Student = student,
-                    Timetable = timetable,
+                    Session = Session,
                 };
                 context.Enrollments.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);

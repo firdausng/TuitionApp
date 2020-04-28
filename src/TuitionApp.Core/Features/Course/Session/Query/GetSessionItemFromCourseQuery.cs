@@ -9,12 +9,12 @@ using TuitionApp.Core.Common.Interfaces;
 
 namespace TuitionApp.Core.Features.Course
 {
-    public class GetTimetableItemFromCourseQuery : IRequest<GetTimetableItemFromCourseDto>
+    public class GetSessionItemFromCourseQuery : IRequest<GetSessionItemFromCourseDto>
     {
         public Guid CourseId { get; set; }
         public Guid Id { get; set; }
 
-        public class QueryHandler : IRequestHandler<GetTimetableItemFromCourseQuery, GetTimetableItemFromCourseDto>
+        public class QueryHandler : IRequestHandler<GetSessionItemFromCourseQuery, GetSessionItemFromCourseDto>
         {
             private readonly IApplicationDbContext context;
 
@@ -23,7 +23,7 @@ namespace TuitionApp.Core.Features.Course
                 this.context = context;
             }
 
-            public async Task<GetTimetableItemFromCourseDto> Handle(GetTimetableItemFromCourseQuery request, CancellationToken cancellationToken)
+            public async Task<GetSessionItemFromCourseDto> Handle(GetSessionItemFromCourseQuery request, CancellationToken cancellationToken)
             {
                 var course = await context.Courses.SingleOrDefaultAsync(l => l.Id.Equals(request.CourseId));
                 if (course == null)
@@ -31,15 +31,15 @@ namespace TuitionApp.Core.Features.Course
                     throw new EntityNotFoundException(nameof(Domain.Entities.Course), request.CourseId);
                 }
 
-                var entity = await context.Timetables
+                var entity = await context.Sessions
                     .SingleOrDefaultAsync(x => x.CourseId.Equals(request.CourseId));
 
                 if (entity == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.Timetable), request.Id);
+                    throw new EntityNotFoundException(nameof(Domain.Entities.Session), request.Id);
                 }
 
-                var dto = new GetTimetableItemFromCourseDto
+                var dto = new GetSessionItemFromCourseDto
                 {
                     Id = entity.Id,
                 };

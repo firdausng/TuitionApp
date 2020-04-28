@@ -11,23 +11,23 @@ using Xunit;
 namespace TuitionApp.IntegrationTest.Course
 {
     using static SliceFixture;
-    public class CreateTimetableFromCourseTests: IntegrationTestBase
+    public class CreateSessionFromCourseTests: IntegrationTestBase
     {
         [Fact]
-        public async Task ShouldCreateTimetableFromCourse()
+        public async Task ShouldCreateSessionFromCourse()
         {
             var createCourseItemDto = await SendAsync(new CreateCourseItemCommand()
             {
-                Name = "ShouldCreateTimetableFromCourse",
+                Name = "ShouldCreateSessionFromCourse",
                 Rate = 40,
             });
 
-            CreateTimetableFromCourseDto dto = await SendAsync(new CreateTimetableFromCourseCommand
+            CreateSessionFromCourseDto dto = await SendAsync(new CreateSessionFromCourseCommand
             {
                 CourseId = createCourseItemDto.Id
             });
 
-            var created = await ExecuteDbContextAsync(db => db.Timetables.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
+            var created = await ExecuteDbContextAsync(db => db.Sessions.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
             created.ShouldNotBeNull();
             created.CourseId.ShouldBe(createCourseItemDto.Id);

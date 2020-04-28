@@ -12,7 +12,7 @@ namespace TuitionApp.Infrastructure.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Instructor> Instructor { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Timetable> Timetables { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         public DbSet<Timeslot> Timeslots { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -37,16 +37,16 @@ namespace TuitionApp.Infrastructure.Data
                 .WithMany(c => c.LocationInstructors)
                 .HasForeignKey(bc => bc.LocationId);
 
-            // many to many mapping for Timetable and Instructor
-            modelBuilder.Entity<InstructorTimetable>()
-                .HasKey(bc => new { bc.InstructorId, bc.TimetableId });
-            modelBuilder.Entity<InstructorTimetable>()
+            // many to many mapping for Session and Instructor
+            modelBuilder.Entity<InstructorSession>()
+                .HasKey(bc => new { bc.InstructorId, bc.SessionId });
+            modelBuilder.Entity<InstructorSession>()
                 .HasOne(bc => bc.Instructor)
-                .WithMany(b => b.InstructorTimetables)
-                .HasForeignKey(bc => bc.TimetableId);
-            modelBuilder.Entity<InstructorTimetable>()
-                .HasOne(bc => bc.Timetable)
-                .WithMany(c => c.InstructorTimetables)
+                .WithMany(b => b.InstructorSessions)
+                .HasForeignKey(bc => bc.SessionId);
+            modelBuilder.Entity<InstructorSession>()
+                .HasOne(bc => bc.Session)
+                .WithMany(c => c.InstructorSessions)
                 .HasForeignKey(bc => bc.InstructorId);
 
 

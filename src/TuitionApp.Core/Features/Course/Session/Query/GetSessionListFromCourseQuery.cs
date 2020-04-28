@@ -10,11 +10,11 @@ using TuitionApp.Core.Features.Common;
 
 namespace TuitionApp.Core.Features.Course
 {
-    public class GetTimetableListFromCourseQuery : IRequest<GetObjectListVm<GetTimetableItemFromCourseDto>>
+    public class GetSessionListFromCourseQuery : IRequest<GetObjectListVm<GetSessionItemFromCourseDto>>
     {
         public Guid CourseId { get; set; }
 
-        public class QueryHandler : IRequestHandler<GetTimetableListFromCourseQuery, GetObjectListVm<GetTimetableItemFromCourseDto>>
+        public class QueryHandler : IRequestHandler<GetSessionListFromCourseQuery, GetObjectListVm<GetSessionItemFromCourseDto>>
         {
             private readonly IApplicationDbContext context;
 
@@ -23,7 +23,7 @@ namespace TuitionApp.Core.Features.Course
                 this.context = context;
             }
 
-            public async Task<GetObjectListVm<GetTimetableItemFromCourseDto>> Handle(GetTimetableListFromCourseQuery request, CancellationToken cancellationToken)
+            public async Task<GetObjectListVm<GetSessionItemFromCourseDto>> Handle(GetSessionListFromCourseQuery request, CancellationToken cancellationToken)
             {
                 var course = await context.Courses.SingleOrDefaultAsync(l => l.Id.Equals(request.CourseId));
                 if (course == null)
@@ -31,17 +31,17 @@ namespace TuitionApp.Core.Features.Course
                     throw new EntityNotFoundException(nameof(Domain.Entities.Course), request.CourseId);
                 }
 
-                var timetables = await context.Timetables
+                var sessions = await context.Sessions
                     .Where(x => x.CourseId.Equals(request.CourseId))
                     .ToListAsync(cancellationToken);
 
-                var list = timetables
-                    .Select(x => new GetTimetableItemFromCourseDto
+                var list = sessions
+                    .Select(x => new GetSessionItemFromCourseDto
                     {
                         Id = x.Id,
                     }).ToList();
 
-                var dto = new GetObjectListVm<GetTimetableItemFromCourseDto>
+                var dto = new GetObjectListVm<GetSessionItemFromCourseDto>
                 {
                     Count = list.Count,
                     Data = list

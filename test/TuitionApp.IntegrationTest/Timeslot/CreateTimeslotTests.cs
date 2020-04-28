@@ -20,7 +20,7 @@ namespace TuitionApp.IntegrationTest.Timeslot
         public async Task ShouldCreateTimeslot()
         {
             var classroomDto = await CreateClassroomAsync();
-            var timetableDto = await CreateTimetableAsync();
+            var SessionDto = await CreateSessionAsync();
 
             var command = new CreateTimeslotItemCommand()
             {
@@ -28,7 +28,7 @@ namespace TuitionApp.IntegrationTest.Timeslot
                 Week = 10,
                 Time = new TimeSpan(2,0,0),
                 roomId = classroomDto.Id,
-                TimetableId = timetableDto.Id,
+                SessionId = SessionDto.Id,
             };
             var dto = await SendAsync(command);
             
@@ -45,8 +45,8 @@ namespace TuitionApp.IntegrationTest.Timeslot
         public async Task ShouldNotCreateTimeslotWhenRoomTimeSlotAlreadyTaken()
         {
             var classroomDto = await CreateClassroomAsync();
-            var timetableDto = await CreateTimetableAsync();
-            var timetableDto2 = await CreateTimetableAsync();
+            var SessionDto = await CreateSessionAsync();
+            var SessionDto2 = await CreateSessionAsync();
 
 
             var dto1st = await SendAsync(new CreateTimeslotItemCommand()
@@ -55,7 +55,7 @@ namespace TuitionApp.IntegrationTest.Timeslot
                 Week = 10,
                 Time = new TimeSpan(2, 0, 0),
                 roomId = classroomDto.Id,
-                TimetableId = timetableDto2.Id,
+                SessionId = SessionDto2.Id,
             });
 
             var command = new CreateTimeslotItemCommand()
@@ -64,7 +64,7 @@ namespace TuitionApp.IntegrationTest.Timeslot
                 Week = 10,
                 Time = new TimeSpan(2, 0, 0),
                 roomId = classroomDto.Id,
-                TimetableId = timetableDto.Id,
+                SessionId = SessionDto.Id,
             };
 
             //assert
@@ -90,15 +90,15 @@ namespace TuitionApp.IntegrationTest.Timeslot
             return dto;
         }
 
-        private async Task<CreateTimetableFromCourseDto> CreateTimetableAsync()
+        private async Task<CreateSessionFromCourseDto> CreateSessionAsync()
         {
             var createCourseItemDto = await SendAsync(new CreateCourseItemCommand()
             {
-                Name = "ShouldCreateTimetableFromCourse",
+                Name = "ShouldCreateSessionFromCourse",
                 Rate = 40,
             });
 
-            CreateTimetableFromCourseDto dto = await SendAsync(new CreateTimetableFromCourseCommand
+            CreateSessionFromCourseDto dto = await SendAsync(new CreateSessionFromCourseCommand
             {
                 CourseId = createCourseItemDto.Id
             });
