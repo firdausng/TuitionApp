@@ -27,7 +27,7 @@ namespace TuitionApp.IntegrationTest.Timeslot
                 Day = 1,
                 Week = 10,
                 Time = new TimeSpan(2,0,0),
-                roomId = classroomDto.Id,
+                RoomId = classroomDto.Id,
                 SessionId = SessionDto.Id,
             };
             var dto = await SendAsync(command);
@@ -54,7 +54,7 @@ namespace TuitionApp.IntegrationTest.Timeslot
                 Day = 1,
                 Week = 10,
                 Time = new TimeSpan(2, 0, 0),
-                roomId = classroomDto.Id,
+                RoomId = classroomDto.Id,
                 SessionId = SessionDto2.Id,
             });
 
@@ -63,7 +63,7 @@ namespace TuitionApp.IntegrationTest.Timeslot
                 Day = 1,
                 Week = 10,
                 Time = new TimeSpan(2, 0, 0),
-                roomId = classroomDto.Id,
+                RoomId = classroomDto.Id,
                 SessionId = SessionDto.Id,
             };
 
