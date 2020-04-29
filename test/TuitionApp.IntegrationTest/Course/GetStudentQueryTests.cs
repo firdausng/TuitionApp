@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shouldly;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TuitionApp.Core.Features.Common;
 using TuitionApp.Core.Features.Course;
-using TuitionApp.Core.Features.Student;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Course
