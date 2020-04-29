@@ -12,7 +12,7 @@ using Xunit;
 namespace TuitionApp.IntegrationTest.Student
 {
     using static SliceFixture;
-    public class GetInstructorQueryTests: IntegrationTestBase
+    public class GetStudentQueryTests: IntegrationTestBase
     {
         [Fact]
         public async Task ShouldGetStudentItem()
@@ -49,7 +49,7 @@ namespace TuitionApp.IntegrationTest.Student
             var created = await ExecuteDbContextAsync(db =>
             db.Students.Where(c => c.Id.Equals(createStudentDto.Id)).SingleOrDefaultAsync());
 
-            GetStudentListQuery query = new GetStudentListQuery();
+            GetWeeklyScheduleListQuery query = new GetWeeklyScheduleListQuery();
             GetObjectListVm<GetStudentItemDto> dto = await SendAsync(query);
 
 
