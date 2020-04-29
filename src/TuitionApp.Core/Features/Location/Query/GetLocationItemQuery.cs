@@ -30,7 +30,9 @@ namespace TuitionApp.Core.Features.Location
                 {
                     Id = location.Id,
                     Name = location.Name,
-                    IsEnabled = location.IsEnabled
+                    IsEnabled = location.IsEnabled,
+                    OpeningTime = location.OpeningTime,
+                    ClosingTime = location.ClosingTime,
                 };
 
                 return dto;

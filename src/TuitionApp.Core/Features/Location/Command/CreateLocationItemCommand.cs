@@ -10,6 +10,8 @@ namespace TuitionApp.Core.Features.Location
     {
         public string Name { get; set; }
         public bool IsEnabled { get; set; }
+        public TimeSpan OpeningTime { get; set; }
+        public TimeSpan ClosingTime { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateLocationItemCommand, CreateLocationItemDto>
         {
@@ -24,7 +26,9 @@ namespace TuitionApp.Core.Features.Location
                 var entity = new Domain.Entities.Location()
                 {
                     Name = request.Name,
-                    IsEnabled = request.IsEnabled
+                    IsEnabled = request.IsEnabled,
+                    OpeningTime = request.OpeningTime,
+                    ClosingTime = request.ClosingTime,
                 };
                 context.Locations.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
