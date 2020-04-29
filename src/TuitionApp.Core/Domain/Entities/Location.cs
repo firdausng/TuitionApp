@@ -10,6 +10,8 @@ namespace TuitionApp.Core.Domain.Entities
         public string Description { get; set; }
         public bool IsEnabled { get; set; }
         public string Address { get; set; }
+        public TimeSpan OpeningTime { get; set; }
+        public TimeSpan ClosingTime { get; set; }
         public ICollection<Classroom> Classrooms { get; set; } = new List<Classroom>();
         public ICollection<LocationInstructor> LocationInstructors { get; set; } = new List<LocationInstructor>();
     }
@@ -65,18 +67,16 @@ namespace TuitionApp.Core.Domain.Entities
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; } 
         public Guid DayslotId { get; set; }
-        public Dayslot Dayslot { get; set; }
+        public WeeklySchedule Dayslot { get; set; }
         public Guid SessionId { get; set; }
         public Session Session { get; set; }
     }
 
-    public class Dayslot : BaseEntity
+    public class WeeklySchedule : BaseEntity
     {
-        public DateTime DateTime { get; set; }
+        public DateTime DateSchedule { get; set; }
         public int WeekNumber { get; set; }
         public DayOfWeek DayOfWeek { get; set; }
-        public TimeSpan OpeningTime { get; set; }
-        public TimeSpan ClosingTime { get; set; }
         public bool Disabled { get; set; }
         public Guid ClassroomId { get; set; }
         public Classroom Classroom { get; set; }

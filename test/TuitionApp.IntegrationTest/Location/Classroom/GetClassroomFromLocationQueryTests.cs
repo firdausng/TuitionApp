@@ -20,7 +20,9 @@ namespace TuitionApp.IntegrationTest.Location
             var locationDto = await SendAsync(new CreateLocationItemCommand()
             {
                 IsEnabled = true,
-                Name = "ShouldGetClassroomFromLocationItem_location"
+                Name = "ShouldGetClassroomFromLocationItem_location",
+                OpeningTime = new TimeSpan(0, 19, 0),
+                ClosingTime = new TimeSpan(0, 21, 0),
             });
 
 

@@ -31,7 +31,9 @@ namespace TuitionApp.IntegrationTest.Location
                 command = new CreateLocationItemCommand()
                 {
                     IsEnabled = true,
-                    Name = "location1"
+                    Name = "location1",
+                    OpeningTime = new TimeSpan(0, 19, 0),
+                    ClosingTime = new TimeSpan(0, 21, 0),
                 };
                 dto = await mediator.Send(command);
             });
@@ -40,6 +42,8 @@ namespace TuitionApp.IntegrationTest.Location
 
             created.ShouldNotBeNull();
             created.Name.ShouldBe(command.Name);
+            created.OpeningTime.ShouldBe(command.OpeningTime);
+            created.ClosingTime.ShouldBe(command.ClosingTime);
             created.IsEnabled.ShouldBe(command.IsEnabled);
         }
     }

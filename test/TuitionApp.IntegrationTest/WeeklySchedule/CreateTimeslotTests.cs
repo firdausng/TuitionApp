@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Features.Course;
 using TuitionApp.Core.Features.Location;
-using TuitionApp.Core.Features.Timeslot;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Timeslot

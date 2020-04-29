@@ -12,7 +12,7 @@ using Xunit;
 namespace TuitionApp.IntegrationTest.Instructor
 {
     using static SliceFixture;
-    public class CreateInstructorTests: IntegrationTestBase
+    public class CreateInstructorTests : IntegrationTestBase
     {
         [Fact]
         public async Task ShouldCreateInstructor()

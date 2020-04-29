@@ -20,7 +20,9 @@ namespace TuitionApp.IntegrationTest.Location
             var locationDto = await SendAsync(new CreateLocationItemCommand()
             {
                 IsEnabled = true,
-                Name = "ShouldGetLocationItem"
+                Name = "ShouldGetLocationItem",
+                OpeningTime = new TimeSpan(0, 19, 0),
+                ClosingTime = new TimeSpan(0, 21, 0),
             });
 
 
@@ -38,6 +40,8 @@ namespace TuitionApp.IntegrationTest.Location
             dto.ShouldNotBeNull();
             dto.Id.ShouldBe(created.Id);
             dto.Name.ShouldBe(created.Name);
+            dto.OpeningTime.ShouldBe(created.OpeningTime);
+            dto.ClosingTime.ShouldBe(created.ClosingTime);
             dto.IsEnabled.ShouldBe(created.IsEnabled);
         }
 
@@ -47,7 +51,9 @@ namespace TuitionApp.IntegrationTest.Location
             var locationDto = await SendAsync(new CreateLocationItemCommand()
             {
                 IsEnabled = true,
-                Name = "ShouldGetLocationList"
+                Name = "ShouldGetLocationList",
+                OpeningTime = new TimeSpan(0, 19, 0),
+                ClosingTime = new TimeSpan(0, 21, 0),
             });
 
             var created = await ExecuteDbContextAsync(db => 

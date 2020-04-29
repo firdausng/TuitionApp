@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
 
-namespace TuitionApp.Core.Features.Timeslot
+namespace TuitionApp.Core.Features.Dayslot.Timeslot
 {
     public class CreateTimeslotItemCommand : IRequest<CreateTimeslotItem>
     {
         public TimeSpan Duration { get; set; }
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; }
-        public Guid DayslotId { get; set; }
+        public Guid WeeklyScheduleId { get; set; }
         public Guid SessionId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItem>
@@ -29,10 +29,10 @@ namespace TuitionApp.Core.Features.Timeslot
 
             public async Task<CreateTimeslotItem> Handle(CreateTimeslotItemCommand request, CancellationToken cancellationToken)
             {
-                var classroom = await context.Dayslots.SingleOrDefaultAsync(l => l.Id.Equals(request.DayslotId));
-                if (classroom == null)
+                var weeklySchedule = await context.WeeklySchedules.SingleOrDefaultAsync(l => l.Id.Equals(request.WeeklyScheduleId));
+                if (weeklySchedule == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.Dayslot), request.DayslotId);
+                    throw new EntityNotFoundException(nameof(Domain.Entities.WeeklySchedule), request.WeeklyScheduleId);
                 }
 
                 //var timeslot = await context.Timeslots

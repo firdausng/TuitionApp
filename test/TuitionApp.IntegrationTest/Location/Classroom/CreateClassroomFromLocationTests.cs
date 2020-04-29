@@ -11,15 +11,17 @@ using Xunit;
 namespace TuitionApp.IntegrationTest.Location
 {
     using static SliceFixture;
-    public class CreateClassroomFromLocationTests: IntegrationTestBase
+    public class CreateClassroomFromLocationTests : IntegrationTestBase
     {
         [Fact]
         public async Task ShouldCreateClassroomFromLocation()
         {
-            var createLocationDto = await SendAsync(new CreateLocationItemCommand 
-            { 
+            var createLocationDto = await SendAsync(new CreateLocationItemCommand
+            {
                 Name = "location1",
-                IsEnabled = true
+                IsEnabled = true,
+                OpeningTime = new TimeSpan(0, 19, 0),
+                ClosingTime = new TimeSpan(0, 21, 0),
             });
 
             CreateClassroomFromLocationCommand command = new CreateClassroomFromLocationCommand

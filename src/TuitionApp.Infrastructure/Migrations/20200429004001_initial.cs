@@ -3,10 +3,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TuitionApp.Infrastructure.Migrations
 {
-    public partial class intial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "CalendarSettings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: false),
+                    FirstDayOfWeek = table.Column<int>(nullable: false),
+                    DefaultOpeningTime = table.Column<TimeSpan>(nullable: false),
+                    DefaultClosingTime = table.Column<TimeSpan>(nullable: false),
+                    AllowedTimeslotOverlap = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CalendarSettings", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
@@ -30,7 +46,9 @@ namespace TuitionApp.Infrastructure.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     IsEnabled = table.Column<bool>(nullable: false),
-                    Address = table.Column<string>(nullable: true)
+                    Address = table.Column<string>(nullable: true),
+                    OpeningTime = table.Column<TimeSpan>(nullable: false),
+                    ClosingTime = table.Column<TimeSpan>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,17 +191,40 @@ namespace TuitionApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WeeklySchedules",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: false),
+                    DateSchedule = table.Column<DateTime>(nullable: false),
+                    WeekNumber = table.Column<int>(nullable: false),
+                    DayOfWeek = table.Column<int>(nullable: false),
+                    Disabled = table.Column<bool>(nullable: false),
+                    ClassroomId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeeklySchedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WeeklySchedules_Classrooms_ClassroomId",
+                        column: x => x.ClassroomId,
+                        principalTable: "Classrooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Timeslots",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     TenantId = table.Column<Guid>(nullable: false),
-                    WeekNumber = table.Column<int>(nullable: false),
-                    Day = table.Column<int>(nullable: false),
-                    Time = table.Column<TimeSpan>(nullable: false),
+                    Duration = table.Column<TimeSpan>(nullable: false),
+                    StartTime = table.Column<TimeSpan>(nullable: false),
                     Disabled = table.Column<bool>(nullable: false),
-                    ClassroomId = table.Column<Guid>(nullable: false),
-                    SessionId = table.Column<Guid>(nullable: false)
+                    DayslotId = table.Column<Guid>(nullable: false),
+                    SessionId = table.Column<Guid>(nullable: false),
+                    ClassroomId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -192,6 +233,12 @@ namespace TuitionApp.Infrastructure.Migrations
                         name: "FK_Timeslots_Classrooms_ClassroomId",
                         column: x => x.ClassroomId,
                         principalTable: "Classrooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Timeslots_WeeklySchedules_DayslotId",
+                        column: x => x.DayslotId,
+                        principalTable: "WeeklySchedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -238,13 +285,26 @@ namespace TuitionApp.Infrastructure.Migrations
                 column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Timeslots_DayslotId",
+                table: "Timeslots",
+                column: "DayslotId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Timeslots_SessionId",
                 table: "Timeslots",
                 column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeeklySchedules_ClassroomId",
+                table: "WeeklySchedules",
+                column: "ClassroomId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CalendarSettings");
+
             migrationBuilder.DropTable(
                 name: "Enrollments");
 
@@ -261,16 +321,19 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Person");
 
             migrationBuilder.DropTable(
-                name: "Classrooms");
+                name: "WeeklySchedules");
 
             migrationBuilder.DropTable(
                 name: "Sessions");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Classrooms");
 
             migrationBuilder.DropTable(
                 name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
         }
     }
 }

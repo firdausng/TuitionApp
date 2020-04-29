@@ -13,7 +13,7 @@ using Xunit;
 namespace TuitionApp.IntegrationTest.Instructor
 {
     using static SliceFixture;
-    public class GetInstructorQueryTests: IntegrationTestBase
+    public class GetCalendarSettingQueryTests: IntegrationTestBase
     {
         [Fact]
         public async Task ShouldGetInstructorItem()

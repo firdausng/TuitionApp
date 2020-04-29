@@ -10,8 +10,8 @@ using TuitionApp.Infrastructure.Data;
 namespace TuitionApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200428141303_intial")]
-    partial class intial
+    [Migration("20200429004001_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,32 @@ namespace TuitionApp.Infrastructure.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.CalendarSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("AllowedTimeslotOverlap")
+                        .HasColumnType("boolean");
+
+                    b.Property<TimeSpan>("DefaultClosingTime")
+                        .HasColumnType("interval");
+
+                    b.Property<TimeSpan>("DefaultOpeningTime")
+                        .HasColumnType("interval");
+
+                    b.Property<int>("FirstDayOfWeek")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CalendarSettings");
+                });
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Classroom", b =>
                 {
@@ -126,6 +152,9 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
+                    b.Property<TimeSpan>("ClosingTime")
+                        .HasColumnType("interval");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -134,6 +163,9 @@ namespace TuitionApp.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<TimeSpan>("OpeningTime")
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
@@ -212,23 +244,58 @@ namespace TuitionApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ClassroomId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("DayslotId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Disabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("interval");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("interval");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.HasIndex("DayslotId");
+
+                    b.HasIndex("SessionId");
+
+                    b.ToTable("Timeslots");
+                });
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.WeeklySchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ClassroomId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Day")
+                    b.Property<DateTime>("DateSchedule")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("DayOfWeek")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Disabled")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("SessionId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
-
-                    b.Property<TimeSpan>("Time")
-                        .HasColumnType("interval");
 
                     b.Property<int>("WeekNumber")
                         .HasColumnType("integer");
@@ -237,9 +304,7 @@ namespace TuitionApp.Infrastructure.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.HasIndex("SessionId");
-
-                    b.ToTable("Timeslots");
+                    b.ToTable("WeeklySchedules");
                 });
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Instructor", b =>
@@ -324,15 +389,28 @@ namespace TuitionApp.Infrastructure.Migrations
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Timeslot", b =>
                 {
-                    b.HasOne("TuitionApp.Core.Domain.Entities.Classroom", "Classroom")
+                    b.HasOne("TuitionApp.Core.Domain.Entities.Classroom", null)
                         .WithMany("Timeslots")
-                        .HasForeignKey("ClassroomId")
+                        .HasForeignKey("ClassroomId");
+
+                    b.HasOne("TuitionApp.Core.Domain.Entities.WeeklySchedule", "Dayslot")
+                        .WithMany("Timeslots")
+                        .HasForeignKey("DayslotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TuitionApp.Core.Domain.Entities.Session", "Session")
                         .WithMany()
                         .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.WeeklySchedule", b =>
+                {
+                    b.HasOne("TuitionApp.Core.Domain.Entities.Classroom", "Classroom")
+                        .WithMany()
+                        .HasForeignKey("ClassroomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
