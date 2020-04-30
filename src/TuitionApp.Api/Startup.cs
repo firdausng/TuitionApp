@@ -26,6 +26,7 @@ namespace TuitionApp.Api
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
                 });
 
             services.AddSwaggerConfig();
