@@ -12,7 +12,7 @@ using Xunit;
 namespace TuitionApp.IntegrationTest.WeeklySchedule
 {
     using static SliceFixture;
-    public class GetTimeslotQueryTests: IntegrationTestBase
+    public class GetTimeslotQueryTests : IntegrationTestBase
     {
         [Fact]
         public async Task ShouldGetWeeklyScheduleItem()
@@ -20,17 +20,16 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             var weeklyScheduleDto = await CreateWeeklyScheduleAsync();
             var sessionDto = await CreateSessionAsync();
 
-
-           var command = new CreateTimeslotItemCommand()
+            var command = new CreateTimeslotItemCommand()
             {
                 Disabled = false,
-                Duration = new TimeSpan(1,0,0),
-                StartTime = new TimeSpan(0,22,0),
+                Duration = new TimeSpan(1, 0, 0),
+                StartTime = new TimeSpan(0, 22, 0),
                 WeeklyScheduleId = weeklyScheduleDto.Id,
                 SessionId = sessionDto.Id,
-           };
+            };
             var timeslotDto = await SendAsync(command);
-           
+
             GetTimeslotItemQuery query = new GetTimeslotItemQuery() { Id = timeslotDto.Id };
             GetTimeslotItemDto dto = await SendAsync(query);
 
@@ -52,7 +51,6 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             var weeklyScheduleDto = await CreateWeeklyScheduleAsync();
             var sessionDto = await CreateSessionAsync();
 
-
             var command = new CreateTimeslotItemCommand()
             {
                 Disabled = false,
@@ -63,12 +61,11 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             };
             var timeslotDto = await SendAsync(command);
 
-            GetTimeslotListQuery query = new GetTimeslotListQuery() {  };
+            GetTimeslotListQuery query = new GetTimeslotListQuery() { };
             var dto = await SendAsync(query);
 
             var created = await ExecuteDbContextAsync(db =>
             db.Timeslots.Where(c => c.Id.Equals(timeslotDto.Id)).SingleOrDefaultAsync());
-
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

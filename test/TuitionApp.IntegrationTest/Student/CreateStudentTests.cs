@@ -23,7 +23,6 @@ namespace TuitionApp.IntegrationTest.Student
             var created = await ExecuteDbContextAsync(db =>
             db.Students.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
-
             created.ShouldNotBeNull();
             created.FirstName.ShouldBe(command.FirstName);
             created.LastName.ShouldBe(command.LastName);

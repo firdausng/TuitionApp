@@ -23,7 +23,6 @@ namespace TuitionApp.IntegrationTest.Instructor
                 HireDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
             });
 
-
             GetInstructorItemQuery query = new GetInstructorItemQuery() { Id = instructorDto.Id };
             GetInstructorItemDto dto = await SendAsync(query);
 
@@ -46,13 +45,11 @@ namespace TuitionApp.IntegrationTest.Instructor
                 HireDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
             });
 
-
             var created = await ExecuteDbContextAsync(db =>
                 db.Instructor.Where(c => c.Id.Equals(instructorDto.Id)).SingleOrDefaultAsync());
 
             GetInstructorListQuery query = new GetInstructorListQuery();
             GetObjectListVm<GetInstructorItemDto> dto = await SendAsync(query);
-
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

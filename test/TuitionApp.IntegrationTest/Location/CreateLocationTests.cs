@@ -14,21 +14,14 @@ namespace TuitionApp.IntegrationTest.Location
         [Fact]
         public async Task ShouldCreateLocation()
         {
-            CreateLocationItemDto dto = null;
-            CreateLocationItemCommand command = null;
-
-            await ExecuteDbContextAsync(async (ctxt, mediator) =>
+            CreateLocationItemCommand command = new CreateLocationItemCommand()
             {
-                //await ctxt.Locations.AddAsync(dept);
-                command = new CreateLocationItemCommand()
-                {
-                    IsEnabled = true,
-                    Name = "location1",
-                    OpeningTime = new TimeSpan(0, 19, 0),
-                    ClosingTime = new TimeSpan(0, 21, 0),
-                };
-                dto = await mediator.Send(command);
-            });
+                IsEnabled = true,
+                Name = "location1",
+                OpeningTime = new TimeSpan(0, 19, 0),
+                ClosingTime = new TimeSpan(0, 21, 0),
+            };
+            CreateLocationItemDto dto = await SendAsync(command);
 
             var created = await ExecuteDbContextAsync(db => db.Locations.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 

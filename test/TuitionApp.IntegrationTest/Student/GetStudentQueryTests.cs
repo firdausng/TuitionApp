@@ -21,7 +21,6 @@ namespace TuitionApp.IntegrationTest.Student
             };
             var createStudentDto = await SendAsync(createStudentItemCommand);
 
-
             GetStudentItemQuery query = new GetStudentItemQuery() { Id = createStudentDto.Id };
             GetStudentItemDto dto = await SendAsync(query);
 
@@ -31,7 +30,6 @@ namespace TuitionApp.IntegrationTest.Student
             dto.Id.ShouldBe(created.Id);
             dto.Name.ShouldBe($"{created.FirstName} {created.LastName}");
         }
-
 
         [Fact]
         public async Task ShouldGetStudentList()

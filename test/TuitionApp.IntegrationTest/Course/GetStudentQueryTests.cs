@@ -21,7 +21,6 @@ namespace TuitionApp.IntegrationTest.Course
             };
             var createCourseItemDto = await SendAsync(command);
 
-
             GetCourseItemQuery query = new GetCourseItemQuery() { Id = createCourseItemDto.Id };
             GetCourseItemDto dto = await SendAsync(query);
 
@@ -31,7 +30,6 @@ namespace TuitionApp.IntegrationTest.Course
             dto.Id.ShouldBe(created.Id);
             dto.Name.ShouldBe(created.Name);
         }
-
 
         [Fact]
         public async Task ShouldGetStudentList()
@@ -48,7 +46,6 @@ namespace TuitionApp.IntegrationTest.Course
 
             GetCourseListQuery query = new GetCourseListQuery();
             GetObjectListVm<GetCourseItemDto> dto = await SendAsync(query);
-
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

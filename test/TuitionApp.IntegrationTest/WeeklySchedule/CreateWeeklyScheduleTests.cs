@@ -44,7 +44,6 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             var created = await ExecuteDbContextAsync(db =>
             db.WeeklySchedules.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
-
             created.ShouldNotBeNull();
             created.WeekNumber.ShouldBe(command.WeekNumber);
             created.ClassroomId.ShouldBe(command.ClassroomId);

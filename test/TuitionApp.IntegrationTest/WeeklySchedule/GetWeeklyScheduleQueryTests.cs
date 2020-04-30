@@ -40,7 +40,6 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             };
             var weeklyScheduleDto = await SendAsync(command);
 
-
             GetWeeklyScheduleItemQuery query = new GetWeeklyScheduleItemQuery() { Id = weeklyScheduleDto.Id };
             GetWeeklyScheduleItemDto dto = await SendAsync(query);
 
@@ -89,7 +88,6 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
 
             var created = await ExecuteDbContextAsync(db =>
             db.WeeklySchedules.Where(c => c.Id.Equals(weeklyScheduleDto.Id)).SingleOrDefaultAsync());
-
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

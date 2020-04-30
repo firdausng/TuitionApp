@@ -25,7 +25,6 @@ namespace TuitionApp.IntegrationTest.Instructor
             var created = await ExecuteDbContextAsync(db =>
                 db.Instructor.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
-
             created.ShouldNotBeNull();
             created.Id.ShouldBe(dto.Id);
         }

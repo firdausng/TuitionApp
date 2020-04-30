@@ -23,7 +23,6 @@ namespace TuitionApp.IntegrationTest.Location
                 ClosingTime = new TimeSpan(0, 21, 0),
             });
 
-
             var classroomDto = await SendAsync(new CreateClassroomFromLocationCommand()
             {
                 IsEnabled = true,
@@ -41,7 +40,6 @@ namespace TuitionApp.IntegrationTest.Location
             getClassroomItemdto.Id.ShouldBe(created.Id);
             getClassroomItemdto.Name.ShouldBe(created.Name);
             getClassroomItemdto.IsEnabled.ShouldBe(created.IsEnabled);
-
         }
 
         [Fact]

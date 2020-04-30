@@ -36,7 +36,6 @@ namespace TuitionApp.IntegrationTest.Timeslot
             var created = await ExecuteDbContextAsync(db =>
                 db.Timeslots.Where(c => c.Id.Equals(timeslotDto.Id)).SingleOrDefaultAsync());
 
-
             created.ShouldNotBeNull();
             created.SessionId.ShouldBe(command.SessionId);
             created.WeeklyScheduleId.ShouldBe(command.WeeklyScheduleId);

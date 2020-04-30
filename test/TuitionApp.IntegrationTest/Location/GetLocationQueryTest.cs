@@ -23,15 +23,8 @@ namespace TuitionApp.IntegrationTest.Location
                 ClosingTime = new TimeSpan(0, 21, 0),
             });
 
-
-            GetLocationDto dto = null;
-            GetLocationItemQuery query = null;
-
-            await ExecuteDbContextAsync(async (ctxt, mediator) =>
-            {
-                query = new GetLocationItemQuery() { Id = locationDto.Id};
-                dto = await mediator.Send(query);
-            });
+            GetLocationItemQuery query = new GetLocationItemQuery() { Id = locationDto.Id };
+            GetLocationDto dto = await SendAsync(query);
 
             var created = await ExecuteDbContextAsync(db => db.Locations.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
@@ -59,7 +52,6 @@ namespace TuitionApp.IntegrationTest.Location
 
             GetLocationListQuery query = new GetLocationListQuery();
             GetObjectListVm<GetLocationDto> dto = await SendAsync(query);
-
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

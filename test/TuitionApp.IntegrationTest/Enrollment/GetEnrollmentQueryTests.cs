@@ -20,7 +20,6 @@ namespace TuitionApp.IntegrationTest.Enrollment
         {
             var enrollmentDto = await CreateEnrollmentDtoAsync();
 
-
             GetEnrollmentItemQuery query = new GetEnrollmentItemQuery() { Id = enrollmentDto.Id };
             GetEnrollmentItemDto dto = await SendAsync(query);
 
@@ -35,7 +34,6 @@ namespace TuitionApp.IntegrationTest.Enrollment
             dto.EndDate.ShouldBe(created.EndDate);
         }
 
-
         [Fact]
         public async Task ShouldGetEnrollmentList()
         {
@@ -46,7 +44,6 @@ namespace TuitionApp.IntegrationTest.Enrollment
 
             GetEnrollmentListQuery query = new GetEnrollmentListQuery();
             GetObjectListVm<GetEnrollmentItemDto> dto = await SendAsync(query);
-
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

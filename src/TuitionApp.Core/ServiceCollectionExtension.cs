@@ -8,11 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddTuitionAppCore(this IServiceCollection services)
         {
-            //var assembly = typeof(ServiceCollectionExtension).Assembly;
-
             services.AddMediatR(Assembly.GetExecutingAssembly());
-
-
             return services;
         }
     }
