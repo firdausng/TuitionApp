@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Features.Course;
-using TuitionApp.Core.Features.Dayslot.Timeslot;
+using TuitionApp.Core.Features.WeeklySchedule.Timeslot;
 using TuitionApp.Core.Features.Location;
 using TuitionApp.Core.Features.WeeklySchedule;
 using Xunit;
@@ -45,10 +45,31 @@ namespace TuitionApp.IntegrationTest.Timeslot
             created.Duration.ShouldBe(command.Duration);
         }
 
-        [Fact(Skip = "WIP - need to create dayslot test 1st")]
+        [Fact()]
         public async Task ShouldNotCreateTimeslotWhenRoomTimeSlotAlreadyTaken()
         {
+            var weeklySchedule = await CreateWeeklyScheduleAsync();
+            var session = await CreateSessionAsync();
 
+            var command1st = new CreateTimeslotItemCommand
+            {
+                Disabled = false,
+                SessionId = session.Id,
+                WeeklyScheduleId = weeklySchedule.Id,
+                Duration = new TimeSpan(0, 1, 0),
+                StartTime = new TimeSpan(0, 20, 0),
+            };
+            var timeslotDto1st = await SendAsync(command1st);
+
+            var command2nd = new CreateTimeslotItemCommand
+            {
+                Disabled = false,
+                SessionId = session.Id,
+                WeeklyScheduleId = weeklySchedule.Id,
+                Duration = new TimeSpan(0, 1, 0),
+                StartTime = new TimeSpan(0, 20, 0),
+            };
+            await SendAsync(command2nd).ShouldThrowAsync<EntityAlreadyExistException>();
         }
 
         private async Task<CreateWeeklyScheduleItem> CreateWeeklyScheduleAsync()

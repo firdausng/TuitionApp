@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
+using TuitionApp.Core.Domain.Entities;
 
-namespace TuitionApp.Core.Features.Dayslot.Timeslot
+namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
 {
     public class CreateTimeslotItemCommand : IRequest<CreateTimeslotItem>
     {
@@ -29,23 +29,20 @@ namespace TuitionApp.Core.Features.Dayslot.Timeslot
 
             public async Task<CreateTimeslotItem> Handle(CreateTimeslotItemCommand request, CancellationToken cancellationToken)
             {
-                var weeklySchedule = await context.WeeklySchedules.SingleOrDefaultAsync(l => l.Id.Equals(request.WeeklyScheduleId));
+                var weeklySchedule = await context.WeeklySchedules
+                    .Include(w => w.Timeslots)
+                    .SingleOrDefaultAsync(l => l.Id.Equals(request.WeeklyScheduleId));
                 if (weeklySchedule == null)
                 {
                     throw new EntityNotFoundException(nameof(Domain.Entities.WeeklySchedule), request.WeeklyScheduleId);
                 }
 
-                //var timeslot = await context.Timeslots
-                //    .Where(l => l.Classroom.Equals(classroom))
-                //    .Where(l => l.WeekNumber == request.Week)
-                //    .Where(l => l.Day == request.Day)
-                //    .Where(l => l.Time == request.Time)
-                //    .SingleOrDefaultAsync();
+                var bookedTimeslots = weeklySchedule.Timeslots.GetOverlapTimeslot(request.StartTime, request.Duration);
 
-                //if (timeslot != null)
-                //{
-                //    throw new EntityAlreadyExistException(nameof(Domain.Entities.Timeslot), timeslot.Id);
-                //}
+                if (bookedTimeslots.Count > 0)
+                {
+                    throw new EntityAlreadyExistException(nameof(Domain.Entities.Timeslot), string.Join(",", bookedTimeslots.Select(b => b.Id.ToString()).ToArray()));
+                }
 
                 var session = await context.Sessions.SingleOrDefaultAsync(l => l.Id.Equals(request.SessionId));
                 if (session == null)
@@ -56,6 +53,7 @@ namespace TuitionApp.Core.Features.Dayslot.Timeslot
                 var entity = new Domain.Entities.Timeslot()
                 {
                     Session = session,
+                    WeeklySchedule = weeklySchedule,
                     Disabled = request.Disabled,
                     Duration = request.Duration,
                     StartTime = request.StartTime,
@@ -68,6 +66,24 @@ namespace TuitionApp.Core.Features.Dayslot.Timeslot
                 {
                     Id = entity.Id
                 };
+            }
+
+            public bool IstimeslotOverlapping(Domain.Entities.Timeslot currentTimeslot, List<Domain.Entities.Timeslot> timeslots)
+            {
+                foreach (var timeslot in timeslots)
+                {
+                    if (timeslot.Id == currentTimeslot.Id) continue;
+
+                    if (timeslot.StartTime > currentTimeslot.StartTime && timeslot.StartTime < currentTimeslot.StartTime.Add(currentTimeslot.Duration))
+                    {
+                        return true;
+                    }
+                    else if (currentTimeslot.StartTime > timeslot.StartTime && currentTimeslot.StartTime < timeslot.StartTime.Add(timeslot.Duration))
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
     }

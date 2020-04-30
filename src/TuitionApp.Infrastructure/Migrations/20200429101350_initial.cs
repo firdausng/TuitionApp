@@ -222,7 +222,7 @@ namespace TuitionApp.Infrastructure.Migrations
                     Duration = table.Column<TimeSpan>(nullable: false),
                     StartTime = table.Column<TimeSpan>(nullable: false),
                     Disabled = table.Column<bool>(nullable: false),
-                    DayslotId = table.Column<Guid>(nullable: false),
+                    WeeklyScheduleId = table.Column<Guid>(nullable: false),
                     SessionId = table.Column<Guid>(nullable: false),
                     ClassroomId = table.Column<Guid>(nullable: true)
                 },
@@ -236,15 +236,15 @@ namespace TuitionApp.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Timeslots_WeeklySchedules_DayslotId",
-                        column: x => x.DayslotId,
-                        principalTable: "WeeklySchedules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Timeslots_Sessions_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Sessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Timeslots_WeeklySchedules_WeeklyScheduleId",
+                        column: x => x.WeeklyScheduleId,
+                        principalTable: "WeeklySchedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -285,14 +285,14 @@ namespace TuitionApp.Infrastructure.Migrations
                 column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Timeslots_DayslotId",
-                table: "Timeslots",
-                column: "DayslotId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Timeslots_SessionId",
                 table: "Timeslots",
                 column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Timeslots_WeeklyScheduleId",
+                table: "Timeslots",
+                column: "WeeklyScheduleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WeeklySchedules_ClassroomId",
@@ -321,16 +321,16 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Person");
 
             migrationBuilder.DropTable(
-                name: "WeeklySchedules");
-
-            migrationBuilder.DropTable(
                 name: "Sessions");
 
             migrationBuilder.DropTable(
-                name: "Classrooms");
+                name: "WeeklySchedules");
 
             migrationBuilder.DropTable(
                 name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "Classrooms");
 
             migrationBuilder.DropTable(
                 name: "Locations");

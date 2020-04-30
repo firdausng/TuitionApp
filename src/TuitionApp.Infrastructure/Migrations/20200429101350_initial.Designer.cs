@@ -10,7 +10,7 @@ using TuitionApp.Infrastructure.Data;
 namespace TuitionApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200429004001_initial")]
+    [Migration("20200429101350_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -247,9 +247,6 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.Property<Guid?>("ClassroomId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("DayslotId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("Disabled")
                         .HasColumnType("boolean");
 
@@ -265,13 +262,16 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("WeeklyScheduleId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClassroomId");
 
-                    b.HasIndex("DayslotId");
-
                     b.HasIndex("SessionId");
+
+                    b.HasIndex("WeeklyScheduleId");
 
                     b.ToTable("Timeslots");
                 });
@@ -393,15 +393,15 @@ namespace TuitionApp.Infrastructure.Migrations
                         .WithMany("Timeslots")
                         .HasForeignKey("ClassroomId");
 
-                    b.HasOne("TuitionApp.Core.Domain.Entities.WeeklySchedule", "Dayslot")
-                        .WithMany("Timeslots")
-                        .HasForeignKey("DayslotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TuitionApp.Core.Domain.Entities.Session", "Session")
                         .WithMany()
                         .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TuitionApp.Core.Domain.Entities.WeeklySchedule", "WeeklySchedule")
+                        .WithMany("Timeslots")
+                        .HasForeignKey("WeeklyScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
