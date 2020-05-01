@@ -33,11 +33,11 @@ namespace TuitionApp.Infrastructure.Data
             modelBuilder.Entity<LocationInstructor>()
                 .HasOne(bc => bc.Location)
                 .WithMany(b => b.LocationInstructors)
-                .HasForeignKey(bc => bc.InstructorId);
+                .HasForeignKey(bc => bc.LocationId);
             modelBuilder.Entity<LocationInstructor>()
                 .HasOne(bc => bc.Instructor)
                 .WithMany(c => c.LocationInstructors)
-                .HasForeignKey(bc => bc.LocationId);
+                .HasForeignKey(bc => bc.InstructorId);
 
             // many to many mapping for Session and Instructor
             modelBuilder.Entity<InstructorSession>()
@@ -45,11 +45,11 @@ namespace TuitionApp.Infrastructure.Data
             modelBuilder.Entity<InstructorSession>()
                 .HasOne(bc => bc.Instructor)
                 .WithMany(b => b.InstructorSessions)
-                .HasForeignKey(bc => bc.SessionId);
+                .HasForeignKey(bc => bc.InstructorId);
             modelBuilder.Entity<InstructorSession>()
                 .HasOne(bc => bc.Session)
                 .WithMany(c => c.InstructorSessions)
-                .HasForeignKey(bc => bc.InstructorId);
+                .HasForeignKey(bc => bc.SessionId);
 
 
             modelBuilder.Entity<Person>()
