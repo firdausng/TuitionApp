@@ -9,6 +9,5 @@ namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Query
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; }
         public Guid DailyScheduleId { get; set; }
-        public Guid SessionId { get; set; }
     }
 }

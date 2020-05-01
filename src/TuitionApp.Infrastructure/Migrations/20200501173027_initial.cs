@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TuitionApp.Infrastructure.Migrations
 {
-    public partial class initil : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -223,7 +223,6 @@ namespace TuitionApp.Infrastructure.Migrations
                     StartTime = table.Column<TimeSpan>(type: "interval", nullable: false),
                     Disabled = table.Column<bool>(type: "boolean", nullable: false),
                     DailyScheduleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClassroomId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -241,13 +240,36 @@ namespace TuitionApp.Infrastructure.Migrations
                         principalTable: "DailySchedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Booking",
+                columns: table => new
+                {
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TimeslotId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Booking", x => new { x.TimeslotId, x.SessionId });
                     table.ForeignKey(
-                        name: "FK_Timeslots_Sessions_SessionId",
+                        name: "FK_Booking_Sessions_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Sessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Booking_Timeslots_TimeslotId",
+                        column: x => x.TimeslotId,
+                        principalTable: "Timeslots",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Booking_SessionId",
+                table: "Booking",
+                column: "SessionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Classrooms_LocationId",
@@ -293,15 +315,13 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "IX_Timeslots_DailyScheduleId",
                 table: "Timeslots",
                 column: "DailyScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Timeslots_SessionId",
-                table: "Timeslots",
-                column: "SessionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Booking");
+
             migrationBuilder.DropTable(
                 name: "CalendarSettings");
 
@@ -318,19 +338,19 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Timeslots");
 
             migrationBuilder.DropTable(
+                name: "Sessions");
+
+            migrationBuilder.DropTable(
                 name: "Person");
 
             migrationBuilder.DropTable(
                 name: "DailySchedules");
 
             migrationBuilder.DropTable(
-                name: "Sessions");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Classrooms");
-
-            migrationBuilder.DropTable(
-                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Locations");

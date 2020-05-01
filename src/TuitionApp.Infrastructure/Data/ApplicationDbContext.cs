@@ -49,6 +49,18 @@ namespace TuitionApp.Infrastructure.Data
                 .WithMany(c => c.InstructorSessions)
                 .HasForeignKey(bc => bc.SessionId);
 
+            // many to many mapping for Session and timeslot
+            modelBuilder.Entity<Booking>()
+                .HasKey(bc => new { bc.TimeslotId, bc.SessionId });
+            modelBuilder.Entity<Booking>()
+                .HasOne(bc => bc.Timeslot)
+                .WithMany(b => b.Bookings)
+                .HasForeignKey(bc => bc.TimeslotId);
+            modelBuilder.Entity<Booking>()
+                .HasOne(bc => bc.Session)
+                .WithMany(c => c.Bookings)
+                .HasForeignKey(bc => bc.SessionId);
+
             modelBuilder.Entity<Person>()
                 .HasDiscriminator<string>("PersonRole");
         }

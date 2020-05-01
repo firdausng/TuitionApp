@@ -27,7 +27,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
                 Duration = new TimeSpan(1, 0, 0),
                 StartTime = new TimeSpan(0, 22, 0),
                 DailyScheduleId = dailyScheduleDto.Id,
-                SessionId = sessionDto.Id,
             };
             var timeslotDto = await SendAsync(command);
 
@@ -38,7 +37,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
 
             dto.ShouldNotBeNull();
             dto.Id.ShouldBe(created.Id);
-            dto.SessionId.ShouldBe(created.SessionId);
             dto.DailyScheduleId.ShouldBe(created.DailyScheduleId);
             dto.StartTime.ShouldBe(created.StartTime);
             dto.Duration.ShouldBe(created.Duration);
@@ -58,7 +56,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
                 Duration = new TimeSpan(1, 0, 0),
                 StartTime = new TimeSpan(0, 22, 0),
                 DailyScheduleId = dailyScheduleDto.Id,
-                SessionId = sessionDto.Id,
             };
             var timeslotDto = await SendAsync(command);
 

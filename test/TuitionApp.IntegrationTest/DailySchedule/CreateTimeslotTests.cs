@@ -26,7 +26,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
             var command = new CreateTimeslotItemCommand
             {
                 Disabled = false,
-                SessionId = session.Id,
                 DailyScheduleId = dailySchedule.Id,
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),
@@ -37,7 +36,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
                 db.Timeslots.Where(c => c.Id.Equals(timeslotDto.Id)).SingleOrDefaultAsync());
 
             created.ShouldNotBeNull();
-            created.SessionId.ShouldBe(command.SessionId);
             created.DailyScheduleId.ShouldBe(command.DailyScheduleId);
             created.StartTime.ShouldBe(command.StartTime);
             created.Disabled.ShouldBe(command.Disabled);
@@ -53,7 +51,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
             var command1st = new CreateTimeslotItemCommand
             {
                 Disabled = false,
-                SessionId = session.Id,
                 DailyScheduleId = weeklySchedule.Id,
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),
@@ -63,7 +60,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
             var command2nd = new CreateTimeslotItemCommand
             {
                 Disabled = false,
-                SessionId = session.Id,
                 DailyScheduleId = weeklySchedule.Id,
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),

@@ -30,7 +30,6 @@ namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Query
                         Id = entity.Id,
                         Duration = entity.Duration,
                         StartTime = entity.StartTime,
-                        SessionId = entity.SessionId,
                         Disabled = entity.Disabled,
                         DailyScheduleId = entity.DailyScheduleId,
                     }).ToList();

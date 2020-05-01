@@ -17,7 +17,6 @@ namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Command
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; }
         public Guid DailyScheduleId { get; set; }
-        public Guid SessionId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItem>
         {
@@ -44,15 +43,8 @@ namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Command
                     throw new EntityAlreadyExistException(nameof(Domain.Entities.Timeslot), string.Join(",", bookedTimeslots.Select(b => b.Id.ToString()).ToArray()));
                 }
 
-                var session = await context.Sessions.SingleOrDefaultAsync(l => l.Id.Equals(request.SessionId));
-                if (session == null)
-                {
-                    throw new EntityNotFoundException(nameof(Session), request.SessionId);
-                }
-
                 var entity = new Domain.Entities.Timeslot()
                 {
-                    Session = session,
                     DailySchedule = dailySchedule,
                     Disabled = request.Disabled,
                     Duration = request.Duration,
