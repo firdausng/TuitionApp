@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Interfaces;
 using TuitionApp.Core.Features.Common;
 
-namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
+namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Query
 {
     public class GetTimeslotListQuery : IRequest<GetObjectListVm<GetTimeslotItemDto>>
     {
@@ -21,10 +21,10 @@ namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
 
             public async Task<GetObjectListVm<GetTimeslotItemDto>> Handle(GetTimeslotListQuery request, CancellationToken cancellationToken)
             {
-                var WeeklySchedules = await context.Timeslots
+                var dailySchedules = await context.Timeslots
                     .ToListAsync(cancellationToken);
 
-                var list = WeeklySchedules
+                var list = dailySchedules
                     .Select(entity => new GetTimeslotItemDto
                     {
                         Id = entity.Id,
@@ -32,7 +32,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
                         StartTime = entity.StartTime,
                         SessionId = entity.SessionId,
                         Disabled = entity.Disabled,
-                        WeeklyScheduleId = entity.WeeklyScheduleId,
+                        DailyScheduleId = entity.DailyScheduleId,
                     }).ToList();
 
 

@@ -9,14 +9,14 @@ using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
 using TuitionApp.Core.Domain.Entities;
 
-namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
+namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Command
 {
     public class CreateTimeslotItemCommand : IRequest<CreateTimeslotItem>
     {
         public TimeSpan Duration { get; set; }
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; }
-        public Guid WeeklyScheduleId { get; set; }
+        public Guid DailyScheduleId { get; set; }
         public Guid SessionId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItem>
@@ -29,15 +29,15 @@ namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
 
             public async Task<CreateTimeslotItem> Handle(CreateTimeslotItemCommand request, CancellationToken cancellationToken)
             {
-                var weeklySchedule = await context.WeeklySchedules
+                var dailySchedule = await context.DailySchedules
                     .Include(w => w.Timeslots)
-                    .SingleOrDefaultAsync(l => l.Id.Equals(request.WeeklyScheduleId));
-                if (weeklySchedule == null)
+                    .SingleOrDefaultAsync(l => l.Id.Equals(request.DailyScheduleId));
+                if (dailySchedule == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.WeeklySchedule), request.WeeklyScheduleId);
+                    throw new EntityNotFoundException(nameof(Domain.Entities.DailySchedule), request.DailyScheduleId);
                 }
 
-                var bookedTimeslots = weeklySchedule.Timeslots.GetOverlapTimeslot(request.StartTime, request.Duration);
+                var bookedTimeslots = dailySchedule.Timeslots.GetOverlapTimeslot(request.StartTime, request.Duration);
 
                 if (bookedTimeslots.Count > 0)
                 {
@@ -47,17 +47,17 @@ namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
                 var session = await context.Sessions.SingleOrDefaultAsync(l => l.Id.Equals(request.SessionId));
                 if (session == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.Session), request.SessionId);
+                    throw new EntityNotFoundException(nameof(Session), request.SessionId);
                 }
 
                 var entity = new Domain.Entities.Timeslot()
                 {
                     Session = session,
-                    WeeklySchedule = weeklySchedule,
+                    DailySchedule = dailySchedule,
                     Disabled = request.Disabled,
                     Duration = request.Duration,
                     StartTime = request.StartTime,
-                    
+
                 };
                 context.Timeslots.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);

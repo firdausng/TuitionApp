@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
 
-namespace TuitionApp.Core.Features.WeeklySchedule
+namespace TuitionApp.Core.Features.DailySchedule
 {
-    public class CreateWeeklyScheduleItemCommand : IRequest<CreateWeeklyScheduleItem>
+    public class CreateDailyScheduleItemCommand : IRequest<CreateDailyScheduleItem>
     {
         public DateTime DateSchedule { get; set; }
         public int WeekNumber { get; set; }
@@ -18,7 +18,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule
         public bool Disabled { get; set; }
         public Guid ClassroomId { get; set; }
 
-        public class CommandHandler : IRequestHandler<CreateWeeklyScheduleItemCommand, CreateWeeklyScheduleItem>
+        public class CommandHandler : IRequestHandler<CreateDailyScheduleItemCommand, CreateDailyScheduleItem>
         {
             private readonly IApplicationDbContext context;
             public CommandHandler(IApplicationDbContext context)
@@ -26,7 +26,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule
                 this.context = context;
             }
 
-            public async Task<CreateWeeklyScheduleItem> Handle(CreateWeeklyScheduleItemCommand request, CancellationToken cancellationToken)
+            public async Task<CreateDailyScheduleItem> Handle(CreateDailyScheduleItemCommand request, CancellationToken cancellationToken)
             {
                 var classroom = await context.Classrooms.SingleOrDefaultAsync(l => l.Id.Equals(request.ClassroomId));
                 if (classroom == null)
@@ -37,7 +37,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule
                 //TODO : Filter based on Tenant
                 var calendarYearSettings = await context.CalendarSettings.FirstOrDefaultAsync();
 
-                var entity = new Domain.Entities.WeeklySchedule()
+                var entity = new Domain.Entities.DailySchedule()
                 {
                     DateSchedule = request.DateSchedule,
                     Classroom = classroom,
@@ -45,10 +45,10 @@ namespace TuitionApp.Core.Features.WeeklySchedule
                     Disabled = request.Disabled,
                     WeekNumber = request.WeekNumber,
                 };
-                context.WeeklySchedules.Add(entity);
+                context.DailySchedules.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return new CreateWeeklyScheduleItem
+                return new CreateDailyScheduleItem
                 {
                     Id = entity.Id
                 };
@@ -56,7 +56,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule
         }
     }
 
-    public class CreateWeeklyScheduleItem
+    public class CreateDailyScheduleItem
     {
         public Guid Id { get; set; }
     }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TuitionApp.Core.Features.WeeklySchedule
+namespace TuitionApp.Core.Features.DailySchedule
 {
-    public class GetWeeklyScheduleItemDto
+    public class GetDailyScheduleItemDto
     {
         public Guid Id { get; set; }
         public DateTime DateSchedule { get; set; }

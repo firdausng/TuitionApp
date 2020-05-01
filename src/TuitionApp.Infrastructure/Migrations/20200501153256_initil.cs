@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TuitionApp.Infrastructure.Migrations
 {
-    public partial class initial : Migration
+    public partial class initil : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,12 +11,12 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "CalendarSettings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    FirstDayOfWeek = table.Column<int>(nullable: false),
-                    DefaultOpeningTime = table.Column<TimeSpan>(nullable: false),
-                    DefaultClosingTime = table.Column<TimeSpan>(nullable: false),
-                    AllowedTimeslotOverlap = table.Column<bool>(nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstDayOfWeek = table.Column<int>(type: "integer", nullable: false),
+                    DefaultOpeningTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    DefaultClosingTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    AllowedTimeslotOverlap = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,10 +27,10 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Rate = table.Column<int>(nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Rate = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,14 +41,14 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    IsEnabled = table.Column<bool>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
-                    OpeningTime = table.Column<TimeSpan>(nullable: false),
-                    ClosingTime = table.Column<TimeSpan>(nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    OpeningTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    ClosingTime = table.Column<TimeSpan>(type: "interval", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,13 +59,13 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Person",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    PersonRole = table.Column<string>(nullable: false),
-                    HireDate = table.Column<DateTime>(nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    PersonRole = table.Column<string>(type: "text", nullable: false),
+                    HireDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -76,9 +76,9 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Sessions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    CourseId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,12 +95,12 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Classrooms",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    IsEnabled = table.Column<bool>(nullable: false),
-                    Capacity = table.Column<int>(nullable: false),
-                    LocationId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    IsEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    Capacity = table.Column<int>(type: "integer", nullable: false),
+                    LocationId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,21 +117,21 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "LocationInstructor",
                 columns: table => new
                 {
-                    InstructorId = table.Column<Guid>(nullable: false),
-                    LocationId = table.Column<Guid>(nullable: false)
+                    InstructorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LocationId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LocationInstructor", x => new { x.LocationId, x.InstructorId });
                     table.ForeignKey(
-                        name: "FK_LocationInstructor_Locations_InstructorId",
-                        column: x => x.InstructorId,
+                        name: "FK_LocationInstructor_Locations_LocationId",
+                        column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LocationInstructor_Person_LocationId",
-                        column: x => x.LocationId,
+                        name: "FK_LocationInstructor_Person_InstructorId",
+                        column: x => x.InstructorId,
                         principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -141,27 +141,27 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Enrollments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    Grade = table.Column<string>(nullable: true),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
-                    StudentId = table.Column<Guid>(nullable: false),
-                    SessionId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Grade = table.Column<string>(type: "text", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    StudentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enrollments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Enrollments_Sessions_SessionId",
-                        column: x => x.SessionId,
-                        principalTable: "Sessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Enrollments_Person_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Person",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Enrollments_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -170,43 +170,43 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "InstructorSession",
                 columns: table => new
                 {
-                    InstructorId = table.Column<Guid>(nullable: false),
-                    SessionId = table.Column<Guid>(nullable: false)
+                    InstructorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InstructorSession", x => new { x.InstructorId, x.SessionId });
                     table.ForeignKey(
-                        name: "FK_InstructorSession_Sessions_InstructorId",
+                        name: "FK_InstructorSession_Person_InstructorId",
                         column: x => x.InstructorId,
-                        principalTable: "Sessions",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InstructorSession_Person_SessionId",
+                        name: "FK_InstructorSession_Sessions_SessionId",
                         column: x => x.SessionId,
-                        principalTable: "Person",
+                        principalTable: "Sessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "WeeklySchedules",
+                name: "DailySchedules",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    DateSchedule = table.Column<DateTime>(nullable: false),
-                    WeekNumber = table.Column<int>(nullable: false),
-                    DayOfWeek = table.Column<int>(nullable: false),
-                    Disabled = table.Column<bool>(nullable: false),
-                    ClassroomId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DateSchedule = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    WeekNumber = table.Column<int>(type: "integer", nullable: false),
+                    DayOfWeek = table.Column<int>(type: "integer", nullable: false),
+                    Disabled = table.Column<bool>(type: "boolean", nullable: false),
+                    ClassroomId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WeeklySchedules", x => x.Id);
+                    table.PrimaryKey("PK_DailySchedules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WeeklySchedules_Classrooms_ClassroomId",
+                        name: "FK_DailySchedules_Classrooms_ClassroomId",
                         column: x => x.ClassroomId,
                         principalTable: "Classrooms",
                         principalColumn: "Id",
@@ -217,14 +217,14 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Timeslots",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TenantId = table.Column<Guid>(nullable: false),
-                    Duration = table.Column<TimeSpan>(nullable: false),
-                    StartTime = table.Column<TimeSpan>(nullable: false),
-                    Disabled = table.Column<bool>(nullable: false),
-                    WeeklyScheduleId = table.Column<Guid>(nullable: false),
-                    SessionId = table.Column<Guid>(nullable: false),
-                    ClassroomId = table.Column<Guid>(nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Duration = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    Disabled = table.Column<bool>(type: "boolean", nullable: false),
+                    DailyScheduleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClassroomId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -236,15 +236,15 @@ namespace TuitionApp.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Timeslots_Sessions_SessionId",
-                        column: x => x.SessionId,
-                        principalTable: "Sessions",
+                        name: "FK_Timeslots_DailySchedules_DailyScheduleId",
+                        column: x => x.DailyScheduleId,
+                        principalTable: "DailySchedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Timeslots_WeeklySchedules_WeeklyScheduleId",
-                        column: x => x.WeeklyScheduleId,
-                        principalTable: "WeeklySchedules",
+                        name: "FK_Timeslots_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -253,6 +253,11 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "IX_Classrooms_LocationId",
                 table: "Classrooms",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DailySchedules_ClassroomId",
+                table: "DailySchedules",
+                column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Enrollments_SessionId",
@@ -285,19 +290,14 @@ namespace TuitionApp.Infrastructure.Migrations
                 column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Timeslots_DailyScheduleId",
+                table: "Timeslots",
+                column: "DailyScheduleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Timeslots_SessionId",
                 table: "Timeslots",
                 column: "SessionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Timeslots_WeeklyScheduleId",
-                table: "Timeslots",
-                column: "WeeklyScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WeeklySchedules_ClassroomId",
-                table: "WeeklySchedules",
-                column: "ClassroomId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -321,16 +321,16 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "Person");
 
             migrationBuilder.DropTable(
+                name: "DailySchedules");
+
+            migrationBuilder.DropTable(
                 name: "Sessions");
 
             migrationBuilder.DropTable(
-                name: "WeeklySchedules");
+                name: "Classrooms");
 
             migrationBuilder.DropTable(
                 name: "Courses");
-
-            migrationBuilder.DropTable(
-                name: "Classrooms");
 
             migrationBuilder.DropTable(
                 name: "Locations");

@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Features.Location;
-using TuitionApp.Core.Features.WeeklySchedule;
+using TuitionApp.Core.Features.DailySchedule;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.WeeklySchedule
@@ -30,7 +30,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             });
 
             var scheduleDate = DateTime.UtcNow.Date;
-            var command = new CreateWeeklyScheduleItemCommand()
+            var command = new CreateDailyScheduleItemCommand()
             {
                 DayOfWeek = DayOfWeek.Monday,
                 Disabled = false,
@@ -38,12 +38,12 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
                 DateSchedule = scheduleDate,
                 ClassroomId = classroomDto.Id,
             };
-            var weeklyScheduleDto = await SendAsync(command);
+            var dailyScheduleDto = await SendAsync(command);
 
-            GetWeeklyScheduleItemQuery query = new GetWeeklyScheduleItemQuery() { Id = weeklyScheduleDto.Id };
-            GetWeeklyScheduleItemDto dto = await SendAsync(query);
+            GetDailyScheduleItemQuery query = new GetDailyScheduleItemQuery() { Id = dailyScheduleDto.Id };
+            GetDailyScheduleItemDto dto = await SendAsync(query);
 
-            var created = await ExecuteDbContextAsync(db => db.WeeklySchedules.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
+            var created = await ExecuteDbContextAsync(db => db.DailySchedules.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
             dto.ShouldNotBeNull();
             dto.Id.ShouldBe(created.Id);
@@ -72,7 +72,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             });
 
             var scheduleDate = DateTime.UtcNow.Date;
-            var command = new CreateWeeklyScheduleItemCommand()
+            var command = new CreateDailyScheduleItemCommand()
             {
                 DayOfWeek = DayOfWeek.Monday,
                 Disabled = false,
@@ -80,14 +80,14 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
                 DateSchedule = scheduleDate,
                 ClassroomId = classroomDto.Id,
             };
-            var weeklyScheduleDto = await SendAsync(command);
+            var dailyScheduleDto = await SendAsync(command);
 
 
-            GetWeeklyScheduleListQuery query = new GetWeeklyScheduleListQuery() {  };
+            var query = new GetDailyScheduleListQuery() {  };
             var dto = await SendAsync(query);
 
             var created = await ExecuteDbContextAsync(db =>
-            db.WeeklySchedules.Where(c => c.Id.Equals(weeklyScheduleDto.Id)).SingleOrDefaultAsync());
+            db.DailySchedules.Where(c => c.Id.Equals(dailyScheduleDto.Id)).SingleOrDefaultAsync());
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);

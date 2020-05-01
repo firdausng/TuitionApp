@@ -8,8 +8,8 @@ namespace TuitionApp.Core.Domain.Entities
         public TimeSpan Duration { get; set; }
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; } 
-        public Guid WeeklyScheduleId { get; set; }
-        public WeeklySchedule WeeklySchedule { get; set; }
+        public Guid DailyScheduleId { get; set; }
+        public DailySchedule DailySchedule { get; set; }
         public Guid SessionId { get; set; }
         public Session Session { get; set; }
     }

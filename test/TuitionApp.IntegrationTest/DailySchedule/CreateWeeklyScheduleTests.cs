@@ -3,7 +3,7 @@ using Shouldly;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TuitionApp.Core.Features.WeeklySchedule;
+using TuitionApp.Core.Features.DailySchedule;
 using Xunit;
 using TuitionApp.Core.Features.Location;
 
@@ -31,7 +31,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             });
 
             var scheduleDate = DateTime.UtcNow.Date;
-            var command = new CreateWeeklyScheduleItemCommand()
+            var command = new CreateDailyScheduleItemCommand()
             {
                 DayOfWeek = DayOfWeek.Monday,
                 Disabled = false,
@@ -42,7 +42,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             var dto = await SendAsync(command);
 
             var created = await ExecuteDbContextAsync(db =>
-            db.WeeklySchedules.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
+            db.DailySchedules.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
             created.ShouldNotBeNull();
             created.WeekNumber.ShouldBe(command.WeekNumber);

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Interfaces;
 using TuitionApp.Core.Features.Common;
 
-namespace TuitionApp.Core.Features.WeeklySchedule
+namespace TuitionApp.Core.Features.DailySchedule
 {
-    public class GetWeeklyScheduleListQuery : IRequest<GetObjectListVm<GetWeeklyScheduleItemDto>>
+    public class GetDailyScheduleListQuery : IRequest<GetObjectListVm<GetDailyScheduleItemDto>>
     {
-        public class QueryHandler : IRequestHandler<GetWeeklyScheduleListQuery, GetObjectListVm<GetWeeklyScheduleItemDto>>
+        public class QueryHandler : IRequestHandler<GetDailyScheduleListQuery, GetObjectListVm<GetDailyScheduleItemDto>>
         {
             private readonly IApplicationDbContext context;
 
@@ -22,13 +22,13 @@ namespace TuitionApp.Core.Features.WeeklySchedule
                 this.context = context;
             }
 
-            public async Task<GetObjectListVm<GetWeeklyScheduleItemDto>> Handle(GetWeeklyScheduleListQuery request, CancellationToken cancellationToken)
+            public async Task<GetObjectListVm<GetDailyScheduleItemDto>> Handle(GetDailyScheduleListQuery request, CancellationToken cancellationToken)
             {
-                var WeeklySchedules = await context.WeeklySchedules
+                var dailySchedules = await context.DailySchedules
                     .ToListAsync(cancellationToken);
 
-                var list = WeeklySchedules
-                    .Select(entity => new GetWeeklyScheduleItemDto
+                var list = dailySchedules
+                    .Select(entity => new GetDailyScheduleItemDto
                     {
                         Id = entity.Id,
                         ClassroomId = entity.ClassroomId,
@@ -39,7 +39,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule
                     }).ToList();
 
 
-                var dto = new GetObjectListVm<GetWeeklyScheduleItemDto>
+                var dto = new GetObjectListVm<GetDailyScheduleItemDto>
                 {
                     Count = list.Count,
                     Data = list

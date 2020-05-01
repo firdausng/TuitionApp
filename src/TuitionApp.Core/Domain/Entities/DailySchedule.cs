@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TuitionApp.Core.Domain.Entities
 {
-    public class WeeklySchedule : BaseEntity
+    public class DailySchedule : BaseEntity
     {
         public DateTime DateSchedule { get; set; }
         public int WeekNumber { get; set; }

@@ -44,7 +44,7 @@ namespace TuitionApp.IntegrationTest.Student
             var created = await ExecuteDbContextAsync(db =>
             db.Students.Where(c => c.Id.Equals(createStudentDto.Id)).SingleOrDefaultAsync());
 
-            GetWeeklyScheduleListQuery query = new GetWeeklyScheduleListQuery();
+            GetStudentListQuery query = new GetStudentListQuery();
             GetObjectListVm<GetStudentItemDto> dto = await SendAsync(query);
 
 

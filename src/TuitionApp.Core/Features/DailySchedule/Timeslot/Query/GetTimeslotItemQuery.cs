@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Interfaces;
 
-namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
+namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Query
 {
     public class GetTimeslotItemQuery : IRequest<GetTimeslotItemDto>
     {
@@ -33,7 +33,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
                     StartTime = entity.StartTime,
                     SessionId = entity.SessionId,
                     Disabled = entity.Disabled,
-                    WeeklyScheduleId = entity.WeeklyScheduleId,
+                    DailyScheduleId = entity.DailyScheduleId,
                 };
 
                 return dto;

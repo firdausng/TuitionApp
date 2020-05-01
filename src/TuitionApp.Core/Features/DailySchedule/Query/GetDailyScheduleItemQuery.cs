@@ -7,14 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Interfaces;
 
-namespace TuitionApp.Core.Features.WeeklySchedule
+namespace TuitionApp.Core.Features.DailySchedule
 {
-    public class GetWeeklyScheduleItemQuery : IRequest<GetWeeklyScheduleItemDto>
+    public class GetDailyScheduleItemQuery : IRequest<GetDailyScheduleItemDto>
     {
         public Guid Id { get; set; }
 
 
-        public class QueryHandler : IRequestHandler<GetWeeklyScheduleItemQuery, GetWeeklyScheduleItemDto>
+        public class QueryHandler : IRequestHandler<GetDailyScheduleItemQuery, GetDailyScheduleItemDto>
         {
             private readonly IApplicationDbContext context;
 
@@ -23,12 +23,12 @@ namespace TuitionApp.Core.Features.WeeklySchedule
                 this.context = context;
             }
 
-            public async Task<GetWeeklyScheduleItemDto> Handle(GetWeeklyScheduleItemQuery request, CancellationToken cancellationToken)
+            public async Task<GetDailyScheduleItemDto> Handle(GetDailyScheduleItemQuery request, CancellationToken cancellationToken)
             {
-                var entity = await context.WeeklySchedules
+                var entity = await context.DailySchedules
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
-                var dto = new GetWeeklyScheduleItemDto
+                var dto = new GetDailyScheduleItemDto
                 {
                     Id = entity.Id,
                     ClassroomId = entity.ClassroomId,

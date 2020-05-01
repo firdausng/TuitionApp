@@ -14,14 +14,12 @@ namespace TuitionApp.Infrastructure.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Timeslot> Timeslots { get; set; }
-        public DbSet<WeeklySchedule> WeeklySchedules { get; set; }
+        public DbSet<DailySchedule> DailySchedules { get; set; }
         public DbSet<CalendarSetting> CalendarSettings { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
-        {
-
-        }
+        {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,7 +48,6 @@ namespace TuitionApp.Infrastructure.Data
                 .HasOne(bc => bc.Session)
                 .WithMany(c => c.InstructorSessions)
                 .HasForeignKey(bc => bc.SessionId);
-
 
             modelBuilder.Entity<Person>()
                 .HasDiscriminator<string>("PersonRole");

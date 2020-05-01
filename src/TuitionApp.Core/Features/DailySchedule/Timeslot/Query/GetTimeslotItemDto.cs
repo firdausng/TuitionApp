@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
+namespace TuitionApp.Core.Features.DailySchedule.Timeslot.Query
 {
     public class GetTimeslotItemDto
     {
@@ -8,7 +8,7 @@ namespace TuitionApp.Core.Features.WeeklySchedule.Timeslot
         public TimeSpan Duration { get; set; }
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; }
-        public Guid WeeklyScheduleId { get; set; }
+        public Guid DailyScheduleId { get; set; }
         public Guid SessionId { get; set; }
     }
 }

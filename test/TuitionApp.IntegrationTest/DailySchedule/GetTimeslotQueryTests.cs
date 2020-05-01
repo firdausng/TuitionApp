@@ -4,12 +4,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Features.Course;
+using TuitionApp.Core.Features.DailySchedule.Timeslot.Command;
+using TuitionApp.Core.Features.DailySchedule.Timeslot.Query;
 using TuitionApp.Core.Features.Location;
-using TuitionApp.Core.Features.WeeklySchedule;
-using TuitionApp.Core.Features.WeeklySchedule.Timeslot;
+using TuitionApp.Core.Features.DailySchedule;
 using Xunit;
 
-namespace TuitionApp.IntegrationTest.WeeklySchedule
+namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
 {
     using static SliceFixture;
     public class GetTimeslotQueryTests : IntegrationTestBase
@@ -17,7 +18,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
         [Fact]
         public async Task ShouldGetWeeklyScheduleItem()
         {
-            var weeklyScheduleDto = await CreateWeeklyScheduleAsync();
+            var dailyScheduleDto = await CreateDailyScheduleAsync();
             var sessionDto = await CreateSessionAsync();
 
             var command = new CreateTimeslotItemCommand()
@@ -25,7 +26,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
                 Disabled = false,
                 Duration = new TimeSpan(1, 0, 0),
                 StartTime = new TimeSpan(0, 22, 0),
-                WeeklyScheduleId = weeklyScheduleDto.Id,
+                DailyScheduleId = dailyScheduleDto.Id,
                 SessionId = sessionDto.Id,
             };
             var timeslotDto = await SendAsync(command);
@@ -38,7 +39,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             dto.ShouldNotBeNull();
             dto.Id.ShouldBe(created.Id);
             dto.SessionId.ShouldBe(created.SessionId);
-            dto.WeeklyScheduleId.ShouldBe(created.WeeklyScheduleId);
+            dto.DailyScheduleId.ShouldBe(created.DailyScheduleId);
             dto.StartTime.ShouldBe(created.StartTime);
             dto.Duration.ShouldBe(created.Duration);
             dto.Disabled.ShouldBe(created.Disabled);
@@ -48,7 +49,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
         [Fact]
         public async Task ShouldGetWeeklyScheduleList()
         {
-            var weeklyScheduleDto = await CreateWeeklyScheduleAsync();
+            var dailyScheduleDto = await CreateDailyScheduleAsync();
             var sessionDto = await CreateSessionAsync();
 
             var command = new CreateTimeslotItemCommand()
@@ -56,7 +57,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
                 Disabled = false,
                 Duration = new TimeSpan(1, 0, 0),
                 StartTime = new TimeSpan(0, 22, 0),
-                WeeklyScheduleId = weeklyScheduleDto.Id,
+                DailyScheduleId = dailyScheduleDto.Id,
                 SessionId = sessionDto.Id,
             };
             var timeslotDto = await SendAsync(command);
@@ -73,7 +74,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
         }
 
 
-        private async Task<CreateWeeklyScheduleItem> CreateWeeklyScheduleAsync()
+        private async Task<CreateDailyScheduleItem> CreateDailyScheduleAsync()
         {
             var locationDto = await SendAsync(new CreateLocationItemCommand
             {
@@ -90,7 +91,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
             });
 
             var scheduleDate = DateTime.UtcNow.Date;
-            var weeklyScheduleDto = await SendAsync(new CreateWeeklyScheduleItemCommand()
+            var dailyScheduleDto = await SendAsync(new CreateDailyScheduleItemCommand()
             {
                 DayOfWeek = DayOfWeek.Monday,
                 Disabled = false,
@@ -99,7 +100,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
                 ClassroomId = classroomDto.Id,
             });
 
-            return weeklyScheduleDto;
+            return dailyScheduleDto;
         }
 
         private async Task<CreateSessionFromCourseDto> CreateSessionAsync()

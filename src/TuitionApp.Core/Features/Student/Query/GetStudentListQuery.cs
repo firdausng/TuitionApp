@@ -11,9 +11,9 @@ using TuitionApp.Core.Features.Common;
 
 namespace TuitionApp.Core.Features.Student
 {
-    public class GetWeeklyScheduleListQuery : IRequest<GetObjectListVm<GetStudentItemDto>>
+    public class GetStudentListQuery : IRequest<GetObjectListVm<GetStudentItemDto>>
     {
-        public class QueryHandler : IRequestHandler<GetWeeklyScheduleListQuery, GetObjectListVm<GetStudentItemDto>>
+        public class QueryHandler : IRequestHandler<GetStudentListQuery, GetObjectListVm<GetStudentItemDto>>
         {
             private readonly IApplicationDbContext context;
 
@@ -22,7 +22,7 @@ namespace TuitionApp.Core.Features.Student
                 this.context = context;
             }
 
-            public async Task<GetObjectListVm<GetStudentItemDto>> Handle(GetWeeklyScheduleListQuery request, CancellationToken cancellationToken)
+            public async Task<GetObjectListVm<GetStudentItemDto>> Handle(GetStudentListQuery request, CancellationToken cancellationToken)
             {
                 var students = await context.Students
                     .ToListAsync(cancellationToken);

@@ -23,7 +23,7 @@ namespace TuitionApp.Api.Controllers
         [HttpGet(Name = "GetStudentList")]
         public async Task<ActionResult<GetObjectListVm<GetStudentItemDto>>> GetStudentList()
         {
-            var vm = await mediator.Send(new GetWeeklyScheduleListQuery());
+            var vm = await mediator.Send(new GetStudentListQuery());
             return Ok(vm);
         }
 
