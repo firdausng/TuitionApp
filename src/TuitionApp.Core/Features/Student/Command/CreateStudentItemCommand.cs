@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -37,10 +36,5 @@ namespace TuitionApp.Core.Features.Student
                 };
             }
         }
-    }
-
-    public class CreateStudentDto
-    {
-        public Guid Id { get; set; }
     }
 }

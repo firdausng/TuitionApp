@@ -1,8 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
@@ -52,10 +50,5 @@ namespace TuitionApp.Core.Features.Location
                 };
             }
         }
-    }
-
-    public class CreateClassroomFromLocationDto
-    {
-        public Guid Id { get; set; }
     }
 }

@@ -10,13 +10,13 @@ using TuitionApp.Core.Common.Interfaces;
 
 namespace TuitionApp.Core.Features.Enrollment
 {
-    public class CreateEnrollmentItemCommand : IRequest<CreateEnrollmentItem>
+    public class CreateEnrollmentItemCommand : IRequest<CreateEnrollmentItemDto>
     {
         public DateTime StartDate { get; set; }
         public Guid StudentId { get; set; }
         public Guid SessionId { get; set; }
 
-        public class CommandHandler : IRequestHandler<CreateEnrollmentItemCommand, CreateEnrollmentItem>
+        public class CommandHandler : IRequestHandler<CreateEnrollmentItemCommand, CreateEnrollmentItemDto>
         {
             private readonly IApplicationDbContext context;
             public CommandHandler(IApplicationDbContext context)
@@ -24,7 +24,7 @@ namespace TuitionApp.Core.Features.Enrollment
                 this.context = context;
             }
 
-            public async Task<CreateEnrollmentItem> Handle(CreateEnrollmentItemCommand request, CancellationToken cancellationToken)
+            public async Task<CreateEnrollmentItemDto> Handle(CreateEnrollmentItemCommand request, CancellationToken cancellationToken)
             {
                 var student = await context.Students.SingleOrDefaultAsync(l => l.Id.Equals(request.StudentId));
                 if (student == null)
@@ -48,16 +48,11 @@ namespace TuitionApp.Core.Features.Enrollment
                 context.Enrollments.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return new CreateEnrollmentItem
+                return new CreateEnrollmentItemDto
                 {
                     Id = entity.Id
                 };
             }
         }
-    }
-
-    public class CreateEnrollmentItem
-    {
-        public Guid Id { get; set; }
     }
 }

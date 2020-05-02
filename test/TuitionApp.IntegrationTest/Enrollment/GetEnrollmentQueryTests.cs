@@ -51,7 +51,7 @@ namespace TuitionApp.IntegrationTest.Enrollment
         }
 
 
-        private async Task<CreateEnrollmentItem>  CreateEnrollmentDtoAsync()
+        private async Task<CreateEnrollmentItemDto>  CreateEnrollmentDtoAsync()
         {
             var studentDto = await SendAsync(new CreateStudentItemCommand()
             {
