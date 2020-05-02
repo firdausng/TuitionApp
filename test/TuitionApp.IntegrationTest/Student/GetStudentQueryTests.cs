@@ -3,7 +3,7 @@ using Shouldly;
 using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Features.Common;
-using TuitionApp.Core.Features.Student;
+using TuitionApp.Core.Features.Students;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Student

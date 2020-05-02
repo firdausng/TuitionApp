@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Extensions;
 using TuitionApp.Core.Features.Common;
-using TuitionApp.Core.Features.Instructor;
+using TuitionApp.Core.Features.Instructors;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Instructor

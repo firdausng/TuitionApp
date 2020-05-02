@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Features.Common;
-using TuitionApp.Core.Features.Location;
+using TuitionApp.Core.Features.Locations;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Location

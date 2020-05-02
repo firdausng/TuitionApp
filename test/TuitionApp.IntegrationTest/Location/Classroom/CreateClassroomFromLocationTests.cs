@@ -3,7 +3,8 @@ using Shouldly;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TuitionApp.Core.Features.Location;
+using TuitionApp.Core.Features.Locations;
+using TuitionApp.Core.Features.Locations.Classrooms;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Location

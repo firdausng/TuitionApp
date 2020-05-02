@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TuitionApp.Core.Features.Common;
-using TuitionApp.Core.Features.Student;
+using TuitionApp.Core.Features.Students;
 
 namespace TuitionApp.Api.Controllers
 {

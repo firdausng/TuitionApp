@@ -4,9 +4,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Extensions;
-using TuitionApp.Core.Features.Course;
-using TuitionApp.Core.Features.Enrollment;
-using TuitionApp.Core.Features.Student;
+using TuitionApp.Core.Features.Courses;
+using TuitionApp.Core.Features.Courses.Sessions;
+using TuitionApp.Core.Features.Enrollments;
+using TuitionApp.Core.Features.Students;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Enrollment

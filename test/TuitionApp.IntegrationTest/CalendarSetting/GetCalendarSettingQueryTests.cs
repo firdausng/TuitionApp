@@ -4,8 +4,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Features.Common;
-using TuitionApp.Core.Features.CalendarSetting;
 using Xunit;
+using TuitionApp.Core.Features.CalendarSettings;
 
 namespace TuitionApp.IntegrationTest.CalendarSetting
 {

@@ -3,7 +3,8 @@ using Shouldly;
 using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Features.Common;
-using TuitionApp.Core.Features.Course;
+using TuitionApp.Core.Features.Courses;
+using TuitionApp.Core.Features.Courses.Sessions;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Course

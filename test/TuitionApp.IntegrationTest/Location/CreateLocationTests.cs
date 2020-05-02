@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Extensions;
-using TuitionApp.Core.Features.Instructor;
-using TuitionApp.Core.Features.Location;
+using TuitionApp.Core.Features.Instructors;
+using TuitionApp.Core.Features.Locations;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Location

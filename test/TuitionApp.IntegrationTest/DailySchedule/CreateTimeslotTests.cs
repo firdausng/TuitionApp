@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
-using TuitionApp.Core.Features.Course;
-using TuitionApp.Core.Features.Location;
-using TuitionApp.Core.Features.DailySchedule;
+using TuitionApp.Core.Features.Courses;
+using TuitionApp.Core.Features.Locations;
+using TuitionApp.Core.Features.DailySchedules;
 using Xunit;
-using TuitionApp.Core.Features.DailySchedule.Timeslot.Command;
+using TuitionApp.Core.Features.DailySchedules.Timeslots;
+using TuitionApp.Core.Features.Locations.Classrooms;
+using TuitionApp.Core.Features.Courses.Sessions;
 
 namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
 {
@@ -67,7 +67,7 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
             await SendAsync(command2nd).ShouldThrowAsync<EntityAlreadyExistException>();
         }
 
-        private async Task<CreateDailyScheduleItem> CreateDailyScheduleAsync()
+        private async Task<CreateDailyScheduleItemDto> CreateDailyScheduleAsync()
         {
             var locationDto = await SendAsync(new CreateLocationItemCommand
             {
