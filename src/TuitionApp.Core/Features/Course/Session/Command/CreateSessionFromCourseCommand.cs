@@ -2,17 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
+using TuitionApp.Core.Domain.Entities;
 
 namespace TuitionApp.Core.Features.Course
 {
     public class CreateSessionFromCourseCommand : IRequest<CreateSessionFromCourseDto>
     {
         public Guid CourseId { get; set; }
+        public ICollection<Guid> Timeslots { get; set; } = new List<Guid>();
 
         public class CommandHandler : IRequestHandler<CreateSessionFromCourseCommand, CreateSessionFromCourseDto>
         {
@@ -30,10 +33,34 @@ namespace TuitionApp.Core.Features.Course
                     throw new EntityNotFoundException(nameof(Domain.Entities.Course), request.CourseId);
                 }
 
-                var entity = new Domain.Entities.Session()
+                var entity = new Session()
                 {
                     Course = course,
                 };
+
+                if (request.Timeslots.Count > 0)
+                {
+                    var timeslotListDbQuery = context.Timeslots
+                    .Where(l => request.Timeslots.Contains(l.Id));
+                    var timeslotList = timeslotListDbQuery.ToList();
+
+                    if (timeslotList.Count != request.Timeslots.Count)
+                    {
+                        throw new EntityListCountMismatchException<Timeslot>(timeslotList, request.Timeslots);
+                    }
+
+                    foreach (var timeslot in timeslotList)
+                    {
+                        var booking = new Booking
+                        {
+                            Session = entity,
+                            Timeslot = timeslot
+                        };
+                        entity.Bookings.Add(booking);
+                    }
+                }
+
+
                 context.Sessions.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
 

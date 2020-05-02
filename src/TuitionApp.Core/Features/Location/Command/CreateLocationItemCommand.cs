@@ -1,8 +1,14 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
+using TuitionApp.Core.Domain.Entities;
 
 namespace TuitionApp.Core.Features.Location
 {
@@ -12,6 +18,9 @@ namespace TuitionApp.Core.Features.Location
         public bool IsEnabled { get; set; }
         public TimeSpan OpeningTime { get; set; }
         public TimeSpan ClosingTime { get; set; }
+        public List<Guid> InstructorLists { get; set; } = new List<Guid>();
+        public string Description { get; set; }
+        public string Address { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateLocationItemCommand, CreateLocationItemDto>
         {
@@ -29,8 +38,36 @@ namespace TuitionApp.Core.Features.Location
                     IsEnabled = request.IsEnabled,
                     OpeningTime = request.OpeningTime,
                     ClosingTime = request.ClosingTime,
+                    Description = request.Description,
+                    Address = request.Address,
+
                 };
-                context.Locations.Add(entity);
+                await context.Locations.AddAsync(entity);
+
+
+                if (request.InstructorLists.Count > 0)
+                {
+                    var getInstructorListDbQuery = context.Instructor
+                        .Include(i => i.LocationInstructors)
+                        .OrderBy(i => i.FirstName)
+                        .Where(i => request.InstructorLists.Contains(i.Id));
+                    var instructorEntities = await getInstructorListDbQuery.ToListAsync();
+
+                    if (instructorEntities.Count != request.InstructorLists.Count)
+                    {
+                        throw new EntityListCountMismatchException<Domain.Entities.Instructor>(instructorEntities, request.InstructorLists);
+                    }
+                    foreach (var instructorEntity in instructorEntities)
+                    {
+                        var li = new LocationInstructor
+                        {
+                            Instructor = instructorEntity,
+                            Location = entity,
+                        };
+                        instructorEntity.LocationInstructors.Add(li);
+                    }
+                }
+
                 await context.SaveChangesAsync(cancellationToken);
 
                 return new CreateLocationItemDto

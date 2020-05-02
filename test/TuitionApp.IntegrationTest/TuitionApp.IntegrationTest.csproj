@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\TuitionApp.Api\TuitionApp.Api.csproj" />
+    <ProjectReference Include="..\..\src\TuitionApp.Core\TuitionApp.Core.csproj" />
   </ItemGroup>
 
 </Project>

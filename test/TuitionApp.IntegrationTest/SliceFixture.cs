@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using Respawn;
 using System;
@@ -116,6 +117,13 @@ namespace TuitionApp.IntegrationTest
 
                 return mediator.Send(request);
             });
+        }
+
+        public static void WriteLog(string logMessage)
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var logger = scope.ServiceProvider.GetService<ILogger>();
+            logger.LogInformation(logMessage);
         }
     }
 }
