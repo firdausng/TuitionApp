@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TuitionApp.Core.Common.Exceptions
 {
-    public class EntityNotFoundException : Exception
+    public class EntityNotFoundException : Exception, IAppException
     {
         public EntityNotFoundException(string name, object key)
             : base($"Entity '{name}' ({key}) was not found.")
