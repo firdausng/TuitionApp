@@ -20,10 +20,10 @@ namespace TuitionApp.IntegrationTest.Course
                 Rate = 40,
             });
 
-            CreateSessionFromCourseDto dto = await SendAsync(new CreateSessionFromCourseCommand
+            CreateSessionFromCourseDto dto = await SendWithValidationAsync(new CreateSessionFromCourseCommand
             {
                 CourseId = createCourseItemDto.Id
-            });
+            }, new CreateSessionFromCourseCommandValidator());
 
             var created = await ExecuteDbContextAsync(db => db.Sessions.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 

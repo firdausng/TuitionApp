@@ -41,7 +41,7 @@ namespace TuitionApp.IntegrationTest.Enrollment
                StudentId = studentDto.Id,
                SessionId = SessionDto.Id,
             };
-            var dto = await SendAsync(command);
+            var dto = await SendWithValidationAsync(command, new CreateEnrollmentItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db =>
                 db.Enrollments.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());

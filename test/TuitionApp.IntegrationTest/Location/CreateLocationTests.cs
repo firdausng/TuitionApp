@@ -36,12 +36,13 @@ namespace TuitionApp.IntegrationTest.Location
             {
                 IsEnabled = true,
                 Name = "location1",
+                Address = "address1",
                 OpeningTime = new TimeSpan(0, 19, 0),
                 ClosingTime = new TimeSpan(0, 21, 0),
                 InstructorLists = new System.Collections.Generic.List<Guid>{ instructorDto1.Id, instructorDto2.Id },
             };
 
-            CreateLocationItemDto dto = await SendAsync(command);
+            CreateLocationItemDto dto = await SendWithValidationAsync(command, new CreateLocationItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db => db.Locations.Include(l => l.LocationInstructors).ThenInclude(l => l.Instructor).Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
@@ -78,12 +79,13 @@ namespace TuitionApp.IntegrationTest.Location
             {
                 IsEnabled = true,
                 Name = "location1",
+                Address = "address1",
                 OpeningTime = new TimeSpan(0, 19, 0),
                 ClosingTime = new TimeSpan(0, 21, 0),
                 InstructorLists = new System.Collections.Generic.List<Guid> { Guid.NewGuid(), Guid.NewGuid(), instructorDto1.Id, instructorDto2.Id },
             };
 
-            await SendAsync(command).ShouldThrowAsync<EntityListCountMismatchException<Core.Domain.Entities.Instructor>>();
+            await SendWithValidationAsync(command, new CreateLocationItemCommandValidator()).ShouldThrowAsync<EntityListCountMismatchException<Core.Domain.Entities.Instructor>>();
         }
             
     }

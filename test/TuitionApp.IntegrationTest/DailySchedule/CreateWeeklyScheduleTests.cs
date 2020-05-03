@@ -40,7 +40,7 @@ namespace TuitionApp.IntegrationTest.WeeklySchedule
                 DateSchedule = scheduleDate,
                 ClassroomId = classroomDto.Id,
             };
-            var dto = await SendAsync(command);
+            var dto = await SendWithValidationAsync(command, new CreateDailyScheduleItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db =>
             db.DailySchedules.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());

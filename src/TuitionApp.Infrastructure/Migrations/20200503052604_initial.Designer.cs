@@ -10,7 +10,7 @@ using TuitionApp.Infrastructure.Data;
 namespace TuitionApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200501173027_initial")]
+    [Migration("20200503052604_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,6 +172,21 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.InstructorCourse", b =>
+                {
+                    b.Property<Guid>("InstructorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("InstructorId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("InstructorCourse");
                 });
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.InstructorSession", b =>
@@ -378,6 +393,21 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.HasOne("TuitionApp.Core.Domain.Entities.Student", "Student")
                         .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.InstructorCourse", b =>
+                {
+                    b.HasOne("TuitionApp.Core.Domain.Entities.Course", "Course")
+                        .WithMany("InstructorCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TuitionApp.Core.Domain.Entities.Instructor", "Instructor")
+                        .WithMany("InstructorCourses")
+                        .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

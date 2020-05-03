@@ -18,7 +18,7 @@ namespace TuitionApp.IntegrationTest.Course
                 Name = "Course1",
                 Rate = 40,
             };
-            var dto = await SendAsync(command);
+            var dto = await SendWithValidationAsync(command, new CreateCourseItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db =>
             db.Courses.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());

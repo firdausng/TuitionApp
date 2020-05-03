@@ -30,7 +30,7 @@ namespace TuitionApp.IntegrationTest.Location
                 Capacity = 40,
                 LocationId = createLocationDto.Id
             };
-            CreateClassroomFromLocationDto dto = await SendAsync(command);
+            CreateClassroomFromLocationDto dto = await SendWithValidationAsync(command, new CreateClassroomFromLocationCommandValidator());
 
             var created = await ExecuteDbContextAsync(db => db.Classrooms.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 

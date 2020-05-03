@@ -18,7 +18,7 @@ namespace TuitionApp.IntegrationTest.Student
                 FirstName = "first",
                 LastName = "last"
             };
-            var dto = await SendAsync(command);
+            var dto = await SendWithValidationAsync(command, new CreateStudentItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db =>
             db.Students.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());

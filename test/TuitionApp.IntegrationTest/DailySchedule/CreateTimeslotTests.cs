@@ -30,7 +30,7 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),
             };
-            var timeslotDto = await SendAsync(command);
+            var timeslotDto = await SendWithValidationAsync(command, new CreateTimeslotItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db =>
                 db.Timeslots.Where(c => c.Id.Equals(timeslotDto.Id)).SingleOrDefaultAsync());
@@ -64,7 +64,7 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),
             };
-            await SendAsync(command2nd).ShouldThrowAsync<EntityAlreadyExistException>();
+            await SendWithValidationAsync(command2nd, new CreateTimeslotItemCommandValidator()).ShouldThrowAsync<EntityAlreadyExistException>();
         }
 
         private async Task<CreateDailyScheduleItemDto> CreateDailyScheduleAsync()

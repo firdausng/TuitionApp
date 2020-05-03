@@ -1,12 +1,15 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using Respawn;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TuitionApp.Api;
@@ -107,6 +110,16 @@ namespace TuitionApp.IntegrationTest
 
                 return mediator.Send(request);
             });
+        }
+
+        public static Task<TResponse> SendWithValidationAsync<TResponse>(IRequest<TResponse> request, IValidator validator)
+        {
+            var validationResult = validator.Validate(request);
+            var errorArray = validationResult.Errors.Select(err => err.ErrorMessage).ToArray();
+            var message = string.Join(",", errorArray);
+            validationResult.IsValid.ShouldBeTrue(message);
+
+            return SendAsync(request);
         }
 
         public static Task SendAsync(IRequest request)

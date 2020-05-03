@@ -19,5 +19,7 @@ namespace TuitionApp.Core.Common.Interfaces
         public DbSet<CalendarSetting> CalendarSettings { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        DbSet<TEntity> Set<TEntity>(string name) where TEntity:class;
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
     }
 }

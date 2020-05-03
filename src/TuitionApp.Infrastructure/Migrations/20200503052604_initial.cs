@@ -114,6 +114,30 @@ namespace TuitionApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InstructorCourse",
+                columns: table => new
+                {
+                    InstructorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstructorCourse", x => new { x.InstructorId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_InstructorCourse_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InstructorCourse_Person_InstructorId",
+                        column: x => x.InstructorId,
+                        principalTable: "Person",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LocationInstructor",
                 columns: table => new
                 {
@@ -292,6 +316,11 @@ namespace TuitionApp.Infrastructure.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InstructorCourse_CourseId",
+                table: "InstructorCourse",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InstructorSession_SessionId",
                 table: "InstructorSession",
                 column: "SessionId");
@@ -327,6 +356,9 @@ namespace TuitionApp.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Enrollments");
+
+            migrationBuilder.DropTable(
+                name: "InstructorCourse");
 
             migrationBuilder.DropTable(
                 name: "InstructorSession");

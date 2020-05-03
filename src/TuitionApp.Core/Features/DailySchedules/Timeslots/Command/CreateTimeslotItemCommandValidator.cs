@@ -6,7 +6,7 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
     {
         public CreateTimeslotItemCommandValidator()
         {
-            RuleFor(command => command.Disabled).NotNull().NotEmpty();
+            RuleFor(command => command.Disabled).NotNull().Must(x => x == false || x == true);
             RuleFor(command => command.DailyScheduleId).NotNull().NotEmpty();
             RuleFor(command => command.Duration).NotNull().NotEmpty();
             RuleFor(command => command.StartTime).NotNull().NotEmpty();

@@ -15,12 +15,12 @@ namespace TuitionApp.IntegrationTest.Instructor
         [Fact]
         public async Task ShouldCreateInstructor()
         {
-            var dto = await SendAsync(new CreateInstructorItemCommand()
+            var dto = await SendWithValidationAsync(new CreateInstructorItemCommand()
             {
                 FirstName = "first",
                 LastName = "last",
                 HireDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
-            });
+            }, new CreateInstructorItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db =>
                 db.Instructor.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());

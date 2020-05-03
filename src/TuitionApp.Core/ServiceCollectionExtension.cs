@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
@@ -8,7 +9,13 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddTuitionAppCore(this IServiceCollection services)
         {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            var applicationAssemblies = Assembly.GetExecutingAssembly();
+            services.AddMediatR(applicationAssemblies);
+
+            // not using FluentValidation.AspNetCore package due to issue - https://github.com/JasonGT/NorthwindTraders/issues/76
+            // manually register fluent validation
+            services.AddValidatorsFromAssembly(applicationAssemblies);
+
             return services;
         }
     }
