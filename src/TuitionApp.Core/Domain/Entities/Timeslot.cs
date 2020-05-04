@@ -10,7 +10,8 @@ namespace TuitionApp.Core.Domain.Entities
         public bool Disabled { get; set; } 
         public Guid DailyScheduleId { get; set; }
         public DailySchedule DailySchedule { get; set; }
-        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        public Guid SubjectId { get; set; }
+        public Subject Subject { get; set; }
     }
 
 

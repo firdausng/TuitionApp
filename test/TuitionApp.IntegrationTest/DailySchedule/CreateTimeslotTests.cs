@@ -10,7 +10,6 @@ using TuitionApp.Core.Features.DailySchedules;
 using Xunit;
 using TuitionApp.Core.Features.DailySchedules.Timeslots;
 using TuitionApp.Core.Features.Locations.Classrooms;
-using TuitionApp.Core.Features.Courses.Sessions;
 
 namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
 {
@@ -21,7 +20,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
         public async Task ShouldCreateTimeslot()
         {
             var dailySchedule = await CreateDailyScheduleAsync();
-            var session = await CreateSessionAsync();
 
             var command = new CreateTimeslotItemCommand
             {
@@ -46,7 +44,6 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
         public async Task ShouldNotCreateTimeslotWhenRoomTimeSlotAlreadyTaken()
         {
             var weeklySchedule = await CreateDailyScheduleAsync();
-            var session = await CreateSessionAsync();
 
             var command1st = new CreateTimeslotItemCommand
             {
@@ -95,19 +92,7 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
             var dto = await SendAsync(command);
             return dto;
         }
-        private async Task<CreateSessionFromCourseDto> CreateSessionAsync()
-        {
-            var createCourseItemDto = await SendAsync(new CreateCourseItemCommand()
-            {
-                Name = "ShouldCreateSessionFromCourse",
-                Rate = 40,
-            });
 
-            CreateSessionFromCourseDto dto = await SendAsync(new CreateSessionFromCourseCommand
-            {
-                CourseId = createCourseItemDto.Id
-            });
-            return dto;
-        }
+        
     }
 }

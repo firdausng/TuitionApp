@@ -17,8 +17,7 @@ namespace TuitionApp.Core.Features.Instructors
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime HireDate { get; set; }
-        public ICollection<Guid> CourseList { get; set; } = new List<Guid>();
-        public ICollection<Guid> SessionList { get; set; } = new List<Guid>();
+        public ICollection<Guid> SubjectList { get; set; } = new List<Guid>();
         public ICollection<Guid> LocationList { get; set; } = new List<Guid>();
 
         public class CommandHandler : IRequestHandler<CreateInstructorItemCommand, CreateInstructorItemDto>
@@ -40,14 +39,9 @@ namespace TuitionApp.Core.Features.Instructors
                 };
                 context.Instructor.Add(entity);
 
-                if (request.CourseList.Count > 0)
+                if (request.SubjectList.Count > 0)
                 {
-                    await AddCourseListAsync(entity, request.CourseList);
-                }
-
-                if (request.SessionList.Count > 0)
-                {
-                    await AddSessionListAsync(entity, request.SessionList);
+                    await AddSubjectListAsync(entity, request.SubjectList);
                 }
 
                 if (request.LocationList.Count > 0)
@@ -63,49 +57,20 @@ namespace TuitionApp.Core.Features.Instructors
                 };
             }
 
-            private async Task AddCourseListAsync(Instructor entity, ICollection<Guid> courseList)
+            private async Task AddSubjectListAsync(Instructor entity, ICollection<Guid> subjectList)
             {
-                var getCourseListDbQuery = context.Courses
-                        .Include(i => i.InstructorCourses)
-                        .OrderBy(i => i.Name)
-                        .Where(i => courseList.Contains(i.Id));
-                var courseEntities = await getCourseListDbQuery.ToListAsync();
+                var getSubjectListDbQuery = context.Subjects
+                        .OrderBy(i => i.Title)
+                        .Where(i => subjectList.Contains(i.Id));
+                var subjectEntities = await getSubjectListDbQuery.ToListAsync();
 
-                if (courseEntities.Count != courseList.Count)
+                if (subjectEntities.Count != subjectList.Count)
                 {
-                    throw new EntityListCountMismatchException<Course>(courseEntities, courseList);
+                    throw new EntityListCountMismatchException<Subject>(subjectEntities, subjectList);
                 }
-                foreach (var courseEntity in courseEntities)
+                foreach (var subjectEntity in subjectEntities)
                 {
-                    var ic = new InstructorCourse
-                    {
-                        Instructor = entity,
-                        Course = courseEntity,
-                    };
-                    courseEntity.InstructorCourses.Add(ic);
-                }
-            }
-
-            private async Task AddSessionListAsync(Instructor entity, ICollection<Guid> sessionList)
-            {
-                var getSessionListDbQuery = context.Sessions
-                        .Include(i => i.InstructorSessions)
-                        //.OrderBy(i => i.)
-                        .Where(i => sessionList.Contains(i.Id));
-                var sessionEntities = await getSessionListDbQuery.ToListAsync();
-
-                if (sessionEntities.Count != sessionList.Count)
-                {
-                    throw new EntityListCountMismatchException<Session>(sessionEntities, sessionList);
-                }
-                foreach (var sessionEntity in sessionEntities)
-                {
-                    var ic = new InstructorSession
-                    {
-                        Instructor = entity,
-                        Session = sessionEntity,
-                    };
-                    sessionEntity.InstructorSessions.Add(ic);
+                    entity.Subjects.Add(subjectEntity);
                 }
             }
 

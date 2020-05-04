@@ -6,7 +6,7 @@ namespace TuitionApp.Core.Domain.Entities
     {
         public string Name { get; set; }
         public int Rate { get; set; }
-        public ICollection<Session> Sessions { get; set; } = new List<Session>();
-        public ICollection<InstructorCourse> InstructorCourses { get; set; } = new List<InstructorCourse>();
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
     }
 }

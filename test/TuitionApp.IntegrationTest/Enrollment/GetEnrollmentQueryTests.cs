@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Extensions;
 using TuitionApp.Core.Features.Common;
 using TuitionApp.Core.Features.Courses;
-using TuitionApp.Core.Features.Courses.Sessions;
 using TuitionApp.Core.Features.Enrollments;
 using TuitionApp.Core.Features.Students;
 using Xunit;
@@ -30,7 +29,7 @@ namespace TuitionApp.IntegrationTest.Enrollment
             dto.Id.ShouldBe(created.Id);
             dto.Grade.ShouldBe(created.Grade);
             dto.StudentId.ShouldBe(created.StudentId);
-            dto.SessionId.ShouldBe(created.SessionId);
+            dto.CourseId.ShouldBe(created.CourseId);
             dto.StartDate.ShouldBe(created.StartDate);
             dto.EndDate.ShouldBe(created.EndDate);
         }
@@ -66,16 +65,11 @@ namespace TuitionApp.IntegrationTest.Enrollment
                 Rate = 40,
             });
 
-            var SessionDto = await SendAsync(new CreateSessionFromCourseCommand
-            {
-                CourseId = courseDto.Id
-            });
-
             var command = new CreateEnrollmentItemCommand()
             {
                 StartDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
                 StudentId = studentDto.Id,
-                SessionId = SessionDto.Id,
+                CourseId = courseDto.Id,
             };
             var dto = await SendAsync(command);
             return dto;

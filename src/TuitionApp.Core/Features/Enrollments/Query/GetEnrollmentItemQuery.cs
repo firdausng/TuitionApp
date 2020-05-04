@@ -34,7 +34,7 @@ namespace TuitionApp.Core.Features.Enrollments
                     EndDate = entity.EndDate,
                     Grade = entity.Grade,
                     StudentId = entity.StudentId,
-                    SessionId = entity.SessionId,
+                    CourseId = entity.CourseId,
                 };
 
                 return dto;

@@ -13,7 +13,7 @@ namespace TuitionApp.Core.Common.Interfaces
         public DbSet<Student> Students { get; set; }
         public DbSet<Instructor> Instructor { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
         public DbSet<Timeslot> Timeslots { get; set; }
         public DbSet<DailySchedule> DailySchedules { get; set; }
         public DbSet<CalendarSetting> CalendarSettings { get; set; }
