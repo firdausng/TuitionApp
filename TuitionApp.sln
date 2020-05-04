@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuitionApp.Api", "src\TuitionApp.Api\TuitionApp.Api.csproj", "{AD01D9F4-9A5D-4EF2-B644-095497B9C36F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuitionApp.Api", "src\TuitionApp.Api\TuitionApp.Api.csproj", "{AD01D9F4-9A5D-4EF2-B644-095497B9C36F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuitionApp.Core", "src\TuitionApp.Core\TuitionApp.Core.csproj", "{CFF35D5C-18B6-49C9-9A9B-5DFD0A8DD612}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuitionApp.Core", "src\TuitionApp.Core\TuitionApp.Core.csproj", "{CFF35D5C-18B6-49C9-9A9B-5DFD0A8DD612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuitionApp.Infrastructure", "src\TuitionApp.Infrastructure\TuitionApp.Infrastructure.csproj", "{E1855B2C-FB18-4BEA-8373-C2A2C25FB901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuitionApp.Infrastructure", "src\TuitionApp.Infrastructure\TuitionApp.Infrastructure.csproj", "{E1855B2C-FB18-4BEA-8373-C2A2C25FB901}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuitionApp.UnitTest", "test\TuitionApp.UnitTest\TuitionApp.UnitTest.csproj", "{9648AE7F-DCF9-4F46-9C39-231590473973}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuitionApp.UnitTest", "test\TuitionApp.UnitTest\TuitionApp.UnitTest.csproj", "{9648AE7F-DCF9-4F46-9C39-231590473973}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuitionApp.IntegrationTest", "test\TuitionApp.IntegrationTest\TuitionApp.IntegrationTest.csproj", "{35BDC4D3-9424-4AE1-9C40-9F58919BB4A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuitionApp.IntegrationTest", "test\TuitionApp.IntegrationTest\TuitionApp.IntegrationTest.csproj", "{35BDC4D3-9424-4AE1-9C40-9F58919BB4A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AC323F63-57D5-4A0A-BBAE-DF57FFF6EAA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{206AAA94-BB12-48CB-9A9D-6145760A3E2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuitionApp.Spa", "src\TuitionApp.Spa\TuitionApp.Spa.csproj", "{F5238A8F-0AAF-48CB-BD50-356F82B1E05F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{35BDC4D3-9424-4AE1-9C40-9F58919BB4A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35BDC4D3-9424-4AE1-9C40-9F58919BB4A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35BDC4D3-9424-4AE1-9C40-9F58919BB4A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5238A8F-0AAF-48CB-BD50-356F82B1E05F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5238A8F-0AAF-48CB-BD50-356F82B1E05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5238A8F-0AAF-48CB-BD50-356F82B1E05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5238A8F-0AAF-48CB-BD50-356F82B1E05F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{E1855B2C-FB18-4BEA-8373-C2A2C25FB901} = {206AAA94-BB12-48CB-9A9D-6145760A3E2F}
 		{9648AE7F-DCF9-4F46-9C39-231590473973} = {AC323F63-57D5-4A0A-BBAE-DF57FFF6EAA7}
 		{35BDC4D3-9424-4AE1-9C40-9F58919BB4A9} = {AC323F63-57D5-4A0A-BBAE-DF57FFF6EAA7}
+		{F5238A8F-0AAF-48CB-BD50-356F82B1E05F} = {206AAA94-BB12-48CB-9A9D-6145760A3E2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {690F54A2-E732-4E09-8EFE-8D7CFACFFFE2}
