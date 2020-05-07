@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Interfaces;
 using TuitionApp.Core.Features.Common;
 
-namespace TuitionApp.Core.Features.Courses.CourseSubjects
+namespace TuitionApp.Core.Features.Courses.ClassSubjects
 {
-    public class GetCourseSubjectListQuery : IRequest<GetObjectListVm<GetCourseSubjectItemDto>>
+    public class GetClassSubjectListQuery : IRequest<GetObjectListVm<GetClassSubjectItemDto>>
     {
-        public class QueryHandler : IRequestHandler<GetCourseSubjectListQuery, GetObjectListVm<GetCourseSubjectItemDto>>
+        public class QueryHandler : IRequestHandler<GetClassSubjectListQuery, GetObjectListVm<GetClassSubjectItemDto>>
         {
             private readonly IApplicationDbContext context;
 
@@ -22,22 +22,22 @@ namespace TuitionApp.Core.Features.Courses.CourseSubjects
                 this.context = context;
             }
 
-            public async Task<GetObjectListVm<GetCourseSubjectItemDto>> Handle(GetCourseSubjectListQuery request, CancellationToken cancellationToken)
+            public async Task<GetObjectListVm<GetClassSubjectItemDto>> Handle(GetClassSubjectListQuery request, CancellationToken cancellationToken)
             {
-                var courseSubjectList = await context.CourseSubjects
+                var courseSubjectList = await context.ClassSubjects
                     .ToListAsync(cancellationToken);
 
                 var list = courseSubjectList
-                    .Select(x => new GetCourseSubjectItemDto
+                    .Select(x => new GetClassSubjectItemDto
                     {
                         Id = x.Id,
                         Title = x.Title,
-                        CourseId = x.CourseId,
+                        CourseId = x.CourseClassId,
                         SubjectAssignmentId = x.SubjectAssignmentId,
                     }).ToList();
 
 
-                var dto = new GetObjectListVm<GetCourseSubjectItemDto>
+                var dto = new GetObjectListVm<GetClassSubjectItemDto>
                 {
                     Count = list.Count,
                     Data = list

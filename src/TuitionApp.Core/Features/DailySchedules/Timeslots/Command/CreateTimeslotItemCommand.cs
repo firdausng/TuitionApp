@@ -17,6 +17,7 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; }
         public Guid DailyScheduleId { get; set; }
+        public Guid ClassSubjectId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItemDto>
         {
@@ -33,19 +34,28 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
                     .SingleOrDefaultAsync(l => l.Id.Equals(request.DailyScheduleId));
                 if (dailySchedule == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.DailySchedule), request.DailyScheduleId);
+                    throw new EntityNotFoundException(nameof(DailySchedule), request.DailyScheduleId);
                 }
 
                 var bookedTimeslots = dailySchedule.Timeslots.GetOverlapTimeslot(request.StartTime, request.Duration);
 
                 if (bookedTimeslots.Count > 0)
                 {
-                    throw new EntityAlreadyExistException(nameof(Domain.Entities.Timeslot), string.Join(",", bookedTimeslots.Select(b => b.Id.ToString()).ToArray()));
+                    throw new EntityAlreadyExistException(nameof(Timeslot), string.Join(",", bookedTimeslots.Select(b => b.Id.ToString()).ToArray()));
                 }
 
-                var entity = new Domain.Entities.Timeslot()
+                var classSubject = await context.ClassSubjects
+                    //.Include(w => w.Timeslots)
+                    .SingleOrDefaultAsync(l => l.Id.Equals(request.ClassSubjectId));
+                if (classSubject == null)
+                {
+                    throw new EntityNotFoundException(nameof(ClassSubject), request.ClassSubjectId);
+                }
+
+                var entity = new Timeslot()
                 {
                     DailySchedule = dailySchedule,
+                    ClassSubject = classSubject,
                     Disabled = request.Disabled,
                     Duration = request.Duration,
                     StartTime = request.StartTime,
@@ -60,7 +70,7 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
                 };
             }
 
-            public bool IstimeslotOverlapping(Domain.Entities.Timeslot currentTimeslot, List<Domain.Entities.Timeslot> timeslots)
+            public bool IstimeslotOverlapping(Timeslot currentTimeslot, List<Timeslot> timeslots)
             {
                 foreach (var timeslot in timeslots)
                 {

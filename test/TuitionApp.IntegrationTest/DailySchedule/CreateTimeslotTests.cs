@@ -10,6 +10,12 @@ using TuitionApp.Core.Features.DailySchedules;
 using Xunit;
 using TuitionApp.Core.Features.DailySchedules.Timeslots;
 using TuitionApp.Core.Features.Locations.Classrooms;
+using TuitionApp.Core.Features.Courses.ClassSubjects;
+using TuitionApp.Core.Features.Subjects;
+using TuitionApp.Core.Features.Instructors;
+using System.Collections.Generic;
+using TuitionApp.Core.Common.Extensions;
+using TuitionApp.Core.Features.Courses.CourseClasses;
 
 namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
 {
@@ -20,11 +26,13 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
         public async Task ShouldCreateTimeslot()
         {
             var dailySchedule = await CreateDailyScheduleAsync();
+            var createClassSubjectDto = await CreateClassSubjectAsync();
 
             var command = new CreateTimeslotItemCommand
             {
                 Disabled = false,
                 DailyScheduleId = dailySchedule.Id,
+                ClassSubjectId = createClassSubjectDto.Id,
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),
             };
@@ -43,12 +51,14 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
         [Fact()]
         public async Task ShouldNotCreateTimeslotWhenRoomTimeSlotAlreadyTaken()
         {
-            var weeklySchedule = await CreateDailyScheduleAsync();
+            var dailySchedule = await CreateDailyScheduleAsync();
+            var createClassSubjectDto = await CreateClassSubjectAsync();
 
             var command1st = new CreateTimeslotItemCommand
             {
                 Disabled = false,
-                DailyScheduleId = weeklySchedule.Id,
+                DailyScheduleId = dailySchedule.Id,
+                ClassSubjectId = createClassSubjectDto.Id,
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),
             };
@@ -57,7 +67,8 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
             var command2nd = new CreateTimeslotItemCommand
             {
                 Disabled = false,
-                DailyScheduleId = weeklySchedule.Id,
+                DailyScheduleId = dailySchedule.Id,
+                ClassSubjectId = createClassSubjectDto.Id,
                 Duration = new TimeSpan(0, 1, 0),
                 StartTime = new TimeSpan(0, 20, 0),
             };
@@ -93,6 +104,48 @@ namespace TuitionApp.IntegrationTest.DailySchedule.Timeslot
             return dto;
         }
 
-        
+        private async Task<CreateClassSubjectItemDto> CreateClassSubjectAsync()
+        {
+            var createCourseCommand = new CreateCourseItemCommand()
+            {
+                Name = "Course1",
+                Rate = 40,
+            };
+            var createCourseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
+
+            var createCourseClassCommand = new CreateCourseClassItemCommand()
+            {
+                Name = $"{createCourseCommand.Name}-class1",
+                CourseId = createCourseDto.Id
+            };
+            var createCourseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
+
+            var instructorDto = await SendWithValidationAsync(new CreateInstructorItemCommand()
+            {
+                FirstName = "first",
+                LastName = "last",
+                HireDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
+            }, new CreateInstructorItemCommandValidator());
+
+            var createSubjectItemCommand = new CreateSubjectItemCommand()
+            {
+                Title = "Subject1",
+                InstructorList = new List<Guid> { instructorDto.Id },
+            };
+            var createSubjectItemDto = await SendWithValidationAsync(createSubjectItemCommand,
+                new CreateSubjectItemCommandValidator());
+
+            var getSubjectItemDto = await SendAsync(new GetSubjectItemQuery() { Id = createSubjectItemDto.Id });
+
+            var createClassSubjectCommand = new CreateClassSubjectItemCommand()
+            {
+                Title = $"{createCourseCommand.Name}-subject1",
+                CourseClassId = createCourseClassDto.Id,
+                SubjectAssignmentId = getSubjectItemDto.SubjectAssignmentList.First(),
+            };
+
+            var createClassSubjectDto = await SendWithValidationAsync(createClassSubjectCommand, new CreateClassSubjectItemCommandValidator());
+            return createClassSubjectDto;
+        }
     }
 }

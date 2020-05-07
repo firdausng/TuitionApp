@@ -7,13 +7,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Interfaces;
 
-namespace TuitionApp.Core.Features.Courses.CourseSubjects
+namespace TuitionApp.Core.Features.Courses.ClassSubjects
 {
-    public class GetCourseSubjectItemQuery : IRequest<GetCourseSubjectItemDto>
+    public class GetClassSubjectItemQuery : IRequest<GetClassSubjectItemDto>
     {
         public Guid Id { get; set; }
 
-        public class QueryHandler : IRequestHandler<GetCourseSubjectItemQuery, GetCourseSubjectItemDto>
+        public class QueryHandler : IRequestHandler<GetClassSubjectItemQuery, GetClassSubjectItemDto>
         {
             private readonly IApplicationDbContext context;
 
@@ -22,16 +22,16 @@ namespace TuitionApp.Core.Features.Courses.CourseSubjects
                 this.context = context;
             }
 
-            public async Task<GetCourseSubjectItemDto> Handle(GetCourseSubjectItemQuery request, CancellationToken cancellationToken)
+            public async Task<GetClassSubjectItemDto> Handle(GetClassSubjectItemQuery request, CancellationToken cancellationToken)
             {
-                var entity = await context.CourseSubjects
+                var entity = await context.ClassSubjects
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
-                var dto = new GetCourseSubjectItemDto
+                var dto = new GetClassSubjectItemDto
                 {
                     Id = entity.Id,
                     Title = entity.Title,
-                    CourseId = entity.CourseId,
+                    CourseId = entity.CourseClassId,
                     SubjectAssignmentId = entity.SubjectAssignmentId,
                 };
 

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TuitionApp.Core.Features.Courses.CourseSubjects
+namespace TuitionApp.Core.Features.Courses.ClassSubjects
 {
-    public class GetCourseSubjectItemDto
+    public class GetClassSubjectItemDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

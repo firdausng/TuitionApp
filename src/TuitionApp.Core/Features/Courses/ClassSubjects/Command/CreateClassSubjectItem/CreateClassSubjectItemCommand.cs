@@ -7,15 +7,15 @@ using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
 using TuitionApp.Core.Domain.Entities;
 
-namespace TuitionApp.Core.Features.Courses.CourseSubjects
+namespace TuitionApp.Core.Features.Courses.ClassSubjects
 {
-    public class CreateCourseSubjectItemCommand : IRequest<CreateCourseSubjectItemDto>
+    public class CreateClassSubjectItemCommand : IRequest<CreateClassSubjectItemDto>
     {
         public string Title { get; set; }
-        public Guid CourseId { get; set; }
+        public Guid CourseClassId { get; set; }
         public Guid SubjectAssignmentId { get; set; }
 
-        public class CommandHandler : IRequestHandler<CreateCourseSubjectItemCommand, CreateCourseSubjectItemDto>
+        public class CommandHandler : IRequestHandler<CreateClassSubjectItemCommand, CreateClassSubjectItemDto>
         {
             private readonly IApplicationDbContext context;
             public CommandHandler(IApplicationDbContext context)
@@ -23,13 +23,13 @@ namespace TuitionApp.Core.Features.Courses.CourseSubjects
                 this.context = context;
             }
 
-            public async Task<CreateCourseSubjectItemDto> Handle(CreateCourseSubjectItemCommand request, CancellationToken cancellationToken)
+            public async Task<CreateClassSubjectItemDto> Handle(CreateClassSubjectItemCommand request, CancellationToken cancellationToken)
             {
-                var course = await context.Courses
-                    .SingleOrDefaultAsync(l => l.Id.Equals(request.CourseId));
-                if (course == null)
+                var courseClass = await context.CourseClasses
+                    .SingleOrDefaultAsync(l => l.Id.Equals(request.CourseClassId));
+                if (courseClass == null)
                 {
-                    throw new EntityNotFoundException(nameof(Course), request.CourseId);
+                    throw new EntityNotFoundException(nameof(CourseClass), request.CourseClassId);
                 }
 
                 var subjectAssignment = await context.SubjectAssignments
@@ -39,16 +39,16 @@ namespace TuitionApp.Core.Features.Courses.CourseSubjects
                     throw new EntityNotFoundException(nameof(SubjectAssignment), request.SubjectAssignmentId);
                 }
 
-                var entity = new CourseSubject()
+                var entity = new ClassSubject()
                 {
                     Title = request.Title,
-                    Course = course,
+                    CourseClass = courseClass,
                     SubjectAssignment = subjectAssignment,
                 };
-                context.CourseSubjects.Add(entity);
+                context.ClassSubjects.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return new CreateCourseSubjectItemDto
+                return new CreateClassSubjectItemDto
                 {
                     Id = entity.Id
                 };

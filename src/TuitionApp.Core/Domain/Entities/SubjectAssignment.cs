@@ -9,6 +9,6 @@ namespace TuitionApp.Core.Domain.Entities
         public Guid SubjectId { get; set; }
         public Instructor Instructor { get; set; }
         public Guid InstructorId { get; set; }
-        public ICollection<CourseSubject> CourseSubjects { get; set; } = new List<CourseSubject>();
+        public ICollection<ClassSubject> CourseSubjects { get; set; } = new List<ClassSubject>();
     }
 }

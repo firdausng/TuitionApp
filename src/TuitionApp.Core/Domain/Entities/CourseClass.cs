@@ -8,6 +8,6 @@ namespace TuitionApp.Core.Domain.Entities
         public string Name { get; set; }
         public Course Course { get; set; }
         public Guid CourseId { get; set; }
-        public ICollection<Timeslot> Timeslots { get; set; } = new List<Timeslot>();
+        public ICollection<ClassSubject> ClassSubjects { get; set; } = new List<ClassSubject>();
     }
 }

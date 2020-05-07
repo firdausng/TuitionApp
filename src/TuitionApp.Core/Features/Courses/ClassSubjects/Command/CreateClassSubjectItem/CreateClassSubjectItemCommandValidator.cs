@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace TuitionApp.Core.Features.Courses.CourseSubjects
+namespace TuitionApp.Core.Features.Courses.ClassSubjects
 {
-    public class CreateCourseSubjectItemCommandValidator : AbstractValidator<CreateCourseSubjectItemCommand>
+    public class CreateClassSubjectItemCommandValidator : AbstractValidator<CreateClassSubjectItemCommand>
     {
-        public CreateCourseSubjectItemCommandValidator()
+        public CreateClassSubjectItemCommandValidator()
         {
             RuleFor(command => command.Title)
                 .NotNull()
@@ -12,7 +12,7 @@ namespace TuitionApp.Core.Features.Courses.CourseSubjects
             RuleFor(command => command.SubjectAssignmentId)
                 .NotNull()
                 .NotEmpty();
-            RuleFor(command => command.CourseId)
+            RuleFor(command => command.CourseClassId)
                 .NotNull()
                 .NotEmpty();
         }

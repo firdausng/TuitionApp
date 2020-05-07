@@ -12,7 +12,7 @@ namespace TuitionApp.IntegrationTest.Course.CourseClass
     public class CreateCourseClassTests: IntegrationTestBase
     {
         [Fact]
-        public async Task ShouldCreateCourse()
+        public async Task ShouldCreateCourseClass()
         {
             var createCourseCommand = new CreateCourseItemCommand()
             {
