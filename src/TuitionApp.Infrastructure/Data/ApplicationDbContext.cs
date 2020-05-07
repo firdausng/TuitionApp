@@ -13,6 +13,8 @@ namespace TuitionApp.Infrastructure.Data
         public DbSet<Instructor> Instructor { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseClass> CourseClasses { get; set; }
+        public DbSet<CourseSubject> CourseSubjects { get; set; }
+        public DbSet<SubjectAssignment> SubjectAssignments { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Timeslot> Timeslots { get; set; }
         public DbSet<DailySchedule> DailySchedules { get; set; }
@@ -37,6 +39,7 @@ namespace TuitionApp.Infrastructure.Data
                 .HasOne(bc => bc.Instructor)
                 .WithMany(c => c.LocationInstructors)
                 .HasForeignKey(bc => bc.InstructorId);
+
 
             modelBuilder.Entity<Person>()
                 .HasDiscriminator<string>("PersonRole");

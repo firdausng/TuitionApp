@@ -35,7 +35,7 @@ namespace TuitionApp.Core.Features.Instructors
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     HireDate = request.HireDate,
-                    
+
                 };
                 context.Instructor.Add(entity);
 
@@ -70,7 +70,12 @@ namespace TuitionApp.Core.Features.Instructors
                 }
                 foreach (var subjectEntity in subjectEntities)
                 {
-                    entity.Subjects.Add(subjectEntity);
+
+                    entity.SubjectAssignments.Add(new SubjectAssignment
+                    {
+                        Instructor = entity,
+                        Subject = subjectEntity,
+                    });
                 }
             }
 
@@ -95,7 +100,7 @@ namespace TuitionApp.Core.Features.Instructors
                     };
                     locationEntity.LocationInstructors.Add(ic);
                 }
-            }            
+            }
         }
     }
 }

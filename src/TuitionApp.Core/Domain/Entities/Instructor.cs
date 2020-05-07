@@ -7,6 +7,6 @@ namespace TuitionApp.Core.Domain.Entities
     {
         public DateTime HireDate { get; set; }
         public ICollection<LocationInstructor> LocationInstructors { get; set; } = new List<LocationInstructor>();
-        public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
+        public ICollection<SubjectAssignment> SubjectAssignments { get; set; } = new List<SubjectAssignment>();
     }
 }

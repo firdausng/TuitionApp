@@ -2,7 +2,7 @@
 
 namespace TuitionApp.Core.Features.DailySchedules.Timeslots
 {
-    public class CreateTimeslotItem
+    public class CreateTimeslotItemDto
     {
         public Guid Id { get; set; }
     }

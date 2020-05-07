@@ -11,14 +11,14 @@ using TuitionApp.Core.Domain.Entities;
 
 namespace TuitionApp.Core.Features.DailySchedules.Timeslots
 {
-    public class CreateTimeslotItemCommand : IRequest<CreateTimeslotItem>
+    public class CreateTimeslotItemCommand : IRequest<CreateTimeslotItemDto>
     {
         public TimeSpan Duration { get; set; }
         public TimeSpan StartTime { get; set; }
         public bool Disabled { get; set; }
         public Guid DailyScheduleId { get; set; }
 
-        public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItem>
+        public class CommandHandler : IRequestHandler<CreateTimeslotItemCommand, CreateTimeslotItemDto>
         {
             private readonly IApplicationDbContext context;
             public CommandHandler(IApplicationDbContext context)
@@ -26,7 +26,7 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
                 this.context = context;
             }
 
-            public async Task<CreateTimeslotItem> Handle(CreateTimeslotItemCommand request, CancellationToken cancellationToken)
+            public async Task<CreateTimeslotItemDto> Handle(CreateTimeslotItemCommand request, CancellationToken cancellationToken)
             {
                 var dailySchedule = await context.DailySchedules
                     .Include(w => w.Timeslots)
@@ -54,7 +54,7 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
                 context.Timeslots.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return new CreateTimeslotItem
+                return new CreateTimeslotItemDto
                 {
                     Id = entity.Id
                 };
