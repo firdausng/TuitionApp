@@ -73,6 +73,26 @@ namespace TuitionApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CourseClasses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    CourseId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseClasses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CourseClasses_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Classrooms",
                 columns: table => new
                 {
@@ -208,6 +228,7 @@ namespace TuitionApp.Infrastructure.Migrations
                     Disabled = table.Column<bool>(type: "boolean", nullable: false),
                     DailyScheduleId = table.Column<Guid>(type: "uuid", nullable: false),
                     SubjectId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CourseClassId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClassroomId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -219,6 +240,12 @@ namespace TuitionApp.Infrastructure.Migrations
                         principalTable: "Classrooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Timeslots_CourseClasses_CourseClassId",
+                        column: x => x.CourseClassId,
+                        principalTable: "CourseClasses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Timeslots_DailySchedules_DailyScheduleId",
                         column: x => x.DailyScheduleId,
@@ -237,6 +264,11 @@ namespace TuitionApp.Infrastructure.Migrations
                 name: "IX_Classrooms_LocationId",
                 table: "Classrooms",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseClasses_CourseId",
+                table: "CourseClasses",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DailySchedules_ClassroomId",
@@ -274,6 +306,11 @@ namespace TuitionApp.Infrastructure.Migrations
                 column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Timeslots_CourseClassId",
+                table: "Timeslots",
+                column: "CourseClassId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Timeslots_DailyScheduleId",
                 table: "Timeslots",
                 column: "DailyScheduleId");
@@ -297,6 +334,9 @@ namespace TuitionApp.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Timeslots");
+
+            migrationBuilder.DropTable(
+                name: "CourseClasses");
 
             migrationBuilder.DropTable(
                 name: "DailySchedules");

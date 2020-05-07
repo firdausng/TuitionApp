@@ -12,6 +12,8 @@ namespace TuitionApp.Core.Domain.Entities
         public DailySchedule DailySchedule { get; set; }
         public Guid SubjectId { get; set; }
         public Subject Subject { get; set; }
+        public Guid CourseClassId { get; set; }
+        public CourseClass CourseClass { get; set; }
     }
 
 
