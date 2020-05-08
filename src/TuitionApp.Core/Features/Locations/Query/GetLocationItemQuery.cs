@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
+using TuitionApp.Core.Domain.Entities;
 
 namespace TuitionApp.Core.Features.Locations
 {
@@ -22,17 +24,21 @@ namespace TuitionApp.Core.Features.Locations
 
             public async Task<GetLocationDto> Handle(GetLocationItemQuery request, CancellationToken cancellationToken)
             {
-                var location = await context.Locations
-                    .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken)
-                    ;
+                var entity = await context.Locations
+                    .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+                if (entity == null)
+                {
+                    throw new EntityNotFoundException(nameof(Location), request.Id);
+                }
 
                 var dto = new GetLocationDto
                 {
-                    Id = location.Id,
-                    Name = location.Name,
-                    IsEnabled = location.IsEnabled,
-                    OpeningTime = location.OpeningTime,
-                    ClosingTime = location.ClosingTime,
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    IsEnabled = entity.IsEnabled,
+                    OpeningTime = entity.OpeningTime,
+                    ClosingTime = entity.ClosingTime,
                 };
 
                 return dto;

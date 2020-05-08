@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
+using TuitionApp.Core.Domain.Entities;
 
 namespace TuitionApp.Core.Features.DailySchedules.Timeslots
 {
@@ -25,6 +27,11 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
             {
                 var entity = await context.Timeslots
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+                if (entity == null)
+                {
+                    throw new EntityNotFoundException(nameof(Timeslot), request.Id);
+                }
 
                 var dto = new GetTimeslotItemDto
                 {

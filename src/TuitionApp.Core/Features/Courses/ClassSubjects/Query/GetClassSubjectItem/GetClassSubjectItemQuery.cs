@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
+using TuitionApp.Core.Domain.Entities;
 
 namespace TuitionApp.Core.Features.Courses.ClassSubjects
 {
@@ -26,6 +28,11 @@ namespace TuitionApp.Core.Features.Courses.ClassSubjects
             {
                 var entity = await context.ClassSubjects
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+                if (entity == null)
+                {
+                    throw new EntityNotFoundException(nameof(ClassSubject), request.Id);
+                }
 
                 var dto = new GetClassSubjectItemDto
                 {

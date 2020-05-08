@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Interfaces;
+using TuitionApp.Core.Domain.Entities;
 
 namespace TuitionApp.Core.Features.Instructors
 {
@@ -26,6 +28,11 @@ namespace TuitionApp.Core.Features.Instructors
             {
                 var entity = await context.Instructor
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
+
+                if (entity == null)
+                {
+                    throw new EntityNotFoundException(nameof(Instructor), request.Id);
+                }
 
                 var dto = new GetInstructorItemDto
                 {
