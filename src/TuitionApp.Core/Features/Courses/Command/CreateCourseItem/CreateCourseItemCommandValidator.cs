@@ -9,6 +9,12 @@ namespace TuitionApp.Core.Features.Courses
             RuleFor(command => command.Name)
                 .NotNull()
                 .NotEmpty();
+
+            RuleFor(command => command.ClassNameList)
+               .NotNull();
+
+            RuleFor(command => command.SubjectIdList)
+               .NotNull();
         }
     }
 }
