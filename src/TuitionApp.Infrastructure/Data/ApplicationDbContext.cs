@@ -19,6 +19,7 @@ namespace TuitionApp.Infrastructure.Data
         public DbSet<Timeslot> Timeslots { get; set; }
         public DbSet<DailySchedule> DailySchedules { get; set; }
         public DbSet<CalendarSetting> CalendarSettings { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)

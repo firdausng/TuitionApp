@@ -36,6 +36,7 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
                 {
                     Name = request.Name,
                     Course = course,
+                    Capacity = request.Capacity,
                 };
                 context.CourseClasses.Add(entity);
                 await context.SaveChangesAsync(cancellationToken);

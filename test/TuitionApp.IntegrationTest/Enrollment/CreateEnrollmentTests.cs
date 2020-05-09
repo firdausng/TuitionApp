@@ -3,6 +3,7 @@ using Shouldly;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TuitionApp.Core.Common.Exceptions;
 using TuitionApp.Core.Common.Extensions;
 using TuitionApp.Core.Features.Courses;
 using TuitionApp.Core.Features.Courses.CourseClasses;
@@ -57,6 +58,50 @@ namespace TuitionApp.IntegrationTest.Enrollment
             created.StartDate.ShouldBe(command.StartDate);
             created.StudentId.ShouldBe(command.StudentId);
             created.CourseClassId.ShouldBe(command.CourseClassId);
+        }
+
+        [Fact]
+        public async Task ShouldNotCreateEnrollmentWhenCapacityFull()
+        {
+            var studentDto = await SendAsync(new CreateStudentItemCommand()
+            {
+                FirstName = "first",
+                LastName = "last"
+            });
+
+            var createCourseCommand = new CreateCourseItemCommand()
+            {
+                Name = "Course1",
+                Rate = 40,
+            };
+            var courseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
+
+
+            var createCourseClassCommand = new CreateCourseClassItemCommand()
+            {
+                Name = $"{createCourseCommand.Name}-class1",
+                CourseId = courseDto.Id,
+                Capacity = 10,
+            };
+            var courseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
+
+            for (int i = 0; i < 10; i++)
+            {
+                await SendAsync(new CreateEnrollmentItemCommand()
+                {
+                    StartDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
+                    StudentId = studentDto.Id,
+                    CourseClassId = courseClassDto.Id,
+                });
+            }
+
+            // assert
+            await SendAsync(new CreateEnrollmentItemCommand()
+            {
+                StartDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
+                StudentId = studentDto.Id,
+                CourseClassId = courseClassDto.Id,
+            }).ShouldThrowAsync<InvalidAppOperationException>();
         }
     }
 }
