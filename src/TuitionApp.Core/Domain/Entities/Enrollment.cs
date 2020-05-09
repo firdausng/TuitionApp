@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TuitionApp.Core.Domain.Entities
 {
@@ -9,7 +10,8 @@ namespace TuitionApp.Core.Domain.Entities
         public DateTime EndDate { get; set; }
         public Guid StudentId { get; set; }
         public Student Student { get; set; }
-        public Guid CourseId { get; set; }
-        public Course Course { get; set; }
+        public Guid CourseClassId { get; set; }
+        public CourseClass CourseClass { get; set; }
+        public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
     }
 }
