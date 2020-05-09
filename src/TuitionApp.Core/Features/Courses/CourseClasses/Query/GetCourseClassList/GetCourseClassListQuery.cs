@@ -24,7 +24,7 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
 
             public async Task<GetObjectListVm<GetCourseClassItemDto>> Handle(GetCourseClassListQuery request, CancellationToken cancellationToken)
             {
-                var courseClasses = await context.CourseClasses
+                var courseClasses = await context.CourseClasses.Include(cc => cc.Enrollments)
                     .ToListAsync(cancellationToken);
 
                 var list = courseClasses
@@ -33,6 +33,8 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
                         Id = x.Id,
                         Name = x.Name,
                         CourseId = x.Id,
+                        Capacity = x.Capacity,
+                        CapacityLeft = x.Capacity - x.Enrollments.Count
                     }).ToList();
 
 

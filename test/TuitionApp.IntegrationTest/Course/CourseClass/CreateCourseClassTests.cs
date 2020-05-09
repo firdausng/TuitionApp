@@ -34,6 +34,7 @@ namespace TuitionApp.IntegrationTest.Course.CourseClass
 
             created.ShouldNotBeNull();
             created.Name.ShouldBe(createCourseClassCommand.Name);
+            created.Capacity.ShouldBe(createCourseClassCommand.Capacity);
             created.CourseId.ShouldBe(createCourseClassCommand.CourseId);
         }
     }

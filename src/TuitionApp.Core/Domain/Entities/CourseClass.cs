@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace TuitionApp.Core.Domain.Entities
@@ -7,12 +8,12 @@ namespace TuitionApp.Core.Domain.Entities
     {
         public string Name { get; set; }
 
-        private int capacity;
+        private int _capacity;
         public int Capacity
         {
             // because when set this, normal people will do without assumption number start at 0
-            get { return capacity - 1; }
-            set { capacity = value; }
+            get { return _capacity; }
+            set { _capacity = value - 1; }
         }
         public Course Course { get; set; }
         public Guid CourseId { get; set; }

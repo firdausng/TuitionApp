@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Features.Common;
 using TuitionApp.Core.Features.Courses;
 using TuitionApp.Core.Features.Courses.CourseClasses;
+using TuitionApp.Core.Features.Enrollments;
 using Xunit;
 
 namespace TuitionApp.IntegrationTest.Course.CourseClass
@@ -32,11 +33,13 @@ namespace TuitionApp.IntegrationTest.Course.CourseClass
 
             var dto = await SendAsync(new GetCourseClassItemQuery() { Id = createCourseClassDto.Id });
 
-            var created = await ExecuteDbContextAsync(db => db.CourseClasses.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
+            var created = await ExecuteDbContextAsync(db => db.CourseClasses.Where(c => c.Id.Equals(dto.Id)).Include(cc => cc.Enrollments).SingleOrDefaultAsync());
 
             dto.ShouldNotBeNull();
             dto.Id.ShouldBe(created.Id);
             dto.Name.ShouldBe(created.Name);
+            dto.Capacity.ShouldBe(created.Capacity);
+            dto.CapacityLeft.ShouldBe(created.Capacity - created.Enrollments.Count);
             dto.CourseId.ShouldBe(created.CourseId);
         }
 

@@ -27,6 +27,7 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
             public async Task<GetCourseClassItemDto> Handle(GetCourseClassItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.CourseClasses
+                    .Include(cc => cc.Enrollments)
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)
@@ -39,6 +40,8 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
                     Id = entity.Id,
                     Name = entity.Name,
                     CourseId = entity.CourseId,
+                    Capacity = entity.Capacity,
+                    CapacityLeft = entity.Capacity - entity.Enrollments.Count
                 };
 
                 return dto;
