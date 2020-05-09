@@ -12,6 +12,7 @@ namespace TuitionApp.Core.Domain.Entities
         public DailySchedule DailySchedule { get; set; }
         public Guid ClassSubjectId { get; set; }
         public ClassSubject ClassSubject { get; set; }
+        public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
     }
 
 

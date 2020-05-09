@@ -20,6 +20,7 @@ namespace TuitionApp.Core.Common.Interfaces
         public DbSet<Timeslot> Timeslots { get; set; }
         public DbSet<DailySchedule> DailySchedules { get; set; }
         public DbSet<CalendarSetting> CalendarSettings { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         DbSet<TEntity> Set<TEntity>(string name) where TEntity:class;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TuitionApp.Core.Domain.Entities
 {
@@ -9,6 +10,6 @@ namespace TuitionApp.Core.Domain.Entities
         public Guid SubjectAssignmentId { get; set; }
         public CourseClass CourseClass { get; set; }
         public Guid CourseClassId { get; set; }
-
+        public ICollection<Timeslot> Timeslots { get; set; } = new List<Timeslot>();
     }
 }
