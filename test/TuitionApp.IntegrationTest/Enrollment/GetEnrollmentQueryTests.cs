@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TuitionApp.Core.Common.Extensions;
 using TuitionApp.Core.Features.Common;
 using TuitionApp.Core.Features.Courses;
+using TuitionApp.Core.Features.Courses.CourseClasses;
 using TuitionApp.Core.Features.Enrollments;
 using TuitionApp.Core.Features.Students;
 using Xunit;
@@ -29,7 +30,7 @@ namespace TuitionApp.IntegrationTest.Enrollment
             dto.Id.ShouldBe(created.Id);
             dto.Grade.ShouldBe(created.Grade);
             dto.StudentId.ShouldBe(created.StudentId);
-            dto.CourseId.ShouldBe(created.CourseId);
+            dto.CourseClassIdId.ShouldBe(created.CourseClassId);
             dto.StartDate.ShouldBe(created.StartDate);
             dto.EndDate.ShouldBe(created.EndDate);
         }
@@ -59,17 +60,28 @@ namespace TuitionApp.IntegrationTest.Enrollment
                 LastName = "last"
             });
 
-            var courseDto = await SendAsync(new CreateCourseItemCommand()
+            var createCourseCommand = new CreateCourseItemCommand()
             {
-                Name = "ShouldCreateSessionFromCourse",
+                Name = "Course1",
                 Rate = 40,
-            });
+            };
+            var courseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
+
+
+            var createCourseClassCommand = new CreateCourseClassItemCommand()
+            {
+                Name = $"{createCourseCommand.Name}-class1",
+                CourseId = courseDto.Id,
+                Capacity = 40,
+            };
+            var courseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
+
 
             var command = new CreateEnrollmentItemCommand()
             {
                 StartDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
                 StudentId = studentDto.Id,
-                CourseId = courseDto.Id,
+                CourseClassId = courseClassDto.Id,
             };
             var dto = await SendAsync(command);
             return dto;

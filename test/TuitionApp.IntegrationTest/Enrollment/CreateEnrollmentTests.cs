@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Extensions;
 using TuitionApp.Core.Features.Courses;
+using TuitionApp.Core.Features.Courses.CourseClasses;
 using TuitionApp.Core.Features.Enrollments;
 using TuitionApp.Core.Features.Students;
 using Xunit;
@@ -23,19 +24,30 @@ namespace TuitionApp.IntegrationTest.Enrollment
                 LastName = "last"
             });
 
-            var courseDto = await SendAsync(new CreateCourseItemCommand()
+            var createCourseCommand = new CreateCourseItemCommand()
             {
-                Name = "ShouldCreateSessionFromCourse",
+                Name = "Course1",
                 Rate = 40,
-            });
+            };
+            var courseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
+
+
+            var createCourseClassCommand = new CreateCourseClassItemCommand()
+            {
+                Name = $"{createCourseCommand.Name}-class1",
+                CourseId = courseDto.Id,
+                Capacity = 40,
+            };
+            var courseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
+
 
             var command = new CreateEnrollmentItemCommand()
             {
-               StartDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
-               StudentId = studentDto.Id,
-               CourseId = courseDto.Id,
+                StartDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
+                StudentId = studentDto.Id,
+                CourseClassId = courseClassDto.Id,
             };
-            var dto = await SendWithValidationAsync(command, new CreateEnrollmentItemCommandValidator());
+            var dto = await SendAsync(command);
 
             var created = await ExecuteDbContextAsync(db =>
                 db.Enrollments.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
@@ -44,7 +56,7 @@ namespace TuitionApp.IntegrationTest.Enrollment
             created.ShouldNotBeNull();
             created.StartDate.ShouldBe(command.StartDate);
             created.StudentId.ShouldBe(command.StudentId);
-            created.CourseId.ShouldBe(command.CourseId);
+            created.CourseClassId.ShouldBe(command.CourseClassId);
         }
     }
 }

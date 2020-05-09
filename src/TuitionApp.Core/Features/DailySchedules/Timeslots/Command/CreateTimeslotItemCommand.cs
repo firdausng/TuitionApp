@@ -45,7 +45,8 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
                 }
 
                 var classSubject = await context.ClassSubjects
-                    //.Include(w => w.Timeslots)
+                    .Include(w => w.CourseClass)
+                    .ThenInclude(cc => cc.Enrollments)
                     .SingleOrDefaultAsync(l => l.Id.Equals(request.ClassSubjectId));
                 if (classSubject == null)
                 {
@@ -62,6 +63,22 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
 
                 };
                 context.Timeslots.Add(entity);
+
+                // check if there are any enrollment created yet
+                if (classSubject.CourseClass.Enrollments.Count > 0)
+                {
+                    foreach (var enrollment in classSubject.CourseClass.Enrollments)
+                    {
+                        context.Attendances.Add(new Attendance
+                        {
+                            Enrollment = enrollment,
+                            Timeslot = entity,
+                            AttendanceStatus = AttendanceStatus.Created,
+                        });
+                    }
+                }
+                
+
                 await context.SaveChangesAsync(cancellationToken);
 
                 return new CreateTimeslotItemDto

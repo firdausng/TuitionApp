@@ -6,9 +6,11 @@ namespace TuitionApp.Core.Features.Enrollments
     {
         public CreateEnrollmentItemCommandValidator()
         {
-            RuleFor(command => command.CourseId).NotNull().NotEmpty();
+            RuleFor(command => command.CourseClassId).NotNull().NotEmpty();
             RuleFor(command => command.StartDate).NotNull().NotEmpty();
             RuleFor(command => command.StudentId).NotNull().NotEmpty();
+
+
         }
     }
 }

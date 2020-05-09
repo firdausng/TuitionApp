@@ -25,7 +25,8 @@ namespace TuitionApp.IntegrationTest.Course.CourseClass
             var createCourseClassCommand = new CreateCourseClassItemCommand()
             {
                 Name = $"{createCourseCommand.Name}-class1",
-                CourseId = createCourseDto.Id
+                CourseId = createCourseDto.Id,
+                Capacity = 40,
             };
             var createCourseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
 
@@ -52,7 +53,8 @@ namespace TuitionApp.IntegrationTest.Course.CourseClass
             var createCourseClassCommand = new CreateCourseClassItemCommand()
             {
                 Name = $"{createCourseCommand.Name}-class1",
-                CourseId = createCourseDto.Id
+                CourseId = createCourseDto.Id,
+                Capacity = 40,
             };
             var createCourseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
 

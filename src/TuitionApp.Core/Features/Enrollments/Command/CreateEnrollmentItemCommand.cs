@@ -15,7 +15,7 @@ namespace TuitionApp.Core.Features.Enrollments
     {
         public DateTime StartDate { get; set; }
         public Guid StudentId { get; set; }
-        public Guid CourseId { get; set; }
+        public Guid CourseClassId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateEnrollmentItemCommand, CreateEnrollmentItemDto>
         {
@@ -30,22 +30,44 @@ namespace TuitionApp.Core.Features.Enrollments
                 var student = await context.Students.SingleOrDefaultAsync(l => l.Id.Equals(request.StudentId));
                 if (student == null)
                 {
-                    throw new EntityNotFoundException(nameof(Domain.Entities.Student), request.StudentId);
+                    throw new EntityNotFoundException(nameof(Student), request.StudentId);
                 }
 
-                var course = await context.Courses.SingleOrDefaultAsync(l => l.Id.Equals(request.CourseId));
-                if (course == null)
+                var courseClassQuery = context.CourseClasses
+                    .Include(cc => cc.Enrollments);
+                var courseClass = await courseClassQuery.SingleOrDefaultAsync(l => l.Id.Equals(request.CourseClassId));
+                if (courseClass == null)
                 {
-                    throw new EntityNotFoundException(nameof(Course), request.CourseId);
+                    throw new EntityNotFoundException(nameof(CourseClass), request.CourseClassId);
+                }
+
+                if (courseClass.Enrollments.Count > courseClass.Capacity)
+                {
+                    throw new InvalidAppOperationException("No more slot, class already in full capacity");
                 }
 
                 var entity = new Enrollment()
                 {
                     StartDate = request.StartDate,
                     Student = student,
-                    Course = course,
+                    CourseClass = courseClass,
                 };
                 context.Enrollments.Add(entity);
+
+                foreach (var classSubject in courseClass.ClassSubjects)
+                {
+                    foreach (var timeslot in classSubject.Timeslots)
+                    {
+                        context.Attendances.Add(new Attendance
+                        {
+                            Enrollment = entity,
+                            Timeslot = timeslot,
+                            AttendanceStatus = AttendanceStatus.Created,
+                        });
+                    }
+                }
+
+
                 await context.SaveChangesAsync(cancellationToken);
 
                 return new CreateEnrollmentItemDto

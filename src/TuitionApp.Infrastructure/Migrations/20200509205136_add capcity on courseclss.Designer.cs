@@ -10,8 +10,8 @@ using TuitionApp.Infrastructure.Data;
 namespace TuitionApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200507222417_initial")]
-    partial class initial
+    [Migration("20200509205136_add capcity on courseclss")]
+    partial class addcapcityoncourseclss
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,36 @@ namespace TuitionApp.Infrastructure.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "5.0.0-preview.3.20181.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Attendance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AttendanceStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("EnrollmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TimeslotId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnrollmentId");
+
+                    b.HasIndex("TimeslotId");
+
+                    b.ToTable("Attendances");
+                });
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.CalendarSetting", b =>
                 {
@@ -128,6 +158,9 @@ namespace TuitionApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
@@ -196,7 +229,7 @@ namespace TuitionApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CourseId")
+                    b.Property<Guid>("CourseClassId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("EndDate")
@@ -216,7 +249,7 @@ namespace TuitionApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseClassId");
 
                     b.HasIndex("StudentId");
 
@@ -395,6 +428,21 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("Student");
                 });
 
+            modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Attendance", b =>
+                {
+                    b.HasOne("TuitionApp.Core.Domain.Entities.Enrollment", "Enrollment")
+                        .WithMany("Attendances")
+                        .HasForeignKey("EnrollmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TuitionApp.Core.Domain.Entities.Timeslot", "Timeslot")
+                        .WithMany("Attendances")
+                        .HasForeignKey("TimeslotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.ClassSubject", b =>
                 {
                     b.HasOne("TuitionApp.Core.Domain.Entities.CourseClass", "CourseClass")
@@ -454,9 +502,9 @@ namespace TuitionApp.Infrastructure.Migrations
 
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Enrollment", b =>
                 {
-                    b.HasOne("TuitionApp.Core.Domain.Entities.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
+                    b.HasOne("TuitionApp.Core.Domain.Entities.CourseClass", "CourseClass")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("CourseClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -500,7 +548,7 @@ namespace TuitionApp.Infrastructure.Migrations
             modelBuilder.Entity("TuitionApp.Core.Domain.Entities.Timeslot", b =>
                 {
                     b.HasOne("TuitionApp.Core.Domain.Entities.ClassSubject", "ClassSubject")
-                        .WithMany()
+                        .WithMany("Timeslots")
                         .HasForeignKey("ClassSubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -12,6 +12,7 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
     public class CreateCourseClassItemCommand : IRequest<CreateCourseClassItemDto>
     {
         public string Name { get; set; }
+        public int Capacity { get; set; }
         public Guid CourseId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateCourseClassItemCommand, CreateCourseClassItemDto>

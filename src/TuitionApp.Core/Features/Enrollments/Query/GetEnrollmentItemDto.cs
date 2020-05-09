@@ -9,6 +9,6 @@ namespace TuitionApp.Core.Features.Enrollments
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid StudentId { get; set; }
-        public Guid CourseId { get; set; }
+        public Guid CourseClassIdId { get; set; }
     }
 }
