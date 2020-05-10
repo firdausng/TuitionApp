@@ -34,7 +34,9 @@ namespace TuitionApp.Core.Features.Enrollments
                 }
 
                 var courseClassQuery = context.CourseClasses
-                    .Include(cc => cc.Enrollments);
+                    .Include(cc => cc.Enrollments)
+                    .Include(cc => cc.ClassSubjects)
+                    .ThenInclude(cs => cs.Timeslots);
                 var courseClass = await courseClassQuery.SingleOrDefaultAsync(l => l.Id.Equals(request.CourseClassId));
                 if (courseClass == null)
                 {
