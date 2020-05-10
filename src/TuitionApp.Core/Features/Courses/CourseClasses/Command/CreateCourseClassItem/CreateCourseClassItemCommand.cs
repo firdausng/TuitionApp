@@ -14,6 +14,7 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
         public string Name { get; set; }
         public int Capacity { get; set; }
         public Guid CourseId { get; set; }
+        public Guid LocationId { get; set; }
 
         public class CommandHandler : IRequestHandler<CreateCourseClassItemCommand, CreateCourseClassItemDto>
         {
@@ -32,10 +33,18 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
                     throw new EntityNotFoundException(nameof(Course), request.CourseId);
                 }
 
+                var location = await context.Locations
+                    .SingleOrDefaultAsync(l => l.Id.Equals(request.LocationId));
+                if (location == null)
+                {
+                    throw new EntityNotFoundException(nameof(Location), request.LocationId);
+                }
+
                 var entity = new CourseClass()
                 {
                     Name = request.Name,
-                    Course = course,
+                    CourseId = course.Id,
+                    LocationId = location.Id,
                     Capacity = request.Capacity,
                 };
                 context.CourseClasses.Add(entity);

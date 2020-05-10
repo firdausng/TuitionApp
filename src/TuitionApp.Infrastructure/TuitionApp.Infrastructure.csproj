@@ -61,8 +61,14 @@
     <Compile Remove="Migrations\20200507144639_initial.Designer.cs" />
     <Compile Remove="Migrations\20200507222417_initial.cs" />
     <Compile Remove="Migrations\20200507222417_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200508105303_initial.cs" />
+    <Compile Remove="Migrations\20200508105303_initial.Designer.cs" />
     <Compile Remove="Migrations\20200509205025_add capacity on courseclass.cs" />
     <Compile Remove="Migrations\20200509205025_add capacity on courseclass.Designer.cs" />
+    <Compile Remove="Migrations\20200509205136_add capcity on courseclss.cs" />
+    <Compile Remove="Migrations\20200509205136_add capcity on courseclss.Designer.cs" />
+    <Compile Remove="Migrations\20200510123824_add location in courseclass.cs" />
+    <Compile Remove="Migrations\20200510123824_add location in courseclass.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TuitionApp.Core.Common.Exceptions;
@@ -26,6 +27,7 @@ namespace TuitionApp.Core.Features.Courses.ClassSubjects
             public async Task<CreateClassSubjectItemDto> Handle(CreateClassSubjectItemCommand request, CancellationToken cancellationToken)
             {
                 var courseClass = await context.CourseClasses
+                    .Include(cc => cc.Location)
                     .SingleOrDefaultAsync(l => l.Id.Equals(request.CourseClassId));
                 if (courseClass == null)
                 {
@@ -33,10 +35,20 @@ namespace TuitionApp.Core.Features.Courses.ClassSubjects
                 }
 
                 var subjectAssignment = await context.SubjectAssignments
+                    .Include(sa => sa.Instructor)
+                    .ThenInclude(i => i.LocationInstructors)
+                    .ThenInclude(li => li.Location)
                     .SingleOrDefaultAsync(l => l.Id.Equals(request.SubjectAssignmentId));
                 if (subjectAssignment == null)
                 {
                     throw new EntityNotFoundException(nameof(SubjectAssignment), request.SubjectAssignmentId);
+                }
+
+                var locationInstructorEntity = subjectAssignment.Instructor.LocationInstructors
+                    .SingleOrDefault(li => li.LocationId.Equals(courseClass.LocationId));
+                if (locationInstructorEntity == null)
+                {
+                    throw new InvalidAppOperationException("Cannot assign instructor to class because instructor is not assigned to the given location");
                 }
 
                 var entity = new ClassSubject()

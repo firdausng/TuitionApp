@@ -11,5 +11,7 @@ namespace TuitionApp.Core.Domain.Entities
         public Guid CourseId { get; set; }
         public ICollection<ClassSubject> ClassSubjects { get; set; } = new List<ClassSubject>();
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public Guid LocationId { get; set; }
+        public Location Location { get; set; }
     }
 }

@@ -13,6 +13,14 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
             RuleFor(command => command.Capacity)
                 .NotNull()
                 .NotEmpty();
+
+            RuleFor(command => command.CourseId)
+                .NotNull()
+                .NotEmpty();
+
+            RuleFor(command => command.LocationId)
+                .NotNull()
+                .NotEmpty();
         }
     }
 }

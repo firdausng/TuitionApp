@@ -14,5 +14,6 @@ namespace TuitionApp.Core.Domain.Entities
         public TimeSpan ClosingTime { get; set; }
         public ICollection<Classroom> Classrooms { get; set; } = new List<Classroom>();
         public ICollection<LocationInstructor> LocationInstructors { get; set; } = new List<LocationInstructor>();
+        public ICollection<CourseClass> CourseClasss { get; set; } = new List<CourseClass>();
     }
 }

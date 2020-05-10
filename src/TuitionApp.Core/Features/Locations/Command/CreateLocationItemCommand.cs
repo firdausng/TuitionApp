@@ -65,7 +65,7 @@ namespace TuitionApp.Core.Features.Locations
                             Instructor = instructorEntity,
                             Location = entity,
                         };
-                        instructorEntity.LocationInstructors.Add(li);
+                        entity.LocationInstructors.Add(li);
                     }
                 }
 

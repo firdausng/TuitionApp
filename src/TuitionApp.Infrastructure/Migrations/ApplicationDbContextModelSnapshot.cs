@@ -162,6 +162,9 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -171,6 +174,8 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("CourseClasses");
                 });
@@ -470,6 +475,12 @@ namespace TuitionApp.Infrastructure.Migrations
                     b.HasOne("TuitionApp.Core.Domain.Entities.Course", "Course")
                         .WithMany("CourseClasses")
                         .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TuitionApp.Core.Domain.Entities.Location", "Location")
+                        .WithMany("CourseClasss")
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

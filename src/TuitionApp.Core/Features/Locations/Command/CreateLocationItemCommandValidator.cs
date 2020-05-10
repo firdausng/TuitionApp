@@ -12,7 +12,7 @@ namespace TuitionApp.Core.Features.Locations
             RuleFor(command => command.IsEnabled).NotNull().NotEmpty();
             RuleFor(command => command.Name).NotNull().NotEmpty();
 
-            RuleFor(command => command.InstructorLists).NotNull().NotEmpty();
+            //RuleFor(command => command.InstructorLists).NotNull().NotEmpty();
 
             //optional
             RuleFor(command => command.Description).Length(500);
