@@ -41,7 +41,7 @@ namespace TuitionApp.Core.Features.Enrollments
                     throw new EntityNotFoundException(nameof(CourseClass), request.CourseClassId);
                 }
 
-                if (courseClass.Enrollments.Count > courseClass.Capacity)
+                if (courseClass.Enrollments.Count >= courseClass.Capacity)
                 {
                     throw new InvalidAppOperationException("No more slot, class already in full capacity");
                 }
