@@ -8,6 +8,7 @@ using TuitionApp.Core.Features.Common;
 using TuitionApp.Core.Features.Courses;
 using TuitionApp.Core.Features.Courses.CourseClasses;
 using TuitionApp.Core.Features.Enrollments;
+using TuitionApp.Core.Features.Locations;
 using TuitionApp.Core.Features.Students;
 using Xunit;
 
@@ -67,11 +68,20 @@ namespace TuitionApp.IntegrationTest.Enrollment
             };
             var courseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
 
+            var locationDto = await SendWithValidationAsync(new CreateLocationItemCommand()
+            {
+                IsEnabled = true,
+                Name = "location1",
+                Address = "address1",
+                OpeningTime = new TimeSpan(0, 19, 0),
+                ClosingTime = new TimeSpan(0, 21, 0),
+            }, new CreateLocationItemCommandValidator());
 
             var createCourseClassCommand = new CreateCourseClassItemCommand()
             {
                 Name = $"{createCourseCommand.Name}-class1",
                 CourseId = courseDto.Id,
+                LocationId = locationDto.Id,
                 Capacity = 40,
             };
             var courseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());

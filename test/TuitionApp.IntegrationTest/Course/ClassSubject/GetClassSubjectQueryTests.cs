@@ -12,6 +12,7 @@ using TuitionApp.Core.Features.Courses.ClassSubjects;
 using TuitionApp.Core.Features.Instructors;
 using TuitionApp.Core.Features.Subjects;
 using Xunit;
+using TuitionApp.Core.Features.Locations;
 
 namespace TuitionApp.IntegrationTest.Course.ClassSubject
 {
@@ -21,9 +22,15 @@ namespace TuitionApp.IntegrationTest.Course.ClassSubject
         [Fact]
         public async Task ShouldGetClassSubjectItem()
         {
-            var createClassSubjectDto = await CreateClassSubjectAsync();
+            var instructorDto = await CreateInstructorAsync();
+            var courseDto = await CreateCourseAsync();
+            var locationDto = await CreateLocationWithInstructorAsync(instructorDto);
 
-            var dto = await SendAsync(new GetClassSubjectItemQuery() { Id = createClassSubjectDto.Id });
+            var courseClassDto = await CreateCourseClassAsync(courseDto, locationDto);
+            var subjectDto = await CreateSubjectAsync(instructorDto);
+            var classSubjectDto = await CreateClassSubjectAsync(subjectDto, courseClassDto);
+
+            var dto = await SendAsync(new GetClassSubjectItemQuery() { Id = classSubjectDto.Id });
 
             var created = await ExecuteDbContextAsync(db => db.ClassSubjects.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
@@ -37,59 +44,19 @@ namespace TuitionApp.IntegrationTest.Course.ClassSubject
         [Fact]
         public async Task ShouldGetClassSubjectList()
         {
-            var createClassSubjectDto = await CreateClassSubjectAsync();
+            var instructorDto = await CreateInstructorAsync();
+            var courseDto = await CreateCourseAsync();
+            var locationDto = await CreateLocationWithInstructorAsync(instructorDto);
+
+            var courseClassDto = await CreateCourseClassAsync(courseDto, locationDto);
+            var subjectDto = await CreateSubjectAsync(instructorDto);
+            var classSubjectDto = await CreateClassSubjectAsync(subjectDto, courseClassDto);
 
             var dto = await SendAsync(new GetClassSubjectListQuery());
 
             dto.ShouldNotBeNull();
             dto.Count.ShouldBeGreaterThanOrEqualTo(1);
-            dto.Data.ShouldContain(d => d.Id.Equals(createClassSubjectDto.Id));
-        }
-
-
-        private async Task<CreateClassSubjectItemDto> CreateClassSubjectAsync()
-        {
-            var createCourseCommand = new CreateCourseItemCommand()
-            {
-                Name = "Course1",
-                Rate = 40,
-            };
-            var createCourseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
-
-            var createCourseClassCommand = new CreateCourseClassItemCommand()
-            {
-                Name = $"{createCourseCommand.Name}-class1",
-                CourseId = createCourseDto.Id,
-                Capacity = 40,
-            };
-            var createCourseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
-
-            var instructorDto = await SendWithValidationAsync(new CreateInstructorItemCommand()
-            {
-                FirstName = "first",
-                LastName = "last",
-                HireDate = DateTime.UtcNow.DateTimeWithoutMilisecond(),
-            }, new CreateInstructorItemCommandValidator());
-
-            var createSubjectItemCommand = new CreateSubjectItemCommand()
-            {
-                Title = "Subject1",
-                InstructorList = new List<Guid> { instructorDto.Id },
-            };
-            var createSubjectItemDto = await SendWithValidationAsync(createSubjectItemCommand,
-                new CreateSubjectItemCommandValidator());
-
-            var getSubjectItemDto = await SendAsync(new GetSubjectItemQuery() { Id = createSubjectItemDto.Id });
-
-            var createCourseSubjectCommand = new CreateClassSubjectItemCommand()
-            {
-                Title = $"{createCourseCommand.Name}-subject1",
-                CourseClassId = createCourseClassDto.Id,
-                SubjectAssignmentId = getSubjectItemDto.SubjectAssignmentList.First(),
-            };
-
-            var createCourseSubjectDto = await SendWithValidationAsync(createCourseSubjectCommand, new CreateClassSubjectItemCommandValidator());
-            return createCourseSubjectDto;
+            dto.Data.ShouldContain(d => d.Id.Equals(classSubjectDto.Id));
         }
     }
 }

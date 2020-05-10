@@ -8,6 +8,7 @@ using TuitionApp.Core.Common.Extensions;
 using TuitionApp.Core.Features.Courses;
 using TuitionApp.Core.Features.Courses.CourseClasses;
 using TuitionApp.Core.Features.Enrollments;
+using TuitionApp.Core.Features.Locations;
 using TuitionApp.Core.Features.Students;
 using Xunit;
 
@@ -19,28 +20,8 @@ namespace TuitionApp.IntegrationTest.Enrollment
         [Fact]
         public async Task ShouldCreateEnrollment()
         {
-            var studentDto = await SendAsync(new CreateStudentItemCommand()
-            {
-                FirstName = "first",
-                LastName = "last"
-            });
-
-            var createCourseCommand = new CreateCourseItemCommand()
-            {
-                Name = "Course1",
-                Rate = 40,
-            };
-            var courseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
-
-
-            var createCourseClassCommand = new CreateCourseClassItemCommand()
-            {
-                Name = $"{createCourseCommand.Name}-class1",
-                CourseId = courseDto.Id,
-                Capacity = 40,
-            };
-            var courseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
-
+            var studentDto = await CreateStudentAsync();
+            var courseClassDto = await CreateCourseClassAsync("ShouldCreateEnrollment");
 
             var command = new CreateEnrollmentItemCommand()
             {
@@ -63,29 +44,11 @@ namespace TuitionApp.IntegrationTest.Enrollment
         [Fact]
         public async Task ShouldNotCreateEnrollmentWhenCapacityFull()
         {
-            var studentDto = await SendAsync(new CreateStudentItemCommand()
-            {
-                FirstName = "first",
-                LastName = "last"
-            });
+            var capacity = 10;
+            var studentDto = await CreateStudentAsync();
+            var courseClassDto = await CreateCourseClassAsync("ShouldNotCreateEnrollmentWhenCapacityFull", capacity);
 
-            var createCourseCommand = new CreateCourseItemCommand()
-            {
-                Name = "Course1",
-                Rate = 40,
-            };
-            var courseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
-
-
-            var createCourseClassCommand = new CreateCourseClassItemCommand()
-            {
-                Name = $"{createCourseCommand.Name}-class1",
-                CourseId = courseDto.Id,
-                Capacity = 10,
-            };
-            var courseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
-
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < capacity; i++)
             {
                 await SendAsync(new CreateEnrollmentItemCommand()
                 {
@@ -102,6 +65,46 @@ namespace TuitionApp.IntegrationTest.Enrollment
                 StudentId = studentDto.Id,
                 CourseClassId = courseClassDto.Id,
             }).ShouldThrowAsync<InvalidAppOperationException>();
+        }
+
+        private async Task<CreateCourseClassItemDto> CreateCourseClassAsync(string courseName, int classCapacity = 40)
+        {
+            var createCourseCommand = new CreateCourseItemCommand()
+            {
+                Name = courseName,
+                Rate = 40,
+            };
+            var courseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
+
+            var locationDto = await SendWithValidationAsync(new CreateLocationItemCommand()
+            {
+                IsEnabled = true,
+                Name = "location1",
+                Address = "address1",
+                OpeningTime = new TimeSpan(0, 19, 0),
+                ClosingTime = new TimeSpan(0, 21, 0),
+            }, new CreateLocationItemCommandValidator());
+
+            var createCourseClassCommand = new CreateCourseClassItemCommand()
+            {
+                Name = $"{createCourseCommand.Name}-class1",
+                CourseId = courseDto.Id,
+                LocationId = locationDto.Id,
+                Capacity = classCapacity,
+            };
+            var courseClassDto = await SendWithValidationAsync(createCourseClassCommand, new CreateCourseClassItemCommandValidator());
+
+            return courseClassDto;
+        }
+
+        private async Task<CreateStudentDto> CreateStudentAsync()
+        {
+            var studentDto = await SendAsync(new CreateStudentItemCommand()
+            {
+                FirstName = "first",
+                LastName = "last"
+            });
+            return studentDto;
         }
     }
 }

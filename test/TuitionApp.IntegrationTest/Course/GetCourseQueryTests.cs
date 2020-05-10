@@ -12,7 +12,7 @@ namespace TuitionApp.IntegrationTest.Course
     public class GetCourseQueryTests: IntegrationTestBase
     {
         [Fact]
-        public async Task ShouldGetStudentItem()
+        public async Task ShouldGetCourseItem()
         {
             var command = new CreateCourseItemCommand()
             {
@@ -32,7 +32,7 @@ namespace TuitionApp.IntegrationTest.Course
         }
 
         [Fact]
-        public async Task ShouldGetStudentList()
+        public async Task ShouldGetCourseList()
         {
             var command = new CreateCourseItemCommand()
             {

@@ -32,7 +32,7 @@ namespace TuitionApp.IntegrationTest.Location
             });
 
 
-            CreateLocationItemCommand command = new CreateLocationItemCommand()
+            var command = new CreateLocationItemCommand()
             {
                 IsEnabled = true,
                 Name = "location1",
@@ -42,7 +42,7 @@ namespace TuitionApp.IntegrationTest.Location
                 InstructorLists = new System.Collections.Generic.List<Guid>{ instructorDto1.Id, instructorDto2.Id },
             };
 
-            CreateLocationItemDto dto = await SendWithValidationAsync(command, new CreateLocationItemCommandValidator());
+            var dto = await SendWithValidationAsync(command, new CreateLocationItemCommandValidator());
 
             var created = await ExecuteDbContextAsync(db => db.Locations.Include(l => l.LocationInstructors).ThenInclude(l => l.Instructor).Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 

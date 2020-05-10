@@ -24,8 +24,8 @@ namespace TuitionApp.IntegrationTest.CalendarSetting
             });
 
 
-            GetCalendarSettingItemQuery query = new GetCalendarSettingItemQuery() { Id = CalendarSettingDto.Id };
-            GetCalendarSettingItemDto dto = await SendAsync(query);
+            var query = new GetCalendarSettingItemQuery() { Id = CalendarSettingDto.Id };
+            var dto = await SendAsync(query);
 
             var created = await ExecuteDbContextAsync(db => db.CalendarSettings.Where(c => c.Id.Equals(dto.Id)).SingleOrDefaultAsync());
 
