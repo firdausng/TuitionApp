@@ -18,27 +18,16 @@ namespace TuitionApp.IntegrationTest.Course.CourseClass
         [Fact]
         public async Task ShouldGetCourseClassItem()
         {
-            var createCourseCommand = new CreateCourseItemCommand()
-            {
-                Name = "Course1",
-                Rate = 40,
-            };
-            var createCourseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
-
-            var locationDto = await SendWithValidationAsync(new CreateLocationItemCommand()
-            {
-                IsEnabled = true,
-                Name = "location1",
-                Address = "address1",
-                OpeningTime = new TimeSpan(0, 19, 0),
-                ClosingTime = new TimeSpan(0, 21, 0),
-            }, new CreateLocationItemCommandValidator());
+            var instructorDto = await CreateInstructorAsync();
+            var studentDto = await CreateStudentAsync();
+            var courseDto = await CreateCourseAsync();
+            var locationDto = await CreateLocationWithInstructorAsync(instructorDto);
 
 
             var createCourseClassCommand = new CreateCourseClassItemCommand()
             {
-                Name = $"{createCourseCommand.Name}-class1",
-                CourseId = createCourseDto.Id,
+                Name = $"{courseDto.Id}-class1",
+                CourseId = courseDto.Id,
                 LocationId = locationDto.Id,
                 Capacity = 40,
             };
@@ -59,27 +48,16 @@ namespace TuitionApp.IntegrationTest.Course.CourseClass
         [Fact]
         public async Task ShouldGetCourseClassList()
         {
-            var createCourseCommand = new CreateCourseItemCommand()
-            {
-                Name = "Course1",
-                Rate = 40,
-            };
-            var createCourseDto = await SendWithValidationAsync(createCourseCommand, new CreateCourseItemCommandValidator());
-
-            var locationDto = await SendWithValidationAsync(new CreateLocationItemCommand()
-            {
-                IsEnabled = true,
-                Name = "location1",
-                Address = "address1",
-                OpeningTime = new TimeSpan(0, 19, 0),
-                ClosingTime = new TimeSpan(0, 21, 0),
-            }, new CreateLocationItemCommandValidator());
+            var instructorDto = await CreateInstructorAsync();
+            var studentDto = await CreateStudentAsync();
+            var courseDto = await CreateCourseAsync();
+            var locationDto = await CreateLocationWithInstructorAsync(instructorDto);
 
 
             var createCourseClassCommand = new CreateCourseClassItemCommand()
             {
-                Name = $"{createCourseCommand.Name}-class1",
-                CourseId = createCourseDto.Id,
+                Name = $"{courseDto.Id}-class1",
+                CourseId = courseDto.Id,
                 LocationId = locationDto.Id,
                 Capacity = 40,
             };

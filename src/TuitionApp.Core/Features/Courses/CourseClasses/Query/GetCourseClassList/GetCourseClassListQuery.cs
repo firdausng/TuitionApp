@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace TuitionApp.Core.Features.Courses.CourseClasses
 
             public async Task<GetObjectListVm<GetCourseClassItemDto>> Handle(GetCourseClassListQuery request, CancellationToken cancellationToken)
             {
-                var courseClasses = await context.CourseClasses.Include(cc => cc.Enrollments)
+                var courseClasses = await context.CourseClasses
+                    .Include(cc => cc.Enrollments)
                     .ToListAsync(cancellationToken);
 
                 var list = courseClasses
