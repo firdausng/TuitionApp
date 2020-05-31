@@ -27,6 +27,7 @@ namespace TuitionApp.Core.Features.Subjects
             public async Task<GetSubjectItemDto> Handle(GetSubjectItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.Subjects
+                    .AsNoTracking()
                     .Include(s => s.SubjectAssignments)
                     .SingleOrDefaultAsync(t => t.Id.Equals(request.Id), cancellationToken);
 

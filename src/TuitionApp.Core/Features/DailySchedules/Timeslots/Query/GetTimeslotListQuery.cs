@@ -22,6 +22,7 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
             public async Task<GetObjectListVm<GetTimeslotItemDto>> Handle(GetTimeslotListQuery request, CancellationToken cancellationToken)
             {
                 var dailySchedules = await context.Timeslots
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
                 var list = dailySchedules

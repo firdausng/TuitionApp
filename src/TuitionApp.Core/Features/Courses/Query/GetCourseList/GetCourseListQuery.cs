@@ -25,6 +25,7 @@ namespace TuitionApp.Core.Features.Courses
             public async Task<GetObjectListVm<GetCourseItemDto>> Handle(GetCourseListQuery request, CancellationToken cancellationToken)
             {
                 var courses = await context.Courses
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
                 var list = courses

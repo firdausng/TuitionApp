@@ -26,6 +26,7 @@ namespace TuitionApp.Core.Features.DailySchedules.Timeslots
             public async Task<GetTimeslotItemDto> Handle(GetTimeslotItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.Timeslots
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)

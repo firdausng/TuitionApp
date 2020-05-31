@@ -27,6 +27,7 @@ namespace TuitionApp.Core.Features.Enrollments
             public async Task<GetEnrollmentItemDto> Handle(GetEnrollmentItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.Enrollments
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)

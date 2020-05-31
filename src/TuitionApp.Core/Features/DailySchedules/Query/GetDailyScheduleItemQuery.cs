@@ -28,6 +28,7 @@ namespace TuitionApp.Core.Features.DailySchedules
             public async Task<GetDailyScheduleItemDto> Handle(GetDailyScheduleItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.DailySchedules
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)

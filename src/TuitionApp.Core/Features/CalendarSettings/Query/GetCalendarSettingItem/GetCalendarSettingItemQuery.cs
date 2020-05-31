@@ -27,6 +27,7 @@ namespace TuitionApp.Core.Features.CalendarSettings
             public async Task<GetCalendarSettingItemDto> Handle(GetCalendarSettingItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.CalendarSettings
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)

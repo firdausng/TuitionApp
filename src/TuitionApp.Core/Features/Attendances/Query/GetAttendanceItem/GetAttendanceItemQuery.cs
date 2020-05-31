@@ -27,6 +27,7 @@ namespace TuitionApp.Core.Features.Attendances
             public async Task<GetAttendanceItemDto> Handle(GetAttendanceItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.Attendances
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)

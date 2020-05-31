@@ -25,6 +25,7 @@ namespace TuitionApp.Core.Features.Locations
             public async Task<GetObjectListVm<GetLocationDto>> Handle(GetLocationListQuery request, CancellationToken cancellationToken)
             {
                 var locations = await context.Locations
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken)
                     ;
 

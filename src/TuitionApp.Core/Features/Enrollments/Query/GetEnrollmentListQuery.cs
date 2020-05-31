@@ -25,6 +25,7 @@ namespace TuitionApp.Core.Features.Enrollments
             public async Task<GetObjectListVm<GetEnrollmentItemDto>> Handle(GetEnrollmentListQuery request, CancellationToken cancellationToken)
             {
                 var entities = await context.Enrollments
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
                 var list = entities

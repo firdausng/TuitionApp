@@ -25,6 +25,7 @@ namespace TuitionApp.Core.Features.Instructors
             public async Task<GetObjectListVm<GetInstructorItemDto>> Handle(GetInstructorListQuery request, CancellationToken cancellationToken)
             {
                 var instructors = await context.Instructor
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
                 var list = instructors

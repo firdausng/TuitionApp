@@ -25,6 +25,7 @@ namespace TuitionApp.Core.Features.Locations
             public async Task<GetLocationDto> Handle(GetLocationItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.Locations
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)

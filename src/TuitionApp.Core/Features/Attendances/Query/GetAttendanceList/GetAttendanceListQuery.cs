@@ -22,6 +22,7 @@ namespace TuitionApp.Core.Features.Attendances
             public async Task<GetObjectListVm<GetAttendanceItemDto>> Handle(GetAttendanceListQuery request, CancellationToken cancellationToken)
             {
                 var calendarSettings = await context.Attendances
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
                 var list = calendarSettings

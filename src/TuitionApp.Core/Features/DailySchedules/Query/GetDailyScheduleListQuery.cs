@@ -25,6 +25,7 @@ namespace TuitionApp.Core.Features.DailySchedules
             public async Task<GetObjectListVm<GetDailyScheduleItemDto>> Handle(GetDailyScheduleListQuery request, CancellationToken cancellationToken)
             {
                 var dailySchedules = await context.DailySchedules
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
 
                 var list = dailySchedules

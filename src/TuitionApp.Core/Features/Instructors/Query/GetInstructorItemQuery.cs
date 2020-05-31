@@ -27,6 +27,7 @@ namespace TuitionApp.Core.Features.Instructors
             public async Task<GetInstructorItemDto> Handle(GetInstructorItemQuery request, CancellationToken cancellationToken)
             {
                 var entity = await context.Instructor
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(t => t.Id == request.Id, cancellationToken);
 
                 if (entity == null)
